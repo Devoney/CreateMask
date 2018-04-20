@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="LocalResistanceCalculationMethod.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.2828937"
+     inkscape:cx="554.56309"
+     inkscape:cy="503.60968"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 12.881031,146.25712 H 184.51206"
+       id="path3721"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="8.1081991"
+       y="153.39954"
+       id="text4530"><tspan
+         sodipodi:role="line"
+         id="tspan4528"
+         x="8.1081991"
+         y="153.39954"
+         style="font-size:5.64444447px;stroke-width:0.26458332">128</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="180.5141"
+       y="152.97279"
+       id="text4534"><tspan
+         sodipodi:role="line"
+         id="tspan4532"
+         x="180.5141"
+         y="152.97279"
+         style="font-size:5.64444447px;stroke-width:0.26458332">256</tspan></text>
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 56.757392,156.19914 c 94.524528,0 94.951278,-0.42675 94.951278,-0.42675"
+       id="path4536"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a9a500;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="53.229164"
+       y="153.88719"
+       id="text4540"><tspan
+         sodipodi:role="line"
+         id="tspan4538"
+         x="53.229164"
+         y="153.88719"
+         style="font-size:4.23333311px;fill:#a9a500;fill-opacity:1;stroke-width:0.26458332">192</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a9a500;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="116.52082"
+       y="160.01218"
+       id="text4544"><tspan
+         sodipodi:role="line"
+         id="tspan4542"
+         x="116.52082"
+         y="160.01218"
+         style="font-size:3.52777778px;fill:#a9a500;fill-opacity:1;stroke-width:0.26458332">8.34KOhm</tspan></text>
+    <path
+       style="fill:none;stroke:#0000c7;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.5, 0.5;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 125.41666,132.35416 0.14583,18.375"
+       id="path4550"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 13.708333,156.125 v 5.25"
+       id="path4552"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 185.64583,161.375 H 13.708333"
+       id="path4554"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 185.64583,156.125 v 5.25"
+       id="path4552-5"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 56.874999,124.625 v -4.8125"
+       id="path4571"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 151.08333,119.8125 H 56.874999"
+       id="path4573"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.08333,124.625 v -4.8125"
+       id="path4571-0"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.26499999,0.26499999;stroke-dashoffset:0"
+       d="m 56.757392,132.91566 v 17.23017"
+       id="path4590"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.26499999, 0.26499999;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 151.70867,132.48891 v 17.23017"
+       id="path4590-2"
+       inkscape:connector-curvature="0" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7"
+       cx="59.500004"
+       cy="142.92708"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="57.500412"
+       y="146.40852"
+       id="text4611-0"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8"
+         x="57.500412"
+         y="146.40852"
+         style="font-size:3.05695868px;stroke-width:0.14329493">1</tspan></text>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-3"
+       cx="154.72917"
+       cy="142.59999"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="151.45947"
+       y="146.07599"
+       id="text4611-0-4"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8-1"
+         x="151.45947"
+         y="146.07599"
+         style="font-size:3.05695868px;stroke-width:0.14329493">2</tspan><tspan
+         sodipodi:role="line"
+         x="151.45947"
+         y="149.89719"
+         style="font-size:3.05695868px;stroke-width:0.14329493"
+         id="tspan4655" /></text>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-0"
+       cx="106.16666"
+       cy="116.89584"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="103.40408"
+       y="119.94459"
+       id="text4611-0-3"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8-0"
+         x="103.40408"
+         y="119.94459"
+         style="font-size:3.05695868px;stroke-width:0.14329493">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="50.493359"
+       y="131.63799"
+       id="text4530-9"><tspan
+         sodipodi:role="line"
+         id="tspan4528-8"
+         x="50.493359"
+         y="131.63799"
+         style="font-size:5.64444447px;stroke-width:0.26458332">161</tspan><tspan
+         sodipodi:role="line"
+         x="50.493359"
+         y="144.86716"
+         style="font-size:5.64444447px;stroke-width:0.26458332"
+         id="tspan4696" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="145.64421"
+       y="131.05466"
+       id="text4530-9-9"><tspan
+         sodipodi:role="line"
+         id="tspan4528-8-0"
+         x="145.64421"
+         y="131.05466"
+         style="font-size:5.64444447px;stroke-width:0.26458332">229</tspan><tspan
+         sodipodi:role="line"
+         x="145.64421"
+         y="144.28383"
+         style="font-size:5.64444447px;stroke-width:0.26458332"
+         id="tspan4719" /><tspan
+         sodipodi:role="line"
+         x="145.64421"
+         y="157.51299"
+         style="font-size:5.64444447px;stroke-width:0.26458332"
+         id="tspan4696-7" /></text>
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 56.874997,158.45156 0,8.16667"
+       id="path4571-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 151.08334,166.61823 H 56.874997"
+       id="path4573-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#bedf00;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 151.08334,157.86823 0,8.75"
+       id="path4571-0-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-0-5"
+       cx="105.72918"
+       cy="169.83333"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="102.97375"
+       y="173.76199"
+       id="text4611-0-3-0"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8-0-2"
+         x="102.97375"
+         y="173.76199"
+         style="font-size:3.05695868px;stroke-width:0.14329493">4</tspan></text>
+    <path
+       style="fill:none;stroke:#920088;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.5,0.5;stroke-dashoffset:0"
+       d="M 47.104167,116.45833 V 170.125 H 101.5"
+       id="path4763"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#920088;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.5,0.5;stroke-dashoffset:0"
+       d="M 47.104167,116.45833 H 100.91666"
+       id="path4765"
+       inkscape:connector-curvature="0" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-0-9"
+       cx="43.749996"
+       cy="125.49999"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="42.007938"
+       y="128.69176"
+       id="text4611-0-3-00"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         x="42.007938"
+         y="128.69176"
+         style="font-size:3.05695868px;stroke-width:0.14329493"
+         id="tspan4788">5</tspan></text>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-0-9-4"
+       cx="121.44168"
+       cy="152.38751"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="118.42935"
+       y="156.02617"
+       id="text4611-0-3-00-3"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         x="118.42935"
+         y="156.02617"
+         style="font-size:3.05695868px;stroke-width:0.14329493"
+         id="tspan4788-9">6</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a9a500;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="124.41636"
+       y="155.041"
+       id="text4540-8"><tspan
+         sodipodi:role="line"
+         id="tspan4538-3"
+         x="124.41636"
+         y="155.041"
+         style="font-size:4.23333311px;fill:#a9a500;fill-opacity:1;stroke-width:0.26458332">?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="120.41505"
+       y="130.763"
+       id="text4530-9-1"><tspan
+         sodipodi:role="line"
+         id="tspan4528-8-1"
+         x="120.41505"
+         y="130.763"
+         style="font-size:5.64444447px;stroke-width:0.26458332">211</tspan><tspan
+         sodipodi:role="line"
+         x="120.41505"
+         y="143.99217"
+         style="font-size:5.64444447px;stroke-width:0.26458332"
+         id="tspan4852" /><tspan
+         sodipodi:role="line"
+         x="120.41505"
+         y="157.22133"
+         style="font-size:5.64444447px;stroke-width:0.26458332"
+         id="tspan4696-4" /></text>
+    <path
+       style="fill:none;stroke:#a7bcb1;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 0.5, 0.25, 0.5;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 61.104167,128.70833 H 118.27083"
+       id="path4854"
+       inkscape:connector-curvature="0" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-0-9-40"
+       cx="90.416672"
+       cy="125.64584"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="87.911613"
+       y="128.84001"
+       id="text4611-0-3-00-8"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         x="87.911613"
+         y="128.84001"
+         style="font-size:3.05695868px;stroke-width:0.14329493"
+         id="tspan4877">7</tspan></text>
+    <path
+       style="fill:none;stroke:#d24c03;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.25,0.25;stroke-dashoffset:0"
+       d="m 46.229166,125.79166 41.854167,-0.14583"
+       id="path4881"
+       inkscape:connector-curvature="0" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-5"
+       cx="66.354164"
+       cy="123.16667"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="64.242508"
+       y="126.31965"
+       id="text4611-0-1"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8-8"
+         x="64.242508"
+         y="126.31965"
+         style="font-size:3.05695868px;stroke-width:0.14329493">8</tspan></text>
+    <path
+       style="fill:none;stroke:#b01fb5;stroke-width:0.25000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.50000001,0.25000001;stroke-dashoffset:0"
+       d="m 61.541667,152.77083 h 4.374999 V 125.9375"
+       id="path4904"
+       inkscape:connector-curvature="0" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.14352059;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4607-7-37"
+       cx="68.833328"
+       cy="137.75"
+       rx="2.2482398"
+       ry="2.1753232" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.05695868px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14329493"
+       x="66.681137"
+       y="141.14539"
+       id="text4611-0-0"
+       transform="scale(1.0166218,0.98364996)"><tspan
+         sodipodi:role="line"
+         id="tspan4609-8-3"
+         x="66.681137"
+         y="141.14539"
+         style="font-size:3.05695868px;stroke-width:0.14329493">9</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="2.4791667"
+       y="64.249992"
+       id="text4929"><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="64.249992"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4963">This is used to create a mask for the DLP LCD of a UV resin printer. This describes the calculation method</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="69.541664"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4967">used to determine the local mask intensity. The big black line represents the resistance measurement</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="74.833321"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4935">results using a LDR where the numbers represent the duty cycle of the DLP LCD (8-bit from 1 to 256).</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="80.124992"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4939">Across this line multiple measurements have been made to determine the characteristics of the LDR. This is</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="85.416664"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4941">performed on the brightest spot on the LCD. A 6th order polynomial curve of this data is created, so we can</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="90.708321"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan4959">put in a resistance value and have the mask intensity value (from 1 to 256) returned. The smaller green line</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="95.999992"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan5013">represents 2 measurements of any less brighter spot, for which we want to know the local mask intensity</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="101.29166"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan5015">required to have a brightness equal to the (arbritrarily chosen) value of 8.34KOhm. This is the value that the entire</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="106.58332"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan5035">LCD screen brightness must be adjusted to, making use of the mask. So to reduce the brightness of the les</tspan><tspan
+         sodipodi:role="line"
+         x="2.4791667"
+         y="111.87499"
+         style="font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan5039">bright spot we need to know which mask intensity value for that particular location we can use.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="175"
+       y="143.875"
+       id="text4971"><tspan
+         sodipodi:role="line"
+         id="tspan4969"
+         x="175"
+         y="143.875"
+         style="stroke-width:0.26458332">4.26KOhm</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="3.8896239"
+       y="142.09903"
+       id="text4971-8"><tspan
+         sodipodi:role="line"
+         x="3.8896239"
+         y="142.09903"
+         style="stroke-width:0.26458332"
+         id="tspan4991">22.79KOhm</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a9a500;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="145.41533"
+       y="154.31183"
+       id="text4544-8"><tspan
+         sodipodi:role="line"
+         id="tspan4542-4"
+         x="145.41533"
+         y="154.31183"
+         style="font-size:4.23333311px;fill:#a9a500;fill-opacity:1;stroke-width:0.26458332">256</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.23333311px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="3.4999998"
+       y="175.66667"
+       id="text5043"><tspan
+         sodipodi:role="line"
+         id="tspan5041"
+         x="3.4999998"
+         y="175.66667"
+         style="stroke-width:0.26458332">1) The lowest mask intensity value of 192 of a secundairy spot is converted to a mask intensity</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="180.95834"
+         style="stroke-width:0.26458332"
+         id="tspan5045">value using the polynomial curve fit of the brightest spot on the screen. Resulting in 161.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="186.25"
+         style="stroke-width:0.26458332"
+         id="tspan5047">2) The same is done for the highest mask intensity value of the secundairy spot, resulting in 229.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="191.54167"
+         style="stroke-width:0.26458332"
+         id="tspan5049">3) The difference of these values is determined, which is 229 - 161 = 68.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="196.83334"
+         style="stroke-width:0.26458332"
+         id="tspan5051">4) The difference between the min and max mask intensity of the secundairy spot is calculated,</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="202.125"
+         style="stroke-width:0.26458332"
+         id="tspan5053">resulting in 64.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="207.41667"
+         style="stroke-width:0.26458332"
+         id="tspan5055">5) These values are brought into ratio by 64 / 68 = 0.941</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="212.70834"
+         style="stroke-width:0.26458332"
+         id="tspan5057">6) The resistance value of 8.34KOhm, we want the secundairy spot to be adjusted to by the</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="218"
+         style="stroke-width:0.26458332"
+         id="tspan5059">yet to determine mask intensity (?) is put in the curve fit to determine the mask intensity of the</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="223.29167"
+         style="stroke-width:0.26458332"
+         id="tspan5061">brightest spot that would equal this light intensity, which is 211.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="228.58333"
+         style="stroke-width:0.26458332"
+         id="tspan5063">7) Then the difference of this value, and the min mask intensity is determined: 211 - 161 = 50.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="233.875"
+         style="stroke-width:0.26458332"
+         id="tspan5065">8) The ratio determined at point 5, and the value of 50 determined at point 7 are multiplied.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="239.16667"
+         style="stroke-width:0.26458332"
+         id="tspan5067">So the mask intensity difference of the brightest spot of value 50, would be equal to </tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="244.45833"
+         style="stroke-width:0.26458332"
+         id="tspan5069">50 x 0.941 =  47.05 difference in mask intensity of the secundairy spot.</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="249.75"
+         style="stroke-width:0.26458332"
+         id="tspan5071">9) Then finally, the minimum value of the secundairy spot is added to obtain 192 + 47.05 = 239</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="255.04167"
+         style="stroke-width:0.26458332"
+         id="tspan5073">as the mask intensity to apply to the secundairy spot to have a light brightness equal to the LDR</tspan><tspan
+         sodipodi:role="line"
+         x="3.4999998"
+         y="260.33334"
+         style="stroke-width:0.26458332"
+         id="tspan5075">measured resistance of 8.34KOhm.</tspan></text>
+  </g>
+</svg>
