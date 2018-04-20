@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Main.Test.Helpers;
@@ -57,13 +59,28 @@ namespace CreateMask.Main.Test
         {
             //Given
             var applicationArguments = new ApplicationArguments();
+            applicationArguments.DesiredResistance = 8820;
+            applicationArguments.High = 255;
+            applicationArguments.LcdHeight = 1440;
+            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
+            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
+            applicationArguments.LcdWidth = 2560;
+            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
+            applicationArguments.Low = 175;
+            applicationArguments.MaskFilePath = Path.GetFullPath("./mask.png");
+            applicationArguments.MeasurementsNrOfColumns = 12;
+            applicationArguments.MeasurementsNrOfRows = 7;
             var main = new MainTester(applicationArguments);
 
             //When
             main.CreateMask();
 
             //Then
-            Assert.Fail("TODO");
+            using (var actualBitmap = new Bitmap(Image.FromFile(applicationArguments.MaskFilePath)))
+            using (var expectedBitmap = new Bitmap(Image.FromFile(FileManager.GetFullFilePath("MaskIsCreatedAsExpected.png"))))
+            {
+                AssertExt.Equals(expectedBitmap, actualBitmap);
+            }
         }
     }
 }
