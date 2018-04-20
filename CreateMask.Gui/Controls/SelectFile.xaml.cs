@@ -46,6 +46,19 @@ namespace CreateMask.Gui.Controls
             new PropertyMetadata("")
         );
 
+        public string Extension
+        {
+            get { return (string)GetValue(ExtensionProperty); }
+            set { SetValue(ExtensionProperty, value); }
+        }
+
+        public static readonly DependencyProperty ExtensionProperty = DependencyProperty.Register(
+            nameof(Extension),
+            typeof(string),
+            typeof(SelectFile),
+            new PropertyMetadata("")
+        );
+
         public SelectFile()
         {
             InitializeComponent();
@@ -56,8 +69,8 @@ namespace CreateMask.Gui.Controls
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
-                DefaultExt = ".csv",
-                Filter = "CSV Files|*.csv"
+                DefaultExt = Extension,
+                Filter = "Files|*" + Extension
             };
 
             var result = dlg.ShowDialog();
