@@ -1,4 +1,5 @@
 ﻿using System;
+using CreateMask.Contracts.Interfaces;
 using CreateMask.Workers;
 
 namespace CreateMask
@@ -9,12 +10,21 @@ namespace CreateMask
         {
             HandleException(() =>
             {
-                var argumentsParser = new ArgumentsParser();
+                Console.WriteLine("CreateMask - https://github.com/Devoney/CreateMask");
+                Console.WriteLine("Contact developer: mikedeklerk@gmail.com");
+                Console.WriteLine("April 2018");
+                Console.WriteLine("");
+
+                IArgumentsParser argumentsParser = new ArgumentsParser();
+                argumentsParser.Output += Main_Output;
                 var arguments = argumentsParser.Parse(args);
 
-                var main = new Main.Main(arguments);
-                main.Output += Main_Output;
-                main.CreateMask();
+                if (arguments != null)
+                {
+                    var main = new Main.Main(arguments);
+                    main.Output += Main_Output;
+                    main.CreateMask();
+                }
             });
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();

@@ -1,6 +1,10 @@
-﻿using CreateMask.Containers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using TestHelpers;
 using Args = CreateMask.Contracts.Constants.Arguments;
@@ -66,6 +70,44 @@ namespace CreateMask.Workers.Test
 
             //Then
             actualArguments.Should().BeEquivalentTo(expectedArguments);
+        }
+
+        [Test, Category(Categories.Unit)]
+        [TestCase("?")]
+        [TestCase("help")]
+        [TestCase("-help")]
+        [TestCase("--help")]
+        public void HelpForArgumentsIsShownWhenNoOrHelpArgumentsAreSet(string helpArgument)
+        {
+            //Given
+            var expectedHelpTexts = new []
+            {
+                "--desiredresistance\t\tThe resistance value you want to normalize the entire LCD screen to. This determines the increase in exposure time.",
+                "--high\t\t[OPTIONAL, DEFAULT=255] The pixel value(0-255) of the mask used for the 'high' light intensity measurements? Normally this is 255, as in completely white, so effectively no mask.",
+                "--lcdheight\t\tThe height in pixels of the LCD screen of the printer.",
+                "--lcdmeasurementsfile_high\t\tThe file path of the CSV file containing the measurements with high light intensity.",
+                "--lcdmeasurementsfile_low\t\tThe file path of the CSV file containing the measurements with low light intensity.",
+                "--lcdwidth\t\tThe width in pixels of the LCD screen of the printer.",
+                "--ldrcalfile\t\tThe file path to the CSV file containing the measurements to the curve fit data of the LDR. The first column is the mask intensity, the second column is the resistance measured in ohm.",
+                "--low\t\tThe grey pixel value (0-255) of the mask used for the 'low' light intensity measurements.",
+                "--maskfilepath\t\tThe file path the mask should be saved to.",
+                "--nrofcolumns\t\tThe number of evenly spread measurements you did on the X-axis. The number of columns, so to speak.",
+                "--nrofrows\t\tThe number of evenly spread measurements you did on the Y-axis. The number of rows, so to speak.",
+            }.ToList();
+            var argumentsParser = GetArgumentsParser();
+            //Even when other arguments are set, when help is set, the help should be displayed.
+            var arguments = new[] {"--lcdwidth", "800", helpArgument};
+            var actualHelpTexts = new List<string>();
+            argumentsParser.Output += (sender, helpText) =>
+            {
+                actualHelpTexts.Add(helpText);
+            };
+
+            //When
+            argumentsParser.Parse(arguments);
+
+            //Then
+            actualHelpTexts.Should().BeEquivalentTo(expectedHelpTexts);
         }
 
         private IArgumentsParser GetArgumentsParser()
