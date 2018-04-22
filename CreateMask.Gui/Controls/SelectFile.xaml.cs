@@ -74,7 +74,6 @@ namespace CreateMask.Gui.Controls
                 CheckFileExists = false
             };
             
-
             var result = dlg.ShowDialog();
             if (result != true) return;
             

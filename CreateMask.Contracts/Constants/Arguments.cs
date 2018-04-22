@@ -2,6 +2,7 @@
 {
     public static class Arguments
     {
+        public const string FileType = "filetype";
         public const string LcdHeight = "lcdheight";
         public const string LcdWidth = "lcdwidth";
         public const string LdrCalibrationFilePath = "ldrcalfile";

@@ -14,6 +14,7 @@ namespace CreateMask.Containers
         public int MeasurementsNrOfRows { get; set; }
         public int MeasurementsNrOfColumns { get; set; }
         public string MaskFilePath { get; set; }
+        public string FileType { get; set; }
         public byte High { get; set; }
         public byte Low { get; set; }
     }

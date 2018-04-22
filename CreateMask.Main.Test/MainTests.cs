@@ -26,9 +26,10 @@ namespace CreateMask.Main.Test
             //Given
             var expectedResolvableTypes = new List<Type>
             {
-                typeof (IMaskIntensityResistanceInterpolator),
-                typeof(IGenericLoader<Measurement>),
                 typeof(IGenericGridLoader<int>),
+                typeof(IGenericLoader<Measurement>),
+                typeof(IImageSaver),
+                typeof(IMaskIntensityResistanceInterpolator),
                 typeof(IMeasurementGridProcessor)
             };
             var applicationArguments = new ApplicationArguments();
@@ -70,6 +71,7 @@ namespace CreateMask.Main.Test
             applicationArguments.MaskFilePath = Path.GetFullPath("./mask.png");
             applicationArguments.MeasurementsNrOfColumns = 12;
             applicationArguments.MeasurementsNrOfRows = 7;
+            applicationArguments.FileType = ".png";
             var main = new MainTester(applicationArguments);
 
             //When

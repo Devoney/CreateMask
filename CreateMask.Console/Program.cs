@@ -15,7 +15,7 @@ namespace CreateMask
                 Console.WriteLine("April 2018");
                 Console.WriteLine("");
 
-                IArgumentsParser argumentsParser = new ArgumentsParser();
+                IArgumentsParser argumentsParser = new ArgumentsParser(new ImageSaver());
                 argumentsParser.Output += Main_Output;
                 var arguments = argumentsParser.Parse(args);
 

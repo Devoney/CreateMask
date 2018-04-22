@@ -12,6 +12,7 @@ namespace CreateMask.Main
         {
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
+            kernel.Bind<IImageSaver>().To<ImageSaver>();
             kernel.Bind<IMaskIntensityResistanceInterpolator>().To<MaskIntensityResistanceInterpolator>();
             kernel.Bind<IMeasurementGridProcessor>().To<MeasurementGridProcessor>();
         }

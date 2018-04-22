@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
@@ -9,11 +11,22 @@ namespace CreateMask.Workers
 {
     public class ArgumentsParser : IArgumentsParser
     {
-        public event EventHandler<string> Output; 
+        private readonly IImageSaver _imageSaver;
+        public event EventHandler<string> Output;
+
+        public ArgumentsParser(IImageSaver imageSaver)
+        {
+            _imageSaver = imageSaver;
+        }
 
         public ApplicationArguments Parse(string[] args)
         {
             var parser = new FluentCommandLineParser<ApplicationArgumentsWrapper>();
+
+            parser.Setup(aa => aa.FileType)
+                .As('a', Args.FileType)
+                .WithDescription("The type of file to output. " +
+                                 "Supported file types are: " + string.Join(", ", _imageSaver.SupportedFileTypes));
 
             parser.Setup(aa => aa.LcdHeight)
                 .As('h', Args.LcdHeight).Required()

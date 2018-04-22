@@ -5,6 +5,7 @@ using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NUnit.Framework;
 using TestHelpers;
 using Args = CreateMask.Contracts.Constants.Arguments;
@@ -25,18 +26,20 @@ namespace CreateMask.Workers.Test
         private const int High = 255;
         private const int Low = 127;
         private const int DesiredResistance = 5467;
+        private const string FileType = ".bmp";
 
         private readonly string _commandLine = $"--{Args.LcdWidth} {LcdWidth} " +
-                                     $"--{Args.LcdHeight} {LcdHeight} " +
-                                     $"--{Args.LdrCalibrationFilePath} \"{LdrCalibrationFilePath}\" " +
-                                     $"--{Args.LcdMeasurementsFilePathHigh} \"{LcdMeasurementsFilePathHigh}\" " +
-                                     $"--{Args.LcdMeasurementsFilePathLow} \"{LcdMeasurementsFilePathLow}\" " +
-                                     $"--{Args.High} {High} " +
-                                     $"--{Args.Low} {Low} " +
-                                     $"--{Args.MaskFilePath} \"{MaskFilePath}\" " +
-                                     $"--{Args.MeasurementsNrOfRows} {NrOfRows} " +
-                                     $"--{Args.MeasurementsNrOfColumns} {NrOfColumns} " +
-                                     $"--{Args.DesiredResistance} {DesiredResistance}";
+                                               $"--{Args.LcdHeight} {LcdHeight} " +
+                                               $"--{Args.LdrCalibrationFilePath} \"{LdrCalibrationFilePath}\" " +
+                                               $"--{Args.LcdMeasurementsFilePathHigh} \"{LcdMeasurementsFilePathHigh}\" " +
+                                               $"--{Args.LcdMeasurementsFilePathLow} \"{LcdMeasurementsFilePathLow}\" " +
+                                               $"--{Args.High} {High} " +
+                                               $"--{Args.Low} {Low} " +
+                                               $"--{Args.MaskFilePath} \"{MaskFilePath}\" " +
+                                               $"--{Args.MeasurementsNrOfRows} {NrOfRows} " +
+                                               $"--{Args.MeasurementsNrOfColumns} {NrOfColumns} " +
+                                               $"--{Args.DesiredResistance} {DesiredResistance} " +
+                                               $"--{Args.FileType} {FileType}";
 
         private readonly string[] _args;
 
@@ -61,7 +64,8 @@ namespace CreateMask.Workers.Test
                 MaskFilePath = MaskFilePath,
                 MeasurementsNrOfRows = NrOfRows,
                 MeasurementsNrOfColumns = NrOfColumns,
-                DesiredResistance = DesiredResistance
+                DesiredResistance = DesiredResistance,
+                FileType = FileType
             };
             var argumentsParser = GetArgumentsParser();
 
@@ -83,6 +87,7 @@ namespace CreateMask.Workers.Test
             var expectedHelpTexts = new []
             {
                 "--desiredresistance\t\tThe resistance value you want to normalize the entire LCD screen to. This determines the increase in exposure time.",
+                "--filetype\t\tThe type of file to output. Supported file types are: png, bmp, gif",
                 "--high\t\t[OPTIONAL, DEFAULT=255] The pixel value(0-255) of the mask used for the 'high' light intensity measurements? Normally this is 255, as in completely white, so effectively no mask.",
                 "--lcdheight\t\tThe height in pixels of the LCD screen of the printer.",
                 "--lcdmeasurementsfile_high\t\tThe file path of the CSV file containing the measurements with high light intensity.",
@@ -110,9 +115,18 @@ namespace CreateMask.Workers.Test
             actualHelpTexts.Should().BeEquivalentTo(expectedHelpTexts);
         }
 
-        private IArgumentsParser GetArgumentsParser()
+        private static IArgumentsParser GetArgumentsParser()
         {
-            return new ArgumentsParser();
+            var imageSaver = GetMockedImageSaver();
+            return new ArgumentsParser(imageSaver);
+        }
+
+        private static IImageSaver GetMockedImageSaver()
+        {
+            var imageSaverMock = new Mock<IImageSaver>();
+            var supportedFileTypes = new List<string> { "png", "bmp", "gif" };
+            imageSaverMock.Setup(ims => ims.SupportedFileTypes).Returns(supportedFileTypes);
+            return imageSaverMock.Object;
         }
     }
 }

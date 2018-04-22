@@ -54,7 +54,8 @@ namespace CreateMask.Main
                 OnOutput($"Resizing bitmap of {bitmap.Width}x{bitmap.Height}px to final mask of {_arguments.LcdWidth}x{_arguments.LcdHeight}px using bilinear interpolation.");
                 using (var mask = Image.Resize(bitmap, _arguments.LcdWidth, _arguments.LcdHeight))
                 {
-                    mask.Save(_arguments.MaskFilePath, ImageFormat.Png);
+                    var imageSaver = Kernel.Get<IImageSaver>();
+                    imageSaver.Save(mask, _arguments.MaskFilePath, _arguments.FileType ?? ".png");
                 }
             }
             OnOutput($"Mask saved to {_arguments.MaskFilePath}.");
