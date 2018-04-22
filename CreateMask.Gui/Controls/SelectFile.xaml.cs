@@ -70,8 +70,10 @@ namespace CreateMask.Gui.Controls
             var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = Extension,
-                Filter = "Files|*" + Extension
+                Filter = "Files|*" + Extension,
+                CheckFileExists = false
             };
+            
 
             var result = dlg.ShowDialog();
             if (result != true) return;
