@@ -6,7 +6,7 @@
         xmlns:controls="clr-namespace:CreateMask.Gui.Controls"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Mask Creator for 3D UV Resin DLP Printers - Mike de Klerk"
+        Title="Mask Creator for 3D UV Resin DLP Printers"
         SizeToContent="Height"
         Height="616.641"
         Width="1120"
@@ -52,14 +52,15 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Grid Grid.Column="0"
+              Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -160,13 +161,15 @@
                                             Maximum="100000" />
                     </Grid>
                     <controls:SelectFile Label="Save mask file path"
-                                         SelectedFilePath="{Binding Arguments.MaskFilePath, Mode=TwoWay}" Extension=".png"/>
+                                         SelectedFilePath="{Binding Arguments.MaskFilePath, Mode=TwoWay}"
+                                         Extension=".png" />
                     <Button Height="40"
                             Click="BtnCreateMask_OnClick">Create Mask</Button>
                 </StackPanel>
             </GroupBox>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Column="1"
+              Grid.Row="0">
             <GroupBox Header="Diagnostics">
                 <TextBox x:Name="tbxOutput"
                          TextWrapping="Wrap"
@@ -175,20 +178,21 @@
                          VerticalScrollBarVisibility="Visible" />
             </GroupBox>
         </Grid>
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-        <TextBlock>           
-            <Hyperlink NavigateUri="https://github.com/Devoney/CreateMask"
-                       RequestNavigate="Hyperlink_RequestNavigate">
-                Visit project on GitHub
-            </Hyperlink>
-        </TextBlock>
-            <TextBlock> / </TextBlock>
-        <TextBlock>           
-            <Hyperlink NavigateUri="mailto:mikedeklerk@gmail.com"
-                       RequestNavigate="Hyperlink_RequestNavigate">
-                Contact Developer Mike de Klerk
-            </Hyperlink>
-        </TextBlock>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Text="{Binding Version}"
+                       Margin="20,0,0,0" />
+            <controls:WebLink Url="https://github.com/Devoney/CreateMask/wiki/3.-How-to-create-the-mask"
+                              Margin="20,0,0,0"
+                              Text="Help" />
+            <controls:WebLink Url="https://github.com/Devoney/CreateMask"
+                              Margin="20,0,0,0"
+                              Text="Visit project on GitHub" />
+            <controls:WebLink Url="mailto:mikedeklerk@gmail.com"
+                              Margin="20,0,0,0"
+                              Text="Contact Developer" />
         </StackPanel>
     </Grid>
 

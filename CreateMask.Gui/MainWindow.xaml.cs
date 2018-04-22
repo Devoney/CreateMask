@@ -13,6 +13,14 @@ namespace CreateMask.Gui
     {
         public ApplicationArguments Arguments { get; set; }
 
+        public string Version
+        {
+            get
+            {
+                return "v" +System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+        }
+
         public MainWindow()
         {
             Arguments = new ApplicationArguments

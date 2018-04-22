@@ -95,6 +95,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\WebLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,6 +109,9 @@
     </Compile>
     <Compile Include="Controls\SelectFile.xaml.cs">
       <DependentUpon>SelectFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WebLink.xaml.cs">
+      <DependentUpon>WebLink.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
