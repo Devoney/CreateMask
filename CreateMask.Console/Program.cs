@@ -17,13 +17,14 @@ namespace CreateMask.Console
                 System.Console.WriteLine("April 2018");
                 System.Console.WriteLine("");
 
-                IArgumentsParser argumentsParser = new ArgumentsParser(new ImageSaver());
+                var kernel = KernelConstructor.GetKernel();
+                var argumentsParser = kernel.Get<IArgumentsParser>();
                 argumentsParser.Output += Main_Output;
                 var arguments = argumentsParser.Parse(args);
 
                 if (arguments != null)
                 {
-                    var kernel = KernelConstructor.GetKernel();
+                    
                     var main = kernel.Get<Main.Main>();
                     main.Output += Main_Output;
                     main.CreateMask(arguments);

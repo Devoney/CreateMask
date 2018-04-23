@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
@@ -124,7 +122,7 @@ namespace CreateMask.Workers
             }
         }
 
-        protected virtual void OnOutput(string e)
+        private void OnOutput(string e)
         {
             Output?.Invoke(this, e);
         }
