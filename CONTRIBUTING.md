@@ -6,7 +6,8 @@
 
 ## Definition of Done
 - The work has been merged to master.
-- Commits have descripte comments.
+- Commits state the issue the work is done on o the first line of the comment of the commit.
+- Commits have descriptive comments.
 - All software compiles
 - All tests succeed.
 - Nuget packages are reused instead of introducing new package for solving the same issue. So no 3 different packages for serializing to and from JSON for example.
