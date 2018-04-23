@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using NUnit.Framework;
 using TestHelpers;
 using Args = CreateMask.Contracts.Constants.Arguments;
@@ -87,7 +84,7 @@ namespace CreateMask.Workers.Test
             var expectedHelpTexts = new []
             {
                 "--desiredresistance\t\tThe resistance value you want to normalize the entire LCD screen to. This determines the increase in exposure time.",
-                "--filetype\t\tThe type of file to output. Supported file types are: png, bmp, gif",
+                "--filetype\t\tThe type of file to output.",
                 "--high\t\t[OPTIONAL, DEFAULT=255] The pixel value(0-255) of the mask used for the 'high' light intensity measurements? Normally this is 255, as in completely white, so effectively no mask.",
                 "--lcdheight\t\tThe height in pixels of the LCD screen of the printer.",
                 "--lcdmeasurementsfile_high\t\tThe file path of the CSV file containing the measurements with high light intensity.",
@@ -117,16 +114,7 @@ namespace CreateMask.Workers.Test
 
         private static IArgumentsParser GetArgumentsParser()
         {
-            var imageSaver = GetMockedImageSaver();
-            return new ArgumentsParser(imageSaver);
-        }
-
-        private static IImageSaver GetMockedImageSaver()
-        {
-            var imageSaverMock = new Mock<IImageSaver>();
-            var supportedFileTypes = new List<string> { "png", "bmp", "gif" };
-            imageSaverMock.Setup(ims => ims.SupportedFileTypes).Returns(supportedFileTypes);
-            return imageSaverMock.Object;
+            return new ArgumentsParser();
         }
     }
 }

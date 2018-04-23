@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CreateMask.Containers;
+using CreateMask.Contracts.Enums;
 using CreateMask.Contracts.Interfaces;
 using Fclp;
 using Args = CreateMask.Contracts.Constants.Arguments;
@@ -9,13 +10,7 @@ namespace CreateMask.Workers
 {
     public class ArgumentsParser : IArgumentsParser
     {
-        private readonly IImageSaver _imageSaver;
         public event EventHandler<string> Output;
-
-        public ArgumentsParser(IImageSaver imageSaver)
-        {
-            _imageSaver = imageSaver;
-        }
 
         public ApplicationArguments Parse(string[] args)
         {
@@ -23,8 +18,7 @@ namespace CreateMask.Workers
 
             parser.Setup(aa => aa.FileType)
                 .As('a', Args.FileType)
-                .WithDescription("The type of file to output. " +
-                                 "Supported file types are: " + string.Join(", ", _imageSaver.SupportedFileTypes));
+                .WithDescription("The type of file to output.");
 
             parser.Setup(aa => aa.LcdHeight)
                 .As('h', Args.LcdHeight).Required()

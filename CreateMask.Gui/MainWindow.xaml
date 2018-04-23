@@ -96,7 +96,7 @@
                 <StackPanel>
                     <controls:SelectFile Label="LDR Curve Data"
                                          SelectedFilePath="{Binding Arguments.LdrCalibrationFilePath, Mode=TwoWay}"
-                                         Extension=".csv" />
+                                         Filter="Csv|*.csv" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -119,10 +119,10 @@
                     </Grid>
                     <controls:SelectFile Label="LCD Measurements High"
                                          SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathHigh, Mode=TwoWay}"
-                                         Extension=".csv" />
+                                         Filter="Csv|*.csv" />
                     <controls:SelectFile Label="LCD Measurements Low"
                                          SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathLow, Mode=TwoWay}"
-                                         Extension=".csv" />
+                                         Filter="Csv|*.csv" />
                 </StackPanel>
             </GroupBox>
             <GroupBox Grid.Row="3"
@@ -149,20 +149,35 @@
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.4*" />
-                            <ColumnDefinition Width="0.25*" />
-                            <ColumnDefinition Width="0.35*" />
+                            <ColumnDefinition Width="0.5*" />
+                            <ColumnDefinition Width="0.5*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0"
-                               Content="Desired overall resistance" />
-                        <xctk:IntegerUpDown Grid.Column="1"
-                                            Value="{Binding Arguments.DesiredResistance}"
-                                            Minimum="0"
-                                            Maximum="100000" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Column="0">
+                            <Label Content="Desired overall resistance" />
+                            <xctk:IntegerUpDown Value="{Binding Arguments.DesiredResistance}"
+                                                Minimum="0"
+                                                Maximum="100000"
+                                                Width="80" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right">
+                            <Label Content="File type" />
+                            <ComboBox x:Name="cmbFileType"
+                                      Width="120"
+                                      HorizontalAlignment="Stretch"
+                                      ItemsSource="{Binding SupportedFileTypes}"
+                                      SelectedItem="{Binding Arguments.FileType}"
+                                      SelectionChanged="CmbFileTypeOnSelectionChanged" />
+                        </StackPanel>
                     </Grid>
-                    <controls:SelectFile Label="Save mask file path"
+                    <controls:SelectFile x:Name="sfOutputPath"
+                                         Label="Save mask file path"
                                          SelectedFilePath="{Binding Arguments.MaskFilePath, Mode=TwoWay}"
-                                         Extension=".png" />
+                                         Filter="{Binding FileFilter}"
+                                         DefaultExtension="{Binding ElementName=cmbFileType, Path=SelectedValue}"
+                                         PropertyChanged="SelectFile_OnPropertyChanged" />
                     <Button Height="40"
                             Click="BtnCreateMask_OnClick">Create Mask</Button>
                 </StackPanel>

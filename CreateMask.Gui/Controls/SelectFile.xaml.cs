@@ -1,29 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using CreateMask.Gui.Annotations;
+using Microsoft.Win32;
 
 namespace CreateMask.Gui.Controls
 {
     /// <summary>
     /// Interaction logic for SelectFile.xaml
     /// </summary>
-    public partial class SelectFile
+    public partial class SelectFile : INotifyPropertyChanged
     {
+        public string DefaultExtension
+        {
+            get { return (string)GetValue(DefaultExtensionProperty); }
+            set
+            {
+                SetValue(DefaultExtensionProperty, value);
+                OnPropertyChanged(nameof(Label));
+            }
+        }
+
+        public static readonly DependencyProperty DefaultExtensionProperty = DependencyProperty.Register(
+            nameof(DefaultExtension),
+            typeof(string),
+            typeof(SelectFile),
+            new PropertyMetadata("")
+        );
+
         public string Label
         {
             get { return (string)GetValue(LabelProperty); }
-            set { SetValue(LabelProperty, value); }
+            set
+            {
+                SetValue(LabelProperty, value);
+                OnPropertyChanged(nameof(Label));
+            }
         }
         
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
@@ -36,7 +48,11 @@ namespace CreateMask.Gui.Controls
         public string SelectedFilePath
         {
             get { return (string)GetValue(SelectedFilePathProperty); }
-            set { SetValue(SelectedFilePathProperty, value); }
+            set
+            {
+                SetValue(SelectedFilePathProperty, value);
+                OnPropertyChanged(nameof(SelectedFilePath));
+            }
         }
 
         public static readonly DependencyProperty SelectedFilePathProperty = DependencyProperty.Register(
@@ -46,14 +62,14 @@ namespace CreateMask.Gui.Controls
             new PropertyMetadata("")
         );
 
-        public string Extension
+        public string Filter
         {
-            get { return (string)GetValue(ExtensionProperty); }
-            set { SetValue(ExtensionProperty, value); }
+            get { return (string)GetValue(FilterProperty); }
+            set { SetValue(FilterProperty, value); }
         }
 
-        public static readonly DependencyProperty ExtensionProperty = DependencyProperty.Register(
-            nameof(Extension),
+        public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
+            nameof(Filter),
             typeof(string),
             typeof(SelectFile),
             new PropertyMetadata("")
@@ -67,10 +83,10 @@ namespace CreateMask.Gui.Controls
 
         private void BrowseClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog
+            var dlg = new OpenFileDialog
             {
-                DefaultExt = Extension,
-                Filter = "Files|*" + Extension,
+                DefaultExt = DefaultExtension,
+                Filter = Filter,
                 CheckFileExists = false
             };
             
@@ -78,6 +94,14 @@ namespace CreateMask.Gui.Controls
             if (result != true) return;
             
             SelectedFilePath = dlg.FileName;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

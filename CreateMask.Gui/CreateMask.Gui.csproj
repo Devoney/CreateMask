@@ -143,6 +143,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -174,6 +175,10 @@
     <ProjectReference Include="..\CreateMask.Containers\CreateMask.Containers.csproj">
       <Project>{f475b21f-5cf2-4021-b6cb-68a5a39b64ae}</Project>
       <Name>CreateMask.Containers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CreateMask.Contracts\CreateMask.Contracts.csproj">
+      <Project>{02973AF4-5120-44C2-B3DD-158E0C21BAC7}</Project>
+      <Name>CreateMask.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\CreateMask.Main\CreateMask.Main.csproj">
       <Project>{9bb69810-93ec-4b99-b23c-0e62ae8d3023}</Project>

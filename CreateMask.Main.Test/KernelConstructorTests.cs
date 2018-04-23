@@ -24,7 +24,6 @@ namespace CreateMask.Main.Test
                 typeof(IArgumentsParser),
                 typeof(IGenericGridLoader<int>),
                 typeof(IGenericLoader<Measurement>),
-                typeof(IImageSaver),
                 typeof(IMaskIntensityResistanceInterpolator),
                 typeof(IMeasurementGridProcessor)
             };

@@ -24,7 +24,6 @@ namespace CreateMask.Console
 
                 if (arguments != null)
                 {
-                    
                     var main = kernel.Get<Main.Main>();
                     main.Output += Main_Output;
                     main.CreateMask(arguments);

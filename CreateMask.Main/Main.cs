@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
 using CreateMask.Containers;
+using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Utilities;
 
@@ -13,23 +16,28 @@ namespace CreateMask.Main
         private readonly IMaskIntensityResistanceInterpolator _maskIntensityInterpolator;
         private readonly IGenericGridLoader<int> _measurementGridLoader;
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
-        private readonly IImageSaver _imageSaver;
+
+        public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
         public Main(IGenericLoader<Measurement> measurementsLoader, 
                     IMaskIntensityResistanceInterpolator maskIntensityInterpolator,
                     IGenericGridLoader<int> measurementGridLoader,
-                    IMeasurementGridProcessor measurementGridProcessor,
-                    IImageSaver imageSaver)
+                    IMeasurementGridProcessor measurementGridProcessor)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolator = maskIntensityInterpolator;
             _measurementGridLoader = measurementGridLoader;
             _measurementGridProcessor = measurementGridProcessor;
-            _imageSaver = imageSaver;
         }
 
         public void CreateMask(ApplicationArguments arguments)
         {
+            var imageFormat = ImageFormat.Png;
+            if (!string.IsNullOrEmpty(arguments.FileType))
+            {
+                imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
+            }
+
             OnOutput($"Loading {arguments.LdrCalibrationFilePath}");
             var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
             
@@ -58,7 +66,7 @@ namespace CreateMask.Main
                 OnOutput($"Resizing bitmap of {bitmap.Width}x{bitmap.Height}px to final mask of {arguments.LcdWidth}x{arguments.LcdHeight}px using bilinear interpolation.");
                 using (var mask = Image.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
                 {
-                    _imageSaver.Save(mask, arguments.MaskFilePath, arguments.FileType ?? ".png");
+                    mask.Save(arguments.MaskFilePath, imageFormat);
                 }
             }
             OnOutput($"Mask saved to {arguments.MaskFilePath}.");
