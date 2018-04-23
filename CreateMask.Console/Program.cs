@@ -1,8 +1,10 @@
 ﻿using System;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Main;
 using CreateMask.Workers;
+using Ninject;
 
-namespace CreateMask
+namespace CreateMask.Console
 {
     class Program
     {
@@ -10,10 +12,10 @@ namespace CreateMask
         {
             HandleException(() =>
             {
-                Console.WriteLine("CreateMask - https://github.com/Devoney/CreateMask");
-                Console.WriteLine("Contact developer: mikedeklerk@gmail.com");
-                Console.WriteLine("April 2018");
-                Console.WriteLine("");
+                System.Console.WriteLine("CreateMask - https://github.com/Devoney/CreateMask");
+                System.Console.WriteLine("Contact developer: mikedeklerk@gmail.com");
+                System.Console.WriteLine("April 2018");
+                System.Console.WriteLine("");
 
                 IArgumentsParser argumentsParser = new ArgumentsParser(new ImageSaver());
                 argumentsParser.Output += Main_Output;
@@ -21,18 +23,19 @@ namespace CreateMask
 
                 if (arguments != null)
                 {
-                    var main = new Main.Main(arguments);
+                    var kernel = KernelConstructor.GetKernel();
+                    var main = kernel.Get<Main.Main>();
                     main.Output += Main_Output;
-                    main.CreateMask();
+                    main.CreateMask(arguments);
                 }
             });
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            System.Console.WriteLine("Press any key to exit.");
+            System.Console.ReadKey();
         }
 
         private static void Main_Output(object sender, string e)
         {
-            Console.WriteLine(e);
+            System.Console.WriteLine(e);
         }
 
         private static void HandleException(Action action)
@@ -43,8 +46,8 @@ namespace CreateMask
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Exception occurred of type '{ex.GetType().Name}', with message:");
-                Console.WriteLine(ex.Message);
+                System.Console.WriteLine($"Exception occurred of type '{ex.GetType().Name}', with message:");
+                System.Console.WriteLine(ex.Message);
             }
         }
     }

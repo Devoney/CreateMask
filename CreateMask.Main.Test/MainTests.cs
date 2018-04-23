@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
-using CreateMask.Main.Test.Helpers;
 using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
@@ -18,43 +17,6 @@ namespace CreateMask.Main.Test
     [TestFixture]
     public class MainTests
     {
-        //OPTIMIZE: This may actually be no test by itself, the usages of the services should be tested.
-        //How that is done is not relevant.
-        [Test, Category(Categories.Unit)]
-        public void KernelHasAllRequiredBindingsThatCanBeResolved()
-        {
-            //Given
-            var expectedResolvableTypes = new List<Type>
-            {
-                typeof(IGenericGridLoader<int>),
-                typeof(IGenericLoader<Measurement>),
-                typeof(IImageSaver),
-                typeof(IMaskIntensityResistanceInterpolator),
-                typeof(IMeasurementGridProcessor)
-            };
-            var applicationArguments = new ApplicationArguments();
-
-            //When
-            var main = new MainTester(applicationArguments);
-
-            //Then
-            var error = false;
-            foreach (var type in expectedResolvableTypes)
-            {
-                try
-                {
-                    main.InternalKernel.Get(type);
-                }
-                catch (ActivationException ex)
-                {
-                    error = true;
-                    Console.WriteLine($"Could not resolve an instance for type '{type.FullName}' due to an exception:\r\n" +
-                                      $"{ex.Message}");
-                }
-            }
-            error.Should().BeFalse();
-        }
-
         [Test, Category(Categories.Integration)]
         public void MaskIsCreatedAsExpected()
         {
@@ -72,10 +34,10 @@ namespace CreateMask.Main.Test
             applicationArguments.MeasurementsNrOfColumns = 12;
             applicationArguments.MeasurementsNrOfRows = 7;
             applicationArguments.FileType = ".png";
-            var main = new MainTester(applicationArguments);
+            var main = KernelConstructor.GetKernel().Get<Main>();
 
             //When
-            main.CreateMask();
+            main.CreateMask(applicationArguments);
 
             //Then
             using (var actualBitmap = new Bitmap(Image.FromFile(applicationArguments.MaskFilePath)))

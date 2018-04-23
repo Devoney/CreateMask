@@ -6,9 +6,16 @@ using Ninject;
 
 namespace CreateMask.Main
 {
-    public static class KernelRegistrator
+    public static class KernelConstructor
     {
-        public static void Register(IKernel kernel)
+        public static IKernel GetKernel()
+        {
+            var kernel = new StandardKernel();
+            Register(kernel);
+            return kernel;
+        }
+
+        private static void Register(IKernel kernel)
         {
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();

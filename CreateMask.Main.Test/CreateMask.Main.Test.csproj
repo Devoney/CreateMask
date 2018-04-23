@@ -71,7 +71,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Helpers\MainTester.cs" />
+    <Compile Include="KernelConstructorTests.cs" />
     <Compile Include="MainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

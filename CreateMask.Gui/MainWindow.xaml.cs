@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
 using CreateMask.Containers;
+using CreateMask.Main;
+using Ninject;
 
 namespace CreateMask.Gui
 {
@@ -11,18 +12,24 @@ namespace CreateMask.Gui
     /// </summary>
     public partial class MainWindow
     {
+        private readonly Main.Main _main;
+
         public ApplicationArguments Arguments { get; set; }
 
         public string Version
         {
             get
             {
-                return "v" +System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return "v" +Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
 
         public MainWindow()
         {
+            var kernel = KernelConstructor.GetKernel();
+            _main = kernel.Get<Main.Main>();
+            _main.Output += Main_Output;
+
             Arguments = new ApplicationArguments
             {
                 MeasurementsNrOfRows = 7,
@@ -41,9 +48,7 @@ namespace CreateMask.Gui
             try
             {
                 tbxOutput.Clear();
-                var main = new Main.Main(Arguments);
-                main.Output += Main_Output;
-                main.CreateMask();
+                _main.CreateMask(Arguments);
             }
             catch (Exception exception)
             {
@@ -60,12 +65,6 @@ namespace CreateMask.Gui
         private void Output(string output)
         {
             tbxOutput.AppendText(output + Environment.NewLine);
-        }
-
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-        {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
         }
     }
 }
