@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
@@ -84,7 +85,7 @@ namespace CreateMask.Workers.Test
             var expectedHelpTexts = new []
             {
                 "--desiredresistance\t\tThe resistance value you want to normalize the entire LCD screen to. This determines the increase in exposure time.",
-                "--filetype\t\tThe type of file to output.",
+                "--filetype\t\tThe type of file to output. Supported file types are: Bmp, Png",
                 "--high\t\t[OPTIONAL, DEFAULT=255] The pixel value(0-255) of the mask used for the 'high' light intensity measurements? Normally this is 255, as in completely white, so effectively no mask.",
                 "--lcdheight\t\tThe height in pixels of the LCD screen of the printer.",
                 "--lcdmeasurementsfile_high\t\tThe file path of the CSV file containing the measurements with high light intensity.",
@@ -112,9 +113,9 @@ namespace CreateMask.Workers.Test
             actualHelpTexts.Should().BeEquivalentTo(expectedHelpTexts);
         }
 
-        private static IArgumentsParser GetArgumentsParser()
+        private static ArgumentsParser GetArgumentsParser()
         {
-            return new ArgumentsParser();
+            return new ArgumentsParser(new[] {nameof(ImageFormat.Bmp), nameof(ImageFormat.Png)});
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using CreateMask.Contracts.Interfaces;
 using CreateMask.Main;
 using CreateMask.Workers;
 using Ninject;
@@ -18,13 +17,13 @@ namespace CreateMask.Console
                 System.Console.WriteLine("");
 
                 var kernel = KernelConstructor.GetKernel();
-                var argumentsParser = kernel.Get<IArgumentsParser>();
+                var main = kernel.Get<Main.Main>();
+                var argumentsParser = new ArgumentsParser(main.SupportedFileTypes);
                 argumentsParser.Output += Main_Output;
                 var arguments = argumentsParser.Parse(args);
 
                 if (arguments != null)
                 {
-                    var main = kernel.Get<Main.Main>();
                     main.Output += Main_Output;
                     main.CreateMask(arguments);
                 }

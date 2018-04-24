@@ -1,4 +1,5 @@
-﻿using CreateMask.Containers;
+﻿using System.Collections.Generic;
+using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Storage;
 using CreateMask.Workers;
@@ -17,7 +18,6 @@ namespace CreateMask.Main
 
         private static void Register(IKernel kernel)
         {
-            kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
             kernel.Bind<IMaskIntensityResistanceInterpolator>().To<MaskIntensityResistanceInterpolator>();
