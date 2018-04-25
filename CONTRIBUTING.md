@@ -1,7 +1,9 @@
-## Defintion of Ready
-- Please only create pull requests that solve open issues.
+## General
 - If you want to work on something that is not in the issue list, please discuss it first. We can then decide to create an issue for it.
-- Issues should describe what value is desired or what problem needs to be solved.
+- Please only create pull requests that solve open issues.
+
+## Defintion of Ready
+- Issues should describe what value is added when it is done. So what bug is fixed, why a feature is proposed to add value or why technical debt should be solved.
 - A description is added (or even a visual mock) for GUI related work.
 
 ## Definition of Done
