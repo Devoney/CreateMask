@@ -8,24 +8,17 @@ using Args = CreateMask.Contracts.Constants.Arguments;
 
 namespace CreateMask.Workers
 {
-    public class ArgumentsParser
+    public class ArgumentsParser : IArgumentsParser
     {
         public event EventHandler<string> Output;
-
-        private readonly IEnumerable<string> _supportedFileTypes;
-
-        public ArgumentsParser(IEnumerable<string> supportedFileTypes)
-        {
-            _supportedFileTypes = supportedFileTypes;
-        }
-
-        public ApplicationArguments Parse(string[] args)
+        
+        public ApplicationArguments Parse(string[] args, IEnumerable<string> supportedFileTypes)
         {
             var parser = new FluentCommandLineParser<ApplicationArgumentsWrapper>();
 
             parser.Setup(aa => aa.FileType)
                 .As('a', Args.FileType)
-                .WithDescription("The type of file to output. Supported file types are: " + string.Join(", ", _supportedFileTypes));
+                .WithDescription("The type of file to output. Supported file types are: " + string.Join(", ", supportedFileTypes));
 
             parser.Setup(aa => aa.LcdHeight)
                 .As('h', Args.LcdHeight).Required()

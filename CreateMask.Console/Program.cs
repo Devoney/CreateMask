@@ -1,4 +1,5 @@
 ﻿using System;
+using CreateMask.Contracts.Interfaces;
 using CreateMask.Main;
 using CreateMask.Workers;
 using Ninject;
@@ -18,9 +19,9 @@ namespace CreateMask.Console
 
                 var kernel = KernelConstructor.GetKernel();
                 var main = kernel.Get<Main.Main>();
-                var argumentsParser = new ArgumentsParser(main.SupportedFileTypes);
+                var argumentsParser = kernel.Get<IArgumentsParser>();
                 argumentsParser.Output += Main_Output;
-                var arguments = argumentsParser.Parse(args);
+                var arguments = argumentsParser.Parse(args, main.SupportedFileTypes);
 
                 if (arguments != null)
                 {

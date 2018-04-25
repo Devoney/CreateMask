@@ -26,6 +26,12 @@ namespace CreateMask.Workers.Test
         private const int DesiredResistance = 5467;
         private const string FileType = ".bmp";
 
+        private readonly List<string> SupportedFileTypes = new List<string>
+        {
+            nameof(ImageFormat.Bmp),
+            nameof(ImageFormat.Png)
+        }; 
+
         private readonly string _commandLine = $"--{Args.LcdWidth} {LcdWidth} " +
                                                $"--{Args.LcdHeight} {LcdHeight} " +
                                                $"--{Args.LdrCalibrationFilePath} \"{LdrCalibrationFilePath}\" " +
@@ -68,7 +74,7 @@ namespace CreateMask.Workers.Test
             var argumentsParser = GetArgumentsParser();
 
             //When
-            var actualArguments = argumentsParser.Parse(_args);
+            var actualArguments = argumentsParser.Parse(_args, SupportedFileTypes);
 
             //Then
             actualArguments.Should().BeEquivalentTo(expectedArguments);
@@ -107,7 +113,7 @@ namespace CreateMask.Workers.Test
             };
 
             //When
-            argumentsParser.Parse(arguments);
+            argumentsParser.Parse(arguments, SupportedFileTypes);
 
             //Then
             actualHelpTexts.Should().BeEquivalentTo(expectedHelpTexts);
@@ -115,7 +121,7 @@ namespace CreateMask.Workers.Test
 
         private static ArgumentsParser GetArgumentsParser()
         {
-            return new ArgumentsParser(new[] {nameof(ImageFormat.Bmp), nameof(ImageFormat.Png)});
+            return new ArgumentsParser();
         }
     }
 }

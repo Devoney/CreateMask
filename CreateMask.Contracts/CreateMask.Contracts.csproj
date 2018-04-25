@@ -45,6 +45,7 @@
     <Compile Include="Constants\Arguments.cs" />
     <Compile Include="Enums\ImageFileType.cs" />
     <Compile Include="Helpers\ImageFileTypeHelper.cs" />
+    <Compile Include="Interfaces\IArgumentsParser.cs" />
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolator.cs" />

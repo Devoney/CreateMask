@@ -18,6 +18,7 @@ namespace CreateMask.Main
 
         private static void Register(IKernel kernel)
         {
+            kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
             kernel.Bind<IMaskIntensityResistanceInterpolator>().To<MaskIntensityResistanceInterpolator>();
