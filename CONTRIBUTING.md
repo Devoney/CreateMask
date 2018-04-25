@@ -6,8 +6,8 @@
 
 ## Definition of Done
 - The work has been merged to master.
-- Commits state the issue the work is done on o the first line of the comment of the commit.
-- Commits have descriptive comments.
+- Commits state the issue the work is done on in the first line of the comment of the commit.
+- Commits have descriptive comments if more is fixed than the issue itself.
 - All software compiles
 - All tests succeed.
 - Nuget packages are reused instead of introducing new package for solving the same issue. So no 3 different packages for serializing to and from JSON for example.
@@ -15,4 +15,5 @@
 - Code refactored or introduced is unit tested.
 - There are no to do's in the code
 - The related issue is closed.
-- The commits that close an issue are linked in the comment section of the issue.
+- The commits that close an issue are linked in the comment section of the issue, if not done automatically by git.
+- Bugs and features are added to the release notes describing what was changed in layman terms as much as possible.
