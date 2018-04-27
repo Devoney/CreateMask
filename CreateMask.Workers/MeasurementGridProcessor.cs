@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Utilities;
 
 namespace CreateMask.Workers
 {
@@ -87,6 +90,12 @@ namespace CreateMask.Workers
             }
 
             return bitmap;
+        }
+
+        public double GetCenterMaskIntensity(byte[,] maskIntensityGrid)
+        {
+            var centerItems = maskIntensityGrid.GetCenterItems().ToList();
+            return centerItems.Average(b => (double)b);
         }
     }
 }

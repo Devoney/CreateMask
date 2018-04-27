@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AFC2FAAB-D3C7-4414-881B-69D96879EA37}</ProjectGuid>
+    <ProjectGuid>{7919B315-0EAB-4888-B94F-959D35DDDD96}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CreateMask.Main.Test</RootNamespace>
-    <AssemblyName>CreateMask.Main.Test</AssemblyName>
+    <RootNamespace>CreateMask.Utilities.Test</RootNamespace>
+    <AssemblyName>CreateMask.Utilities.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,16 +39,11 @@
       <HintPath>..\packages\FluentAssertions.5.3.0\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
       <Private>True</Private>
@@ -64,59 +59,26 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="KernelConstructorTests.cs" />
-    <Compile Include="MainTests.cs" />
+    <Compile Include="MathTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CreateMask.Containers\CreateMask.Containers.csproj">
-      <Project>{f475b21f-5cf2-4021-b6cb-68a5a39b64ae}</Project>
-      <Name>CreateMask.Containers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CreateMask.Contracts\CreateMask.Contracts.csproj">
-      <Project>{02973af4-5120-44c2-b3dd-158e0c21bac7}</Project>
-      <Name>CreateMask.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CreateMask.Main\CreateMask.Main.csproj">
-      <Project>{9bb69810-93ec-4b99-b23c-0e62ae8d3023}</Project>
-      <Name>CreateMask.Main</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CreateMask.Storage\CreateMask.Storage.csproj">
-      <Project>{11572699-04b4-45c5-a278-2c34e1e7c0c4}</Project>
-      <Name>CreateMask.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CreateMask.Workers\CreateMask.Workers.csproj">
-      <Project>{cbc70769-c5e3-4c66-b837-7998bcc486e0}</Project>
-      <Name>CreateMask.Workers</Name>
+    <ProjectReference Include="..\CreateMask.Utilities\CreateMask.Utilities.csproj">
+      <Project>{887c2c66-c55e-4d52-b111-2020e5c267f9}</Project>
+      <Name>CreateMask.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestHelpers\TestHelpers.csproj">
-      <Project>{BF9D4164-07E8-470E-A780-D36C8A41A0F8}</Project>
+      <Project>{bf9d4164-07e8-470e-a780-d36c8a41a0f8}</Project>
       <Name>TestHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\high.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\ldrcurve.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\low.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\MaskIsCreatedAsExpected.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -11,5 +11,6 @@ namespace CreateMask.Contracts.Interfaces
 
         byte[,] CreateLocalMaskIntensityGrid(IMaskIntensityResistanceInterpolator maskIntensityInterpolator, MinMax<Measurement>[,] minMaxResistanceGrid, int desiredResistance);
         Bitmap CreateBitMap(byte[,] localMaskIntensityGrid);
+        double GetCenterMaskIntensity(byte[,] measurementGrid);
     }
 }

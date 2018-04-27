@@ -16,18 +16,21 @@ namespace CreateMask.Main
         private readonly IMaskIntensityResistanceInterpolator _maskIntensityInterpolator;
         private readonly IGenericGridLoader<int> _measurementGridLoader;
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
+        private readonly IExposureTimeCalculator _exposureTimeCalculator;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
         public Main(IGenericLoader<Measurement> measurementsLoader, 
                     IMaskIntensityResistanceInterpolator maskIntensityInterpolator,
                     IGenericGridLoader<int> measurementGridLoader,
-                    IMeasurementGridProcessor measurementGridProcessor)
+                    IMeasurementGridProcessor measurementGridProcessor,
+                    IExposureTimeCalculator exposureTimeCalculator)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolator = maskIntensityInterpolator;
             _measurementGridLoader = measurementGridLoader;
             _measurementGridProcessor = measurementGridProcessor;
+            _exposureTimeCalculator = exposureTimeCalculator;
         }
 
         public void CreateMask(ApplicationArguments arguments)

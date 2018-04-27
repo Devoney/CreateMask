@@ -41,8 +41,8 @@
       <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FluentAssertions, Version=5.2.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.5.2.0\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=5.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.5.3.0\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
@@ -81,6 +81,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ArgumentsParserTests.cs" />
+    <Compile Include="ExposureTimeCalculatorTests.cs" />
     <Compile Include="MaskIntensityResistanceInterpolatorTests.cs" />
     <Compile Include="MeasurementGridProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

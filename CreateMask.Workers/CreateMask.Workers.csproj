@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="ExposureTimeCalculator.cs" />
     <Compile Include="MaskIntensityResistanceInterpolator.cs" />
     <Compile Include="MeasurementGridProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +65,10 @@
     <ProjectReference Include="..\CreateMask.Contracts\CreateMask.Contracts.csproj">
       <Project>{02973af4-5120-44c2-b3dd-158e0c21bac7}</Project>
       <Name>CreateMask.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CreateMask.Utilities\CreateMask.Utilities.csproj">
+      <Project>{887c2c66-c55e-4d52-b111-2020e5c267f9}</Project>
+      <Name>CreateMask.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
