@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Mask Creator for 3D UV Resin DLP Printers"
         SizeToContent="Height"
-        Height="616.641"
+        Height="665.641"
         Width="1120"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Background="Black">
@@ -126,21 +126,35 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox Grid.Row="3"
-                      Header="LCD Dimensions (pixels)">
+                      Header="LCD">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.3*" />
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="0.3*" />
+                        <ColumnDefinition Width="0.2*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0"
-                           Content="Width" />
-                    <xctk:IntegerUpDown Grid.Column="1"
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Content="Current exposure time" />
+                    <xctk:IntegerUpDown Grid.Row="0"
+                                        Grid.Column="1"
+                                        Value="{Binding Arguments.OriginalExposureTime}" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="Width (px)" />
+                    <xctk:IntegerUpDown Grid.Row="1"
+                                        Grid.Column="1"
                                         Value="{Binding Arguments.LcdWidth}" />
-                    <Label Grid.Column="2"
-                           Content="Height" />
-                    <xctk:IntegerUpDown Grid.Column="3"
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Content="Height (px)" />
+                    <xctk:IntegerUpDown Grid.Row="1"
+                                        Grid.Column="3"
                                         Value="{Binding Arguments.LcdHeight}" />
                 </Grid>
             </GroupBox>

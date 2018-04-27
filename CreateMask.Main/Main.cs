@@ -73,6 +73,9 @@ namespace CreateMask.Main
                 }
             }
             OnOutput($"Mask saved to {arguments.MaskFilePath}.");
+
+            var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid, arguments.OriginalExposureTime);
+            OnOutput($"New advised exposure time: {exposureTime}");
         }
 
         private void OnOutput(string e)
