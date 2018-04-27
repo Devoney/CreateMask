@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -45,6 +46,41 @@ namespace CreateMask.Main.Test
             {
                 AssertExt.Equals(expectedBitmap, actualBitmap);
             }
+        }
+
+        [Test, Category(Categories.Integration)]
+        public void OutputIsAsExpected()
+        {
+            //Given
+            var applicationArguments = new ApplicationArguments();
+            applicationArguments.DesiredResistance = 8820;
+            applicationArguments.High = 255;
+            applicationArguments.LcdHeight = 1440;
+            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
+            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
+            applicationArguments.LcdWidth = 2560;
+            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
+            applicationArguments.Low = 175;
+            applicationArguments.MaskFilePath = Path.GetFullPath("./mask2.png");
+            applicationArguments.MeasurementsNrOfColumns = 12;
+            applicationArguments.MeasurementsNrOfRows = 7;
+            applicationArguments.FileType = ".png";
+            applicationArguments.OriginalExposureTime = 8000;
+            var main = KernelConstructor.GetKernel().Get<Main>();
+            var outputStringBuilder = new StringBuilder();
+            main.Output += (sender, output) =>
+            {
+                outputStringBuilder.AppendLine(output);
+            };
+            var expectedOutputPath = FileManager.GetFullFilePath("output.txt");
+            var expectedOutput = File.ReadAllText(expectedOutputPath);
+
+            //When
+            main.CreateMask(applicationArguments);
+
+            //Then
+            var actualOutput = outputStringBuilder.ToString();
+            actualOutput.Should().Be(expectedOutput);
         }
     }
 }
