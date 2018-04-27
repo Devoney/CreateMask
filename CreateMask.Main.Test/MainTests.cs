@@ -22,20 +22,9 @@ namespace CreateMask.Main.Test
         public void MaskIsCreatedAsExpected()
         {
             //Given
-            var applicationArguments = new ApplicationArguments();
-            applicationArguments.DesiredResistance = 8820;
-            applicationArguments.High = 255;
-            applicationArguments.LcdHeight = 1440;
-            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
-            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
-            applicationArguments.LcdWidth = 2560;
-            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
-            applicationArguments.Low = 175;
-            applicationArguments.MaskFilePath = Path.GetFullPath("./mask.png");
-            applicationArguments.MeasurementsNrOfColumns = 12;
-            applicationArguments.MeasurementsNrOfRows = 7;
-            applicationArguments.FileType = ".png";
-            var main = KernelConstructor.GetKernel().Get<Main>();
+            var applicationArguments = GetApplicationArguments();
+            applicationArguments.MaskFilePath = "./mask.png";
+            var main = GetMain();
 
             //When
             main.CreateMask(applicationArguments);
@@ -52,21 +41,8 @@ namespace CreateMask.Main.Test
         public void OutputIsAsExpected()
         {
             //Given
-            var applicationArguments = new ApplicationArguments();
-            applicationArguments.DesiredResistance = 8820;
-            applicationArguments.High = 255;
-            applicationArguments.LcdHeight = 1440;
-            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
-            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
-            applicationArguments.LcdWidth = 2560;
-            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
-            applicationArguments.Low = 175;
-            applicationArguments.MaskFilePath = Path.GetFullPath("./mask2.png");
-            applicationArguments.MeasurementsNrOfColumns = 12;
-            applicationArguments.MeasurementsNrOfRows = 7;
-            applicationArguments.FileType = ".png";
-            applicationArguments.OriginalExposureTime = 8000;
-            var main = KernelConstructor.GetKernel().Get<Main>();
+            var applicationArguments = GetApplicationArguments();
+            var main = GetMain();
             var outputStringBuilder = new StringBuilder();
             main.Output += (sender, output) =>
             {
@@ -81,6 +57,54 @@ namespace CreateMask.Main.Test
             //Then
             var actualOutput = outputStringBuilder.ToString();
             actualOutput.Should().Be(expectedOutput);
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void ExposureTimeIsNotCalculatedWhenOriginalExposureTimeIsNotSet()
+        {
+            //Given
+            var applicationArguments = GetApplicationArguments();
+            applicationArguments.MaskFilePath = "./mask3.png";
+            applicationArguments.OriginalExposureTime = 0;
+            var main = GetMain();
+            var outputStringBuilder = new StringBuilder();
+            main.Output += (sender, s) =>
+            {
+                outputStringBuilder.AppendLine(s);
+            };
+            var notExpectedString = OutputStrings.NewAdvisedExposureTime.Replace("{0}", "");
+
+            //When
+            main.CreateMask(applicationArguments);
+            
+            //Then
+            var output = outputStringBuilder.ToString();
+            var containsAdvisedExposureTime = output.Contains(notExpectedString);
+            containsAdvisedExposureTime.Should().BeFalse();
+        }
+
+        private static Main GetMain()
+        {
+            return KernelConstructor.GetKernel().Get<Main>();
+        }
+
+        private static ApplicationArguments GetApplicationArguments()
+        {
+            var applicationArguments = new ApplicationArguments();
+            applicationArguments.DesiredResistance = 8820;
+            applicationArguments.High = 255;
+            applicationArguments.LcdHeight = 1440;
+            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
+            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
+            applicationArguments.LcdWidth = 2560;
+            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
+            applicationArguments.Low = 175;
+            applicationArguments.MaskFilePath = Path.GetFullPath("./mask2.png");
+            applicationArguments.MeasurementsNrOfColumns = 12;
+            applicationArguments.MeasurementsNrOfRows = 7;
+            applicationArguments.FileType = ".png";
+            applicationArguments.OriginalExposureTime = 8000;
+            return applicationArguments;
         }
     }
 }

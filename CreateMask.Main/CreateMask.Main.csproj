@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="KernelConstructor.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="OutputStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

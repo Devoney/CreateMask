@@ -14,5 +14,6 @@
         public const string High = "high";
         public const string Low = "low";
         public const string DesiredResistance = "desiredresistance";
+        public const string OriginalExposureTime = "oriexptime";
     }
 }

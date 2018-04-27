@@ -66,6 +66,10 @@ namespace CreateMask.Workers
                 .As('d', Args.DesiredResistance).Required()
                 .WithDescription("The resistance value you want to normalize the entire LCD screen to. This determines the increase in exposure time.");
 
+            parser.Setup(aa => aa.OriginalExposureTime)
+                .As('q', Args.OriginalExposureTime)
+                .WithDescription("The time the resin is exposed to the UV light per layer, that currently yields successful prints.");
+
             var parseResults = parser.Parse(args);
 
             if (args == null || args.Length == 0 || args.Intersect(new[] {"?", "help", "-help", "--help"}).Any())

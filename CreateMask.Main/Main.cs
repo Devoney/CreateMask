@@ -41,41 +41,50 @@ namespace CreateMask.Main
                 imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
             }
 
-            OnOutput($"Loading {arguments.LdrCalibrationFilePath}");
+            OnOutput(OutputStrings.LoadingFile, arguments.LdrCalibrationFilePath);
             var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
             
-            OnOutput("Constructing LDR polynomial curve fit.");
+            OnOutput(OutputStrings.ConstructionLdPolynomialCurveFit);
             _maskIntensityInterpolator.LoadMeasurements(ldrCalibrationMeasurements);
 
-            OnOutput($"Loading { arguments.LcdMeasurementsFilePathHigh}");
+            OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathHigh);
             var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
                 arguments.LcdMeasurementsFilePathHigh,
                 arguments.MeasurementsNrOfRows,
                 arguments.MeasurementsNrOfColumns).GetData();
 
-            OnOutput($"Loading { arguments.LcdMeasurementsFilePathLow}");
+            OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathLow);
             var measurementsLow = _measurementGridLoader.GetFromCsvFile(
                 arguments.LcdMeasurementsFilePathLow,
                 arguments.MeasurementsNrOfRows,
                 arguments.MeasurementsNrOfColumns).GetData();
 
-            OnOutput("Constructing grid of low/high measurements.");
+            OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
             var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
-            OnOutput("Creating grid of local mask intensities.");
+            OnOutput(OutputStrings.CreatingGridOfLocalMaskIntensities);
             var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(_maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
-            OnOutput("Converting grid of local mask intensities to bitmap.");
+            OnOutput(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
             using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
             {
-                OnOutput($"Resizing bitmap of {bitmap.Width}x{bitmap.Height}px to final mask of {arguments.LcdWidth}x{arguments.LcdHeight}px using bilinear interpolation.");
+                OnOutput(OutputStrings.ResizingBitmap, bitmap.Width, bitmap.Height, arguments.LcdWidth, arguments.LcdHeight);
                 using (var mask = Image.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
                 {
                     mask.Save(arguments.MaskFilePath, imageFormat);
                 }
             }
-            OnOutput($"Mask saved to {arguments.MaskFilePath}.");
+            OnOutput(OutputStrings.MaskSavedTo, arguments.MaskFilePath);
 
-            var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid, arguments.OriginalExposureTime);
-            OnOutput($"New advised exposure time: {exposureTime}");
+            if (arguments.OriginalExposureTime > 0)
+            {
+                var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
+                    arguments.OriginalExposureTime);
+                OnOutput(OutputStrings.NewAdvisedExposureTime, exposureTime);
+            }
+        }
+
+        private void OnOutput(string format, params object[] parameters)
+        {
+            OnOutput(string.Format(format, parameters));
         }
 
         private void OnOutput(string e)
