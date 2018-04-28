@@ -1,1 +1,0 @@
-Please see the wiki: https://github.com/Devoney/CreateMask/wiki
