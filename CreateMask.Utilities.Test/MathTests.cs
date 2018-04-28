@@ -54,12 +54,11 @@ namespace CreateMask.Utilities.Test
         {
             //Given
             const string expectedExceptionMessage = "An initialized 2D array should have been provided, but null was instead.";
-            int[,] array = null;
 
             //When
             var action = new Action(() =>
             {
-                array.GetCenterItems();
+                Math.GetCenterItems<int[,]>(null);
             });
 
             //Then

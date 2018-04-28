@@ -19,7 +19,8 @@
 
 ## Definition of Done
 - The work has been merged to master.
-- All software compiles
+- All software compiles.
+- >= ~80% unit test coverage of newly added code.
 - All tests succeed.
 - Nuget packages are reused instead of introducing new package for solving the same issue. So no 3 different packages for serializing to and from JSON for example.
 - The software committed adheres to the SOLID principles.

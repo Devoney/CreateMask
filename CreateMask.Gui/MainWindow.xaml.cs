@@ -64,7 +64,7 @@ namespace CreateMask.Gui
 
         private void CmbFileTypeOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
-            if (sfOutputPath == null || string.IsNullOrWhiteSpace(sfOutputPath.SelectedFilePath)) return;
+            if (string.IsNullOrWhiteSpace(sfOutputPath?.SelectedFilePath)) return;
             sfOutputPath.SelectedFilePath = Path.ChangeExtension(sfOutputPath.SelectedFilePath, (string) cmbFileType.SelectedItem);
         }
 

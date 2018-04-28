@@ -1,7 +1,6 @@
 ﻿using System;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Main;
-using CreateMask.Workers;
 using Ninject;
 
 namespace CreateMask.Console

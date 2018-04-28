@@ -51,9 +51,11 @@ namespace CreateMask.Workers.Test
             var measurements = GetDefeaultSetOfMeasurements();
             var maskIntensityInterpolator = GetMaskIntensityInterpolator();
             maskIntensityInterpolator.LoadMeasurements(measurements);
-            var relativePointMinMax = new MinMax<Measurement>();
-            relativePointMinMax.Min = new Measurement(192, 6867);
-            relativePointMinMax.Max = new Measurement(byte.MaxValue, 4623);
+            var relativePointMinMax = new MinMax<Measurement>
+            {
+                Min = new Measurement(192, 6867),
+                Max = new Measurement(byte.MaxValue, 4623)
+            };
             const int desiredLocalResistance = 5000;
             const byte expectedRelativeMaskIntensity = 240;
 
@@ -73,9 +75,11 @@ namespace CreateMask.Workers.Test
             var measurements = GetDefeaultSetOfMeasurements();
             var maskIntensityInterpolator = GetMaskIntensityInterpolator();
             maskIntensityInterpolator.LoadMeasurements(measurements);
-            var relativePointMinMax = new MinMax<Measurement>();
-            relativePointMinMax.Min = new Measurement(192, 6867);
-            relativePointMinMax.Max = new Measurement(byte.MaxValue, 4623);
+            var relativePointMinMax = new MinMax<Measurement>
+            {
+                Min = new Measurement(192, 6867),
+                Max = new Measurement(byte.MaxValue, 4623)
+            };
             var minResistance = measurements.Min(m => m.Resistance);
             var maxResistance = measurements.Max(m => m.Resistance);
             int desiredLocalResistance;
@@ -115,9 +119,11 @@ namespace CreateMask.Workers.Test
             var measurements = GetDefeaultSetOfMeasurements();
             var maskIntensityInterpolator = GetMaskIntensityInterpolator();
             maskIntensityInterpolator.LoadMeasurements(measurements);
-            var relativePointMinMax = new MinMax<Measurement>();
-            relativePointMinMax.Min = new Measurement(192, 6867);
-            relativePointMinMax.Max = new Measurement(byte.MaxValue, 4623);
+            var relativePointMinMax = new MinMax<Measurement>
+            {
+                Min = new Measurement(192, 6867),
+                Max = new Measurement(byte.MaxValue, 4623)
+            };
             int desiredLocalResistance;
             switch (minOrMax)
             {
@@ -134,7 +140,7 @@ namespace CreateMask.Workers.Test
             var expectedPartialExceptionMessage =
                 $"Cannot calculate mask intensity because given desired resistance value of '{desiredLocalResistance}'" +
                                                     $" is not within range (Min:'{relativePointMinMax.Max.Resistance}' Max:'{relativePointMinMax.Min.Resistance}') " +
-                                                    $"of local measurements.";
+                                                    "of local measurements.";
 
             //When
             var action = new Action(() =>

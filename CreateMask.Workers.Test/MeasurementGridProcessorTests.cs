@@ -43,7 +43,7 @@ namespace CreateMask.Workers.Test
             var gridHigh = GetGridHigh();
             gridHigh[0, 0] = toLowLightIntensityToAdjustResistance;
             gridHigh[2, 3] = toLowLightIntensityToAdjustResistance;
-            var expectedIntensityGrid = new byte[3, 4]
+            var expectedIntensityGrid = new [,]
             {
                 {byte.MaxValue, mockedMaskIntensity, mockedMaskIntensity, mockedMaskIntensity},
                 {mockedMaskIntensity, mockedMaskIntensity, mockedMaskIntensity, mockedMaskIntensity},

@@ -94,6 +94,7 @@ namespace CreateMask.Workers
             public new int Low
             {
                 get { return base.Low; }
+                // ReSharper disable once UnusedMember.Local
                 set
                 {
                     CheckValueToBeInByteRange(value, Args.Low);
@@ -104,6 +105,7 @@ namespace CreateMask.Workers
             public new int High
             {
                 get { return base.High; }
+                // ReSharper disable once UnusedMember.Local
                 set
                 {
                     CheckValueToBeInByteRange(value, Args.High);

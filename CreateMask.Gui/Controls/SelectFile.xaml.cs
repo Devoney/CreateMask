@@ -17,7 +17,7 @@ namespace CreateMask.Gui.Controls
             set
             {
                 SetValue(DefaultExtensionProperty, value);
-                OnPropertyChanged(nameof(Label));
+                OnPropertyChanged();
             }
         }
 
@@ -34,7 +34,7 @@ namespace CreateMask.Gui.Controls
             set
             {
                 SetValue(LabelProperty, value);
-                OnPropertyChanged(nameof(Label));
+                OnPropertyChanged();
             }
         }
         
@@ -51,7 +51,7 @@ namespace CreateMask.Gui.Controls
             set
             {
                 SetValue(SelectedFilePathProperty, value);
-                OnPropertyChanged(nameof(SelectedFilePath));
+                OnPropertyChanged();
             }
         }
 

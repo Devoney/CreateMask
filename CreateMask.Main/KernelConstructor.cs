@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CreateMask.Containers;
+﻿using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Storage;
 using CreateMask.Workers;

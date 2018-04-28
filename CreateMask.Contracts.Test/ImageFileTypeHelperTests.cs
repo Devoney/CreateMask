@@ -62,7 +62,7 @@ namespace CreateMask.Contracts.Test
             {
                 try
                 {
-                    var imageFormat = ImageFileTypeHelper.ToImageFormat(kvp.Key);
+                    var imageFormat = kvp.Key.ToImageFormat();
                     if (!imageFormat.Equals(kvp.Value))
                     {
                         Console.WriteLine($"ImageFileType '{kvp.Key}' did not convert to the correct '{typeof(ImageFormat).FullName}'.");

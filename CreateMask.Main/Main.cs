@@ -67,7 +67,7 @@ namespace CreateMask.Main
             using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
             {
                 OnOutput(OutputStrings.ResizingBitmap, bitmap.Width, bitmap.Height, arguments.LcdWidth, arguments.LcdHeight);
-                using (var mask = Image.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
+                using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
                 {
                     mask.Save(arguments.MaskFilePath, imageFormat);
                 }

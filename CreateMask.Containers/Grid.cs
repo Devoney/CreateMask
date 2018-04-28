@@ -5,7 +5,7 @@ namespace CreateMask.Containers
     [Serializable]
     public class Grid<T>
     {
-        private T[,] _data = null;
+        private T[,] _data;
 
         public Grid()
         {

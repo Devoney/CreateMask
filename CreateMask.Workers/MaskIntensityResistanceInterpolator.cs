@@ -10,11 +10,11 @@ namespace CreateMask.Workers
     public class MaskIntensityResistanceInterpolator : IMaskIntensityResistanceInterpolator
     {
         private const int PolynomialOrder = 6;
-        private bool _measurementsLoaded = false;
-        private Func<double, double> _fitMethodMaskIntensity = null;
-        private Func<double, double> _fitMethodResistance = null;
+        private bool _measurementsLoaded;
+        private Func<double, double> _fitMethodMaskIntensity;
+        private Func<double, double> _fitMethodResistance;
 
-        private MinMax<int> _resistance = null; 
+        private MinMax<int> _resistance; 
          
         public void LoadMeasurements(List<Measurement> measurements)
         {
@@ -60,14 +60,14 @@ namespace CreateMask.Workers
             {
                 throw new InvalidOperationException($"Cannot calculate mask intensity because given desired resistance value of '{desiredLocalResistance}'" +
                                                     $" is not within range (Min:'{_resistance.Min}' Max:'{_resistance.Max}') " +
-                                                    $"of loaded measurements.");
+                                                    "of loaded measurements.");
             }
             if (desiredLocalResistance < localMeasurement.Max.Resistance ||
                 desiredLocalResistance > localMeasurement.Min.Resistance)
             {
                 throw new InvalidOperationException($"Cannot calculate mask intensity because given desired resistance value of '{desiredLocalResistance}'" +
                                                     $" is not within range (Min:'{localMeasurement.Max.Resistance}' Max:'{localMeasurement.Min.Resistance}') " +
-                                                    $"of local measurements.");
+                                                    "of local measurements.");
             }
             #endregion
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using System.Text;
 using CreateMask.Containers;
-using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
@@ -109,20 +106,22 @@ namespace CreateMask.Main.Test
 
         private static ApplicationArguments GetApplicationArguments()
         {
-            var applicationArguments = new ApplicationArguments();
-            applicationArguments.DesiredResistance = 8820;
-            applicationArguments.High = 255;
-            applicationArguments.LcdHeight = 1440;
-            applicationArguments.LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv");
-            applicationArguments.LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv");
-            applicationArguments.LcdWidth = 2560;
-            applicationArguments.LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv");
-            applicationArguments.Low = 175;
-            applicationArguments.MaskFilePath = Path.GetFullPath("./mask2.png");
-            applicationArguments.MeasurementsNrOfColumns = 12;
-            applicationArguments.MeasurementsNrOfRows = 7;
-            applicationArguments.FileType = ".png";
-            applicationArguments.OriginalExposureTime = 8000;
+            var applicationArguments = new ApplicationArguments
+            {
+                DesiredResistance = 8820,
+                High = 255,
+                LcdHeight = 1440,
+                LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv"),
+                LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv"),
+                LcdWidth = 2560,
+                LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv"),
+                Low = 175,
+                MaskFilePath = Path.GetFullPath("./mask2.png"),
+                MeasurementsNrOfColumns = 12,
+                MeasurementsNrOfRows = 7,
+                FileType = ".png",
+                OriginalExposureTime = 8000
+            };
             return applicationArguments;
         }
     }

@@ -2,7 +2,6 @@
 using System.Drawing.Imaging;
 using System.Linq;
 using CreateMask.Containers;
-using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using NUnit.Framework;
 using TestHelpers;
@@ -27,7 +26,7 @@ namespace CreateMask.Workers.Test
         private const string FileType = ".bmp";
         private const int OriginalExposureTime = 8000;
 
-        private readonly List<string> SupportedFileTypes = new List<string>
+        private readonly List<string> _supportedFileTypes = new List<string>
         {
             nameof(ImageFormat.Bmp),
             nameof(ImageFormat.Png)
@@ -77,7 +76,7 @@ namespace CreateMask.Workers.Test
             var argumentsParser = GetArgumentsParser();
 
             //When
-            var actualArguments = argumentsParser.Parse(_args, SupportedFileTypes);
+            var actualArguments = argumentsParser.Parse(_args, _supportedFileTypes);
 
             //Then
             actualArguments.Should().BeEquivalentTo(expectedArguments);
@@ -117,7 +116,7 @@ namespace CreateMask.Workers.Test
             };
 
             //When
-            argumentsParser.Parse(arguments, SupportedFileTypes);
+            argumentsParser.Parse(arguments, _supportedFileTypes);
 
             //Then
             actualHelpTexts.Should().BeEquivalentTo(expectedHelpTexts);

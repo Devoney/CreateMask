@@ -1,4 +1,5 @@
-﻿using CreateMask.Contracts.Interfaces;
+﻿using System;
+using CreateMask.Contracts.Interfaces;
 
 namespace CreateMask.Workers
 {
@@ -16,7 +17,7 @@ namespace CreateMask.Workers
             var centerMaskIntensity = _measurementGridProcessor.GetCenterMaskIntensity(maskGrid);
 
             var ratio = highMask/centerMaskIntensity;
-            return (int)System.Math.Round(originalExposureTimeInSeconds*ratio);
+            return (int)Math.Round(originalExposureTimeInSeconds*ratio);
         }
     }
 }

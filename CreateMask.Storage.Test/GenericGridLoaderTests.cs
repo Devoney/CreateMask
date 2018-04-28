@@ -17,7 +17,7 @@ namespace CreateMask.Storage.Test
             const string testDataFileName = "IntGrid.csv";
             var fullpath = FileManager.GetFullFilePath(testDataFileName);
             var gridLoader = GetGridLoader<int>();
-            var expectedData = new int[,]
+            var expectedData = new [,]
             {
                 {160, 7420, 560, 1598},
                 {176, 6620, 3664, 1234},
