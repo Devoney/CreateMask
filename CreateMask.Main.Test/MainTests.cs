@@ -94,6 +94,27 @@ namespace CreateMask.Main.Test
             containsAdvisedExposureTime.Should().BeFalse();
         }
 
+        [Test, Category(Categories.Unit)]
+        public void CorrectSupportedFileTypesAreReturned()
+        {
+            //Given
+            var expectedSupportedFileTypes = new[]
+            {
+                "Bmp",
+                "Gif",
+                "Jpeg",
+                "Png",
+                "Tiff"
+            };
+            var main = GetMain();
+
+            //When
+            var actualSupportedFileTypes = main.SupportedFileTypes;
+
+            //Then
+            actualSupportedFileTypes.Should().BeEquivalentTo(expectedSupportedFileTypes);
+        }
+
         private string GetFullPath(string filePath, string format = OutputStrings.LoadingFile)
         {
             return string.Format(format, Path.GetFullPath(filePath));

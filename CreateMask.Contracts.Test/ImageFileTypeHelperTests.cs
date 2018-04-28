@@ -12,7 +12,7 @@ namespace CreateMask.Contracts.Test
     [TestFixture]
     public class ImageFileTypeHelperTests
     {
-        [Test]
+        [Test, Category(Categories.Unit)]
         [TestCase(ImageFileType.Png, "png")]
         [TestCase(ImageFileType.Bmp, "BmP")]
         [TestCase(ImageFileType.Tiff, ".Tiff")]
@@ -26,7 +26,7 @@ namespace CreateMask.Contracts.Test
             actualImageFileType.Should().BeEquivalentTo(expectedImageFileType);
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ThrowsExceptionWhenStringCouldNotBeParsedToImageFileType()
         {
             //Given
@@ -43,7 +43,7 @@ namespace CreateMask.Contracts.Test
             AssertExt.ThrowsException<InvalidOperationException>(action, expectedExceptionMessage);
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ImageFileTypeCanBeConvertedToImageFormat()
         {
             //Given
@@ -78,6 +78,23 @@ namespace CreateMask.Contracts.Test
 
             //Then
             Assert.IsFalse(error, "See trace output.");
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void ThrowsExceptionWhenTryingToConvertInvalidImageFileTypeToImageFormat()
+        {
+            //Given
+            const string expectedExceptionMessage = "";
+            const ImageFileType invalidImageFileType = (ImageFileType)int.MaxValue;
+
+            //When
+            var action = new Action(() =>
+            {
+                invalidImageFileType.ToImageFormat();
+            });
+
+            //Then
+            AssertExt.ThrowsException<ArgumentOutOfRangeException>(action, expectedExceptionMessage);
         }
     }
 }

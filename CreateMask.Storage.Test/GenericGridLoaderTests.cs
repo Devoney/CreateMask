@@ -1,4 +1,7 @@
-﻿using CreateMask.Contracts.Interfaces;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using NUnit.Framework;
 using TestHelpers;
@@ -8,7 +11,7 @@ namespace CreateMask.Storage.Test
     [TestFixture]
     public class GenericGridLoaderTests
     {
-        [Test, Category(Categories.Unit)]
+        [Test, NUnit.Framework.Category(Categories.Unit)]
         public void CanLoadData()
         {
             //Given
@@ -30,6 +33,46 @@ namespace CreateMask.Storage.Test
 
             //Then
             actualData.Should().BeEquivalentTo(expectedData);
+        }
+
+        [Test, NUnit.Framework.Category(Categories.Unit)]
+        public void ThrowsExceptionWhenCsvDoesNotContainEnoughRows()
+        {
+            //Given
+            const string expectedExceptionMessage = "Excepted a row at zero based index 0.";
+            var genericGridLoader = GetGridLoader<int>();
+            const int rows = 1;
+            const int columns = 5;
+            var filePath = FileManager.GetFullFilePath("empty.csv");
+
+            //When
+            var action = new Action(() =>
+            {
+                genericGridLoader.GetFromCsvFile(filePath, rows, columns);
+            });
+
+            //Then
+            AssertExt.ThrowsException<InvalidDataException>(action, expectedExceptionMessage);
+        }
+
+        [Test, NUnit.Framework.Category(Categories.Unit)]
+        public void ThrowsExceptionWhenDataIsOfUnexpectedType()
+        {
+            //Given
+            var expectedExceptionMessage = $"Expected data of type {typeof(int).FullName} at zero based row:column index 0:0";
+            var genericGridLoader = GetGridLoader<int>();
+            const int rows = 1;
+            const int columns = 5;
+            var filePath = FileManager.GetFullFilePath("stringgrid.csv");
+
+            //When
+            var action = new Action(() =>
+            {
+                genericGridLoader.GetFromCsvFile(filePath, rows, columns);
+            });
+
+            //Then
+            AssertExt.ThrowsException<InvalidDataException>(action, expectedExceptionMessage);
         }
 
         private IGenericGridLoader<T> GetGridLoader<T>()

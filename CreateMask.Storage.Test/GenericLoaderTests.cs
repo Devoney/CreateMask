@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -28,6 +30,23 @@ namespace CreateMask.Storage.Test
 
             //Then
             actualMeasurements.Should().BeEquivalentTo(expectedMeasurements);
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void ThrowsExceptionIfFileNotFound()
+        {
+            //Given
+            const string expectedExceptionMessage = "File could not be found.";
+            var genericLoader = GetGenericLoader<object>();
+
+            //When
+            var action = new Action(() =>
+            {
+                genericLoader.GetFromCsvFile("");
+            });
+
+            //Then
+            AssertExt.ThrowsException<FileNotFoundException>(action, expectedExceptionMessage);
         }
 
         private IGenericLoader<T> GetGenericLoader<T>()
