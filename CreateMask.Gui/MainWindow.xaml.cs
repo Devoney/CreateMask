@@ -56,7 +56,8 @@ namespace CreateMask.Gui
                 LcdWidth = 2560,
                 LcdHeight = 1440,
                 DesiredResistance = 8820,
-                FileType = ImageFileType.Png.ToString()
+                FileType = ImageFileType.Png.ToString(),
+                OriginalExposureTime = 8000
             };
             InitializeComponent();
         }

@@ -1,0 +1,10 @@
+﻿Loading F:\Data\Werkzaamheden\Private\CreateMask\CreateMask.Main.Test\bin\Debug\Data\ldrcurve.csv
+Constructing LDR polynomial curve fit.
+Loading F:\Data\Werkzaamheden\Private\CreateMask\CreateMask.Main.Test\bin\Debug\Data\high.csv
+Loading F:\Data\Werkzaamheden\Private\CreateMask\CreateMask.Main.Test\bin\Debug\Data\low.csv
+Constructing grid of low/high measurements.
+Creating grid of local mask intensities.
+Converting grid of local mask intensities to bitmap.
+Resizing bitmap of 12x7px to final mask of 2560x1440px using bilinear interpolation.
+Mask saved to F:\Data\Werkzaamheden\Private\CreateMask\CreateMask.Main.Test\bin\Debug\mask2.png.
+New advised exposure time: 10025

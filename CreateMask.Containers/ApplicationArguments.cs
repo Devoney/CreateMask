@@ -17,5 +17,6 @@ namespace CreateMask.Containers
         public string FileType { get; set; }
         public byte High { get; set; }
         public byte Low { get; set; }
+        public int OriginalExposureTime { get; set; }
     }
 }

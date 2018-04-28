@@ -96,6 +96,28 @@ namespace CreateMask.Workers.Test
             AssertExt.Equals(expectedBitMap, actualBitmap);
         }
 
+        [Test, Category(Categories.Unit)]
+        public void CenterMaskIntensityIsReturnedAsAverage()
+        {
+            //Given
+            var maskItensity2DArray = new byte[,]
+            {
+                { 1,2,3,4,5, 6},
+                {7,8,9,10,11,12 },
+                {13,14,15,16,17,18},
+                {19,20,21,22,23,24 }
+            };
+            const double expectedMaskIntensity = 12.5;
+            var measurementGridProcessor = GetMeasurementGridProcessor();
+
+            //When
+            var actualCenterMeasurement = measurementGridProcessor.GetCenterMaskIntensity(maskItensity2DArray);
+
+            //Then
+            actualCenterMeasurement.Should().Be(expectedMaskIntensity);
+        }
+
+        #region Helpers
         private int[,] GetGridHigh()
         {
             return new[,]
@@ -142,5 +164,6 @@ namespace CreateMask.Workers.Test
         {
             return new MeasurementGridProcessor();
         }
+        #endregion
     }
 }
