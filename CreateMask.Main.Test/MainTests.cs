@@ -48,14 +48,28 @@ namespace CreateMask.Main.Test
             {
                 outputStringBuilder.AppendLine(output);
             };
-            var expectedOutputPath = FileManager.GetFullFilePath("output.txt");
-            var expectedOutput = File.ReadAllText(expectedOutputPath);
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(GetFullPath(applicationArguments.LdrCalibrationFilePath));
+            stringBuilder.AppendLine(OutputStrings.ConstructionLdPolynomialCurveFit);
+            stringBuilder.AppendLine(GetFullPath(applicationArguments.LcdMeasurementsFilePathHigh));
+            stringBuilder.AppendLine(GetFullPath(applicationArguments.LcdMeasurementsFilePathLow));
+            stringBuilder.AppendLine(OutputStrings.ConstructingGridOfLowHighMeasurements);
+            stringBuilder.AppendLine(OutputStrings.CreatingGridOfLocalMaskIntensities);
+            stringBuilder.AppendLine(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
+            stringBuilder.AppendLine(string.Format(OutputStrings.ResizingBitmap,
+                applicationArguments.MeasurementsNrOfColumns,
+                applicationArguments.MeasurementsNrOfRows,
+                applicationArguments.LcdWidth,
+                applicationArguments.LcdHeight));
+            stringBuilder.AppendLine(GetFullPath(applicationArguments.MaskFilePath, OutputStrings.MaskSavedTo));
+            stringBuilder.AppendLine(string.Format(OutputStrings.NewAdvisedExposureTime, "10025"));
 
             //When
             main.CreateMask(applicationArguments);
 
             //Then
             var actualOutput = outputStringBuilder.ToString();
+            var expectedOutput = stringBuilder.ToString();
             actualOutput.Should().Be(expectedOutput);
         }
 
@@ -81,6 +95,11 @@ namespace CreateMask.Main.Test
             var output = outputStringBuilder.ToString();
             var containsAdvisedExposureTime = output.Contains(notExpectedString);
             containsAdvisedExposureTime.Should().BeFalse();
+        }
+
+        private string GetFullPath(string filePath, string format = OutputStrings.LoadingFile)
+        {
+            return string.Format(format, Path.GetFullPath(filePath));
         }
 
         private static Main GetMain()

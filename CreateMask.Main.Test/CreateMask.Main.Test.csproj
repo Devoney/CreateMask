@@ -71,9 +71,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <None Include="Data\output.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Compile Include="KernelConstructorTests.cs" />
     <Compile Include="MainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
