@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -11,7 +10,7 @@ namespace CreateMask.Storage.Test
     [TestFixture]
     public class GenericGridLoaderTests
     {
-        [Test, NUnit.Framework.Category(Categories.Unit)]
+        [Test, Category(Categories.Unit)]
         public void CanLoadData()
         {
             //Given
@@ -28,14 +27,13 @@ namespace CreateMask.Storage.Test
             };
 
             //When
-            var grid = gridLoader.GetFromCsvFile(fullpath, nrOfRows, nrOfColumns);
-            var actualData = grid.GetData();
+            var actualData = gridLoader.GetFromCsvFile(fullpath, nrOfRows, nrOfColumns);
 
             //Then
             actualData.Should().BeEquivalentTo(expectedData);
         }
 
-        [Test, NUnit.Framework.Category(Categories.Unit)]
+        [Test, Category(Categories.Unit)]
         public void ThrowsExceptionWhenCsvDoesNotContainEnoughRows()
         {
             //Given
@@ -55,7 +53,7 @@ namespace CreateMask.Storage.Test
             AssertExt.ThrowsException<InvalidDataException>(action, expectedExceptionMessage);
         }
 
-        [Test, NUnit.Framework.Category(Categories.Unit)]
+        [Test, Category(Categories.Unit)]
         public void ThrowsExceptionWhenDataIsOfUnexpectedType()
         {
             //Given

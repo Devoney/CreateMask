@@ -1,9 +1,7 @@
-﻿using CreateMask.Containers;
-
-namespace CreateMask.Contracts.Interfaces
+﻿namespace CreateMask.Contracts.Interfaces
 {
-    public interface IGenericGridLoader<T>
+    public interface IGenericGridLoader<out T>
     {
-        Grid<T> GetFromCsvFile(string filepath, int nrOfRows, int nrOfColumns);
+        T[,] GetFromCsvFile(string filepath, int nrOfRows, int nrOfColumns);
     }
 }

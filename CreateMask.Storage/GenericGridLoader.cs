@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CsvHelper;
 
@@ -7,9 +6,9 @@ namespace CreateMask.Storage
 {
     public class GenericGridLoader<T> : IGenericGridLoader<T>
     {
-        public Grid<T> GetFromCsvFile(string filepath, int nrOfRows, int nrOfColumns)
+        public T[,] GetFromCsvFile(string filepath, int nrOfRows, int nrOfColumns)
         {
-            var grid = new Grid<T>(nrOfRows, nrOfColumns);
+            var grid = new T[nrOfRows, nrOfColumns];
 
             using (var streamReader = new StreamReader(filepath))
             using (var csvReader = new CsvReader(streamReader))
@@ -28,7 +27,7 @@ namespace CreateMask.Storage
                         {
                             throw new InvalidDataException($"Expected data of type {typeof(T).FullName} at zero based row:column index {row}:{column}");
                         }
-                        grid.Set(value, row, column);
+                        grid[row, column] = value;
                     }
                 }
             }

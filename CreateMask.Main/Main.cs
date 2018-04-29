@@ -51,13 +51,13 @@ namespace CreateMask.Main
             var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
                 arguments.LcdMeasurementsFilePathHigh,
                 arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns).GetData();
+                arguments.MeasurementsNrOfColumns);
 
             OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathLow);
             var measurementsLow = _measurementGridLoader.GetFromCsvFile(
                 arguments.LcdMeasurementsFilePathLow,
                 arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns).GetData();
+                arguments.MeasurementsNrOfColumns);
 
             OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
             var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
