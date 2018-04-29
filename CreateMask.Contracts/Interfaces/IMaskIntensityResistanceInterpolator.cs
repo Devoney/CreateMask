@@ -7,7 +7,6 @@ namespace CreateMask.Contracts.Interfaces
     {
         byte GetMaskIntensity(int resistance);
         int GetResistance(byte maskIntensity);
-        void LoadMeasurements(List<Measurement> measurements);
         byte GetLocalMaskIntensity(int desiredLocalResistance, MinMax<Measurement> localMeasurement);
     }
 }

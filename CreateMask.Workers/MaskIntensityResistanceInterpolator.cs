@@ -10,13 +10,18 @@ namespace CreateMask.Workers
     public class MaskIntensityResistanceInterpolator : IMaskIntensityResistanceInterpolator
     {
         private const int PolynomialOrder = 6;
-        private bool _measurementsLoaded;
         private Func<double, double> _fitMethodMaskIntensity;
         private Func<double, double> _fitMethodResistance;
 
-        private MinMax<int> _resistance; 
-         
-        public void LoadMeasurements(List<Measurement> measurements)
+        private MinMax<int> _resistance;
+
+        public MaskIntensityResistanceInterpolator(IEnumerable<Measurement> measurements)
+        {
+            if(measurements == null) throw new ArgumentNullException(nameof(measurements));
+            LoadMeasurements(measurements.ToList());
+        }
+
+        private void LoadMeasurements(List<Measurement> measurements)
         {
             var resistanceData = measurements.Select(m => (double)m.Resistance).ToArray();
             _resistance = new MinMax<int>((int)resistanceData.Min(), (int)resistanceData.Max());
@@ -24,16 +29,10 @@ namespace CreateMask.Workers
 
             _fitMethodMaskIntensity = CreateFitMethod(resistanceData, intensityData);
             _fitMethodResistance = CreateFitMethod(intensityData, resistanceData);
-
-            _measurementsLoaded = true;
         }
 
         public byte GetMaskIntensity(int resistance)
         {
-            if (!_measurementsLoaded)
-            {
-                throw new InvalidOperationException("No measurements has been loaded yet, can not interpolate mask intensity.");
-            }
             var maskIntensity = Math.Round(_fitMethodMaskIntensity(resistance));
             if (maskIntensity > byte.MaxValue) return byte.MaxValue;
             return (byte) maskIntensity;
@@ -41,21 +40,12 @@ namespace CreateMask.Workers
 
         public int GetResistance(byte maskIntensity)
         {
-            if (!_measurementsLoaded)
-            {
-                throw new InvalidOperationException("No measurements has been loaded yet, can not interpolate resistance value.");
-            }
             return (int)Math.Round(_fitMethodResistance(maskIntensity));
         }
 
         public byte GetLocalMaskIntensity(int desiredLocalResistance, MinMax<Measurement> localMeasurement)
         {
             #region Sanity check
-
-            if (!_measurementsLoaded)
-            {
-                throw new InvalidOperationException("No measurements has been loaded yet.");
-            }
             if (desiredLocalResistance < _resistance.Min || desiredLocalResistance > _resistance.Max)
             {
                 throw new InvalidOperationException($"Cannot calculate mask intensity because given desired resistance value of '{desiredLocalResistance}'" +

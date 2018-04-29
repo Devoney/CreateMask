@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Workers.Factories;
 using FluentAssertions;
 using NUnit.Framework;
 using TestHelpers;
@@ -18,8 +19,7 @@ namespace CreateMask.Workers.Test
             //Given
             var measurements = GetDefeaultSetOfMeasurements();
             var expectedIntensities = measurements.Select(m => m.MaskIntensity).ToList();
-            var maskIntensityInterpolator = GetMaskIntensityInterpolator();
-            maskIntensityInterpolator.LoadMeasurements(measurements);
+            var maskIntensityInterpolator = GetMaskIntensityInterpolator(measurements);
 
             //When
             var actualIntensities = measurements.Select(m => maskIntensityInterpolator.GetMaskIntensity(m.Resistance)).ToList();
@@ -34,8 +34,7 @@ namespace CreateMask.Workers.Test
             //Given
             var measurements = GetDefeaultSetOfMeasurements();
             var expectedResistance = measurements.Select(m => m.Resistance).ToList();
-            var maskIntensityInterpolator = GetMaskIntensityInterpolator();
-            maskIntensityInterpolator.LoadMeasurements(measurements);
+            var maskIntensityInterpolator = GetMaskIntensityInterpolator(measurements);
 
             //When
             var actualResistance = measurements.Select(m => maskIntensityInterpolator.GetResistance(m.MaskIntensity)).ToList();
@@ -49,8 +48,7 @@ namespace CreateMask.Workers.Test
         {
             //Given
             var measurements = GetDefeaultSetOfMeasurements();
-            var maskIntensityInterpolator = GetMaskIntensityInterpolator();
-            maskIntensityInterpolator.LoadMeasurements(measurements);
+            var maskIntensityInterpolator = GetMaskIntensityInterpolator(measurements);
             var relativePointMinMax = new MinMax<Measurement>
             {
                 Min = new Measurement(192, 6867),
@@ -73,8 +71,7 @@ namespace CreateMask.Workers.Test
         {
             //Given
             var measurements = GetDefeaultSetOfMeasurements();
-            var maskIntensityInterpolator = GetMaskIntensityInterpolator();
-            maskIntensityInterpolator.LoadMeasurements(measurements);
+            var maskIntensityInterpolator = GetMaskIntensityInterpolator(measurements);
             var relativePointMinMax = new MinMax<Measurement>
             {
                 Min = new Measurement(192, 6867),
@@ -117,8 +114,7 @@ namespace CreateMask.Workers.Test
         {
             //Given
             var measurements = GetDefeaultSetOfMeasurements();
-            var maskIntensityInterpolator = GetMaskIntensityInterpolator();
-            maskIntensityInterpolator.LoadMeasurements(measurements);
+            var maskIntensityInterpolator = GetMaskIntensityInterpolator(measurements);
             var relativePointMinMax = new MinMax<Measurement>
             {
                 Min = new Measurement(192, 6867),
@@ -152,6 +148,24 @@ namespace CreateMask.Workers.Test
             AssertExt.ThrowsException<InvalidOperationException>(action, expectedPartialExceptionMessage);
         }
 
+        [Test, Category(Categories.Unit)]
+        public void ConstructionThrowsOnNullArgument()
+        {
+            //Given
+            IEnumerable<Measurement> measurements = null;
+
+            //When
+            var action = new Action(() =>
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                // ReSharper disable once ExpressionIsAlwaysNull
+                new MaskIntensityResistanceInterpolator(measurements);
+            });
+
+            //Then
+            AssertExt.ThrowsException<ArgumentNullException>(action, "");
+        }
+
         private List<Measurement> GetDefeaultSetOfMeasurements()
         {
             return new List<Measurement>
@@ -166,9 +180,10 @@ namespace CreateMask.Workers.Test
             };
         } 
 
-        private IMaskIntensityResistanceInterpolator GetMaskIntensityInterpolator()
+        private IMaskIntensityResistanceInterpolator GetMaskIntensityInterpolator(IEnumerable<Measurement> measurements)
         {
-            return new MaskIntensityResistanceInterpolator();
+            var factory = new MaskIntensityResistanceInterpolatorFactory();
+            return factory.Create(measurements);
         }
 
         public enum UseMinOrMax

@@ -50,6 +50,7 @@
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolator.cs" />
+    <Compile Include="Interfaces\IMaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="Interfaces\IMeasurementGridProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -13,7 +13,7 @@ namespace CreateMask.Main
         public event EventHandler<string> Output;
 
         private readonly IGenericLoader<Measurement> _measurementsLoader;
-        private readonly IMaskIntensityResistanceInterpolator _maskIntensityInterpolator;
+        private readonly IMaskIntensityResistanceInterpolatorFactory _maskIntensityInterpolatorFactory;
         private readonly IGenericGridLoader<int> _measurementGridLoader;
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
@@ -21,13 +21,13 @@ namespace CreateMask.Main
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
         public Main(IGenericLoader<Measurement> measurementsLoader, 
-                    IMaskIntensityResistanceInterpolator maskIntensityInterpolator,
+                    IMaskIntensityResistanceInterpolatorFactory maskIntensityInterpolatorFactory,
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
                     IExposureTimeCalculator exposureTimeCalculator)
         {
             _measurementsLoader = measurementsLoader;
-            _maskIntensityInterpolator = maskIntensityInterpolator;
+            _maskIntensityInterpolatorFactory = maskIntensityInterpolatorFactory;
             _measurementGridLoader = measurementGridLoader;
             _measurementGridProcessor = measurementGridProcessor;
             _exposureTimeCalculator = exposureTimeCalculator;
@@ -45,7 +45,7 @@ namespace CreateMask.Main
             var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
             
             OnOutput(OutputStrings.ConstructionLdPolynomialCurveFit);
-            _maskIntensityInterpolator.LoadMeasurements(ldrCalibrationMeasurements);
+            var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
 
             OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathHigh);
             var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
@@ -62,7 +62,7 @@ namespace CreateMask.Main
             OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
             var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
             OnOutput(OutputStrings.CreatingGridOfLocalMaskIntensities);
-            var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(_maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
+            var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
             OnOutput(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
             using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
             {

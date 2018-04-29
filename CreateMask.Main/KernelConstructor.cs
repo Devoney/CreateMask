@@ -2,6 +2,7 @@
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Storage;
 using CreateMask.Workers;
+using CreateMask.Workers.Factories;
 using Ninject;
 
 namespace CreateMask.Main
@@ -21,7 +22,7 @@ namespace CreateMask.Main
             kernel.Bind<IExposureTimeCalculator>().To <ExposureTimeCalculator> ();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
-            kernel.Bind<IMaskIntensityResistanceInterpolator>().To<MaskIntensityResistanceInterpolator>();
+            kernel.Bind<IMaskIntensityResistanceInterpolatorFactory>().To<MaskIntensityResistanceInterpolatorFactory>();
             kernel.Bind<IMeasurementGridProcessor>().To<MeasurementGridProcessor>();
         }
     }
