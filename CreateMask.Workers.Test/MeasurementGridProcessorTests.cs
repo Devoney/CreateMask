@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -115,6 +116,29 @@ namespace CreateMask.Workers.Test
 
             //Then
             actualCenterMeasurement.Should().Be(expectedMaskIntensity);
+        }
+
+        [Test, Category(Categories.Unit)]
+        [TestCase(3,4,4,4)]
+        [TestCase(4, 3, 4, 4)]
+        public void ExceptionIsThrownWhenLowAndHighGridsAreOfDifferentDimensions(int nrOfRowsLow, int nrOfColumnsLow, int nrOfRowsHigh, int nrOfColumnsHigh)
+        {
+            //Given
+            const string expectedExceptionMessage = "The dimensions of the given resistance 2D arrays do not match.";
+            const byte low = 127;
+            const byte high = byte.MaxValue;
+            var lowGrid = new int[nrOfRowsLow, nrOfColumnsLow];
+            var highGrid = new int[nrOfRowsHigh, nrOfColumnsHigh];
+            var measurementGridProcessor = GetMeasurementGridProcessor();
+
+            //When
+            var action = new Action(() =>
+            {
+                measurementGridProcessor.CreateMinMaxMeasurementGrid(low, high, lowGrid, highGrid);
+            });
+
+            //Then
+            AssertExt.ThrowsException<InvalidOperationException>(action, expectedExceptionMessage);
         }
 
         #region Helpers
