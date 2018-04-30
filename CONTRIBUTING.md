@@ -1,6 +1,7 @@
 ## General
 - If you want to work on something that is not in the issue list, please discuss it first. We can then decide to create an issue for it.
 - Please only create pull requests that solve open issues.
+- Auto increment the build number. Use this extension: https://marketplace.visualstudio.com/items?itemName=PaulMelia.BuildVersionIncrementAdd-inVS2015VS15Preview#overview
 
 ## Branching, Commmiting & Merging
 - Commits state the issue the work is done on in the first line of the comment of the commit.
