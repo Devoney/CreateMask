@@ -11,7 +11,8 @@
         Height="665.641"
         Width="1120"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Background="Black">
+        Background="Black"
+        Icon="favicon.ico">
     <Window.Resources>
         <Style TargetType="GroupBox"
                BasedOn="{StaticResource GroupBoxStyle}">

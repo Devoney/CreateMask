@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/s8509rn5n8khd8pp?svg=true)](https://ci.appveyor.com/project/Devoney/createmask)
 
+<img src="https://raw.githubusercontent.com/Devoney/CreateMask/master/CreateMask.Gui/favicon.ico" width="48" />
+
 ## CreateMask
 This software lets you create a mask for a 3D UV resin printer that uses DLP technique.
 A mask is used to have homogeneous light intensity across the build area. 
