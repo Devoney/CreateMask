@@ -114,19 +114,26 @@ namespace CreateMask.Workers
                 {
                     var lowMeasurement = resistanceMeasurementsLow[r, c];
                     var highMeasurement = resistanceMeasurementsHigh[r, c];
-                    if (lowMeasurement >= highMeasurement) lowsHigherOrEqualThanHigh++;
+                    if (lowMeasurement <= highMeasurement) //<= because lower resistance is higher light intensity
+                    {
+                        lowsHigherOrEqualThanHigh++;
+                    }
                 }
             }
 
             var nrOfMeasurements = rows*columns;
             if (lowsHigherOrEqualThanHigh == nrOfMeasurements)
             {
-                throw new LowHighMeasurementsSwappedException("All measurements from low are equal or higher than the high measurements.");
+                throw new LowHighMeasurementsSwappedException(
+                    "All measurements from low are equal or higher than the high measurements.");
             }
-            throw new LowHigherThanHighMeasurementException($"{lowsHigherOrEqualThanHigh} out of " +
-                                                            $"{nrOfMeasurements} measurements from " +
-                                                            $"low where equal or higher than the high measurement.");
-            
+
+            if (lowsHigherOrEqualThanHigh > 0)
+            {
+                throw new LowHigherThanHighMeasurementException($"{lowsHigherOrEqualThanHigh} out of " +
+                                                                $"{nrOfMeasurements} measurements from " +
+                                                                $"low where equal or higher than the high measurement.");
+            }
         }
     }
 }
