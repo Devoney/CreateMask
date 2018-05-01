@@ -2,6 +2,7 @@
 using System.Drawing;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Workers.Exceptions;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -139,6 +140,64 @@ namespace CreateMask.Workers.Test
 
             //Then
             AssertExt.ThrowsException<InvalidOperationException>(action, expectedExceptionMessage);
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void ExceptionIsThrownWhenLowAndHighMeasurementsAreSwapped()
+        {
+            //Given
+            const byte low = 127;
+            const byte high = byte.MaxValue;
+            const string expectedExceptionMessage = "All measurements from low are equal or higher than the high measurements.";
+            var measurementsHigh = new[,]
+            {
+                { 2,5 },
+                {10, 45 }
+            };
+            var measurementsLow = new[,]
+            {
+                { 20,50 },
+                {100, 90 }
+            };
+            var measurementGridProcessor = GetMeasurementGridProcessor();
+
+            //When
+            var action = new Action(() =>
+            {
+                measurementGridProcessor.CreateMinMaxMeasurementGrid(low, high, measurementsHigh, measurementsLow);
+            });
+
+            //Then
+            AssertExt.ThrowsException<LowHighMeasurementsSwappedException>(action, expectedExceptionMessage);
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void ExceptionIsThrownWhenSomeLowMeasurementsActuallyIndicateBrighterLightThanTheHighMeasurements()
+        {
+            //Given
+            const byte low = 127;
+            const byte high = byte.MaxValue;
+            const string expectedExceptionMessage = "2 out of 4 measurements from low where equal or higher than the high measurement.";
+            var measurementsHigh = new[,]
+            {
+                { 20,5 },
+                {10, 45 }
+            };
+            var measurementsLow = new[,]
+            {
+                { 20,50 },
+                { 5, 40 }
+            };
+            var measurementGridProcessor = GetMeasurementGridProcessor();
+
+            //When
+            var action = new Action(() =>
+            {
+                measurementGridProcessor.CreateMinMaxMeasurementGrid(low, high, measurementsHigh, measurementsLow);
+            });
+
+            //Then
+            AssertExt.ThrowsException<LowHigherThanHighMeasurementException>(action, expectedExceptionMessage);
         }
 
         #region Helpers

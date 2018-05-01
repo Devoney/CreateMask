@@ -124,8 +124,7 @@ namespace CreateMask.Workers
             var nrOfMeasurements = rows*columns;
             if (lowsHigherOrEqualThanHigh == nrOfMeasurements)
             {
-                throw new LowHighMeasurementsSwappedException(
-                    "All measurements from low are equal or higher than the high measurements.");
+                throw new LowHighMeasurementsSwappedException("All measurements from low are equal or higher than the high measurements.");
             }
 
             if (lowsHigherOrEqualThanHigh > 0)
