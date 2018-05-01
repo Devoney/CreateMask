@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsParser.cs" />
+    <Compile Include="Exceptions\LowHigherThanHighMeasurementException.cs" />
+    <Compile Include="Exceptions\LowHighMeasurementsSwappedException.cs" />
     <Compile Include="ExposureTimeCalculator.cs" />
     <Compile Include="Factories\MaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="MaskIntensityResistanceInterpolator.cs" />
