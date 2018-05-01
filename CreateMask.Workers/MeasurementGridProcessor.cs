@@ -4,6 +4,7 @@ using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Utilities;
+using CreateMask.Workers.Exceptions;
 
 namespace CreateMask.Workers
 {
@@ -23,6 +24,8 @@ namespace CreateMask.Workers
             {
                 throw new InvalidOperationException("The dimensions of the given resistance 2D arrays do not match.");
             }
+
+            AssureLowMeasurementsAreLowerThanHighMeasurements(resistanceMeasurementsLow, resistanceMeasurementsHigh);
 
             var minMaxMeasurementsGrid = new MinMax<Measurement>[nrOfRowsLow, nrOfColumnsLow];
 
@@ -95,6 +98,35 @@ namespace CreateMask.Workers
         {
             var centerItems = maskIntensityGrid.GetCenterItems().ToList();
             return centerItems.Average(b => (double)b);
+        }
+
+        private void AssureLowMeasurementsAreLowerThanHighMeasurements(
+            int[,] resistanceMeasurementsLow,
+            int[,] resistanceMeasurementsHigh)
+        {
+            var rows = resistanceMeasurementsLow.GetLength(0);
+            var columns = resistanceMeasurementsLow.GetLength(1);
+
+            var lowsHigherOrEqualThanHigh = 0;
+            for (var r = 0; r < rows; r++)
+            {
+                for (var c = 0; c < columns; c++)
+                {
+                    var lowMeasurement = resistanceMeasurementsLow[r, c];
+                    var highMeasurement = resistanceMeasurementsHigh[r, c];
+                    if (lowMeasurement >= highMeasurement) lowsHigherOrEqualThanHigh++;
+                }
+            }
+
+            var nrOfMeasurements = rows*columns;
+            if (lowsHigherOrEqualThanHigh == nrOfMeasurements)
+            {
+                throw new LowHighMeasurementsSwappedException("All measurements from low are equal or higher than the high measurements.");
+            }
+            throw new LowHigherThanHighMeasurementException($"{lowsHigherOrEqualThanHigh} out of " +
+                                                            $"{nrOfMeasurements} measurements from " +
+                                                            $"low where equal or higher than the high measurement.");
+            
         }
     }
 }
