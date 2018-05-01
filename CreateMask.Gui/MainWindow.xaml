@@ -118,10 +118,10 @@
                                             Minimum="0"
                                             Maximum="255" />
                     </Grid>
-                    <controls:SelectFile Label="LCD Measurements High"
+                    <controls:SelectFile Label="LCD Measurements High Light Intensity"
                                          SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathHigh, Mode=TwoWay}"
                                          Filter="Csv|*.csv" />
-                    <controls:SelectFile Label="LCD Measurements Low"
+                    <controls:SelectFile Label="LCD Measurements Low Light Intensity"
                                          SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathLow, Mode=TwoWay}"
                                          Filter="Csv|*.csv" />
                 </StackPanel>
