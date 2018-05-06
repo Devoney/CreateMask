@@ -78,7 +78,7 @@ namespace CreateMask.Utilities.Test
             releasesClientMock.Setup(client => client.GetAll(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new TimeoutException("The network operation timed out"));
             var releaseManager = new ReleaseManager(releasesClientMock.Object);
-            var arguments = new CheckForReleaseInfo
+            var arguments = new CheckForReleaseArgs
             {
                 CurrentVersion = new Version(),
                 OnNewReleaseCallBack = releaseInfo =>
@@ -97,7 +97,32 @@ namespace CreateMask.Utilities.Test
             callbackCalled.Should().BeFalse();
         }
 
-        private Tuple<IReleaseManager, CheckForReleaseInfo, Mock<IReleasesClient>> 
+        [Test, Category(Categories.Unit)]
+        public async void CorrectUrlAndVersionIsReturnedWhenNewVersionIsAvailable()
+        {
+            //Given
+            var latestVersion = new Version(1, 0, 0, 3);
+            var expectedUrl = "http://www.github.com/Devoney/CreateMask/Releases/" + latestVersion;
+            ReleaseInfo releaseInfo = null;
+            var items = Given(info =>
+            {
+                releaseInfo = info;
+            }, latestVersion);
+            var releaseManager = items.Item1;
+            var args = items.Item2;
+            var releasesClientMock = items.Item3;
+
+            //When
+            await releaseManager.CheckForNewReleaseAsync(args);
+
+            //Then
+            releasesClientMock.Verify(m => m.GetAll(It.IsAny<string>(), It.IsAny<string>()), Times.Once, "It is expected that the releases are queried by the client.");
+            releaseInfo.Should().NotBeNull();
+            releaseInfo.Version.Should().BeEquivalentTo(latestVersion);
+            releaseInfo.Uri.ToString().Should().Be(expectedUrl);
+        }
+
+        private Tuple<IReleaseManager, CheckForReleaseArgs, Mock<IReleasesClient>> 
             Given(Action<ReleaseInfo> callback, Version latestReleaseVersion)
         {
             var releasesClientMock = new Mock<IReleasesClient>();
@@ -117,19 +142,19 @@ namespace CreateMask.Utilities.Test
 
             var releasesClient = releasesClientMock.Object;
             var releaseManager = new ReleaseManager(releasesClient);
-            var arguments = new CheckForReleaseInfo
+            var arguments = new CheckForReleaseArgs
             {
                 CurrentVersion = new Version(1, 0, 0, 0),
                 Repository = "MyRepo",
                 Owner = "SomeOwner",
                 OnNewReleaseCallBack = callback
             };
-            return new Tuple<IReleaseManager, CheckForReleaseInfo, Mock<IReleasesClient>>(releaseManager, arguments, releasesClientMock);
+            return new Tuple<IReleaseManager, CheckForReleaseArgs, Mock<IReleasesClient>>(releaseManager, arguments, releasesClientMock);
         }
 
         private static Release CreateRelease(Version version)
         {
-            return new Release("http://www.github.com/Devoney/CreateMask/Releases/" + version, "htmlurl", "assetsurl", "uploadurl", 
+            return new Release("url", "http://www.github.com/Devoney/CreateMask/Releases/" + version, "assetsurl", "uploadurl", 
                 1, version.ToString(), "targetCommitish", "MyName", 
                 "body", false, false, DateTimeOffset.MaxValue, 
                 DateTimeOffset.MinValue, null, "tarballurl", 

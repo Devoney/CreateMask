@@ -1,9 +1,11 @@
 ﻿using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Storage;
+using CreateMask.Utilities;
 using CreateMask.Workers;
 using CreateMask.Workers.Factories;
 using Ninject;
+using Octokit;
 
 namespace CreateMask.Main
 {
@@ -24,6 +26,17 @@ namespace CreateMask.Main
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
             kernel.Bind<IMaskIntensityResistanceInterpolatorFactory>().To<MaskIntensityResistanceInterpolatorFactory>();
             kernel.Bind<IMeasurementGridProcessor>().To<MeasurementGridProcessor>();
+            RegisterGithubReleasesClient(kernel);
+            kernel.Bind<IReleaseManager>().To<ReleaseManager>();
+            
+        }
+
+        private static void RegisterGithubReleasesClient(IKernel kernel)
+        {
+            var productHeaderValue = new ProductHeaderValue("CreateMask");
+            var githubClient = new GitHubClient(productHeaderValue);
+            var releasesClient = githubClient.Repository.Release;
+            kernel.Bind<IReleasesClient>().ToConstant(releasesClient);
         }
     }
 }

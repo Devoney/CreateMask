@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using CreateMask.Containers;
 using CreateMask.Contracts.Enums;
 using CreateMask.Contracts.Helpers;
+using CreateMask.Contracts.Interfaces;
 using CreateMask.Gui.Controls;
 using CreateMask.Main;
 using Ninject;
@@ -20,6 +22,7 @@ namespace CreateMask.Gui
     public partial class MainWindow
     {
         private readonly Main.Main _main;
+        private readonly IKernel _kernel;
 
         public ApplicationArguments Arguments { get; set; }
 
@@ -43,8 +46,8 @@ namespace CreateMask.Gui
 
         public MainWindow()
         {
-            var kernel = KernelConstructor.GetKernel();
-            _main = kernel.Get<Main.Main>();
+            _kernel = KernelConstructor.GetKernel();
+            _main = _kernel.Get<Main.Main>();
             _main.Output += Main_Output;
 
             Arguments = new ApplicationArguments
@@ -59,7 +62,37 @@ namespace CreateMask.Gui
                 FileType = ImageFileType.Png.ToString(),
                 OriginalExposureTime = 8000
             };
+
             InitializeComponent();
+
+            Loaded += (sender, args) => CheckForUpdate();
+        }
+
+        private async void CheckForUpdate()
+        {
+            var releaseManager = _kernel.Get<IReleaseManager>();
+            var args = new CheckForReleaseArgs
+            {
+                CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version,
+                OnNewReleaseCallBack = AskToVisiteTheDownloadPage,
+                Owner = "Devoney", // TODO: Should be defined somewhere else
+                Repository = "CreateMask" // TODO: Should be defined somewhere else
+            };
+            await releaseManager.CheckForNewReleaseAsync(args);
+        }
+
+        private void AskToVisiteTheDownloadPage(ReleaseInfo releaseInfo)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var messageBoxText = $"A newer version is available ({releaseInfo.Version}).\r\nDo you wish to visit the download page?";
+                var answer = MessageBox.Show(this, messageBoxText, "New version available",
+                    MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                if (answer != MessageBoxResult.Yes) return;
+
+                Process.Start(new ProcessStartInfo(releaseInfo.Uri.AbsoluteUri));
+            });
         }
 
         private void CmbFileTypeOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)

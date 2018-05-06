@@ -6,6 +6,6 @@ namespace CreateMask.Contracts.Interfaces
 {
     public interface IReleaseManager
     {
-        Task CheckForNewReleaseAsync(CheckForReleaseInfo checkForReleaseInfo);
+        Task CheckForNewReleaseAsync(CheckForReleaseArgs checkForReleaseArgs);
     }
 }

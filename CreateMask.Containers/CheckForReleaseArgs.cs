@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CreateMask.Containers
 {
-    public class CheckForReleaseInfo
+    public class CheckForReleaseArgs
     {
         public string Owner { get; set; }
         public string Repository { get; set; }

@@ -17,12 +17,12 @@ namespace CreateMask.Utilities
             _releasesClient = releasesClient;
         }
 
-        public async Task CheckForNewReleaseAsync(CheckForReleaseInfo checkForReleaseInfo)
+        public async Task CheckForNewReleaseAsync(CheckForReleaseArgs checkForReleaseArgs)
         {
             IReadOnlyList<Release> releases;
             try
             {
-                releases = await _releasesClient.GetAll(checkForReleaseInfo.Owner, checkForReleaseInfo.Repository);
+                releases = await _releasesClient.GetAll(checkForReleaseArgs.Owner, checkForReleaseArgs.Repository);
             }
             catch
             {
@@ -32,14 +32,14 @@ namespace CreateMask.Utilities
 
             var latest = releases.First();
             var version = new Version(latest.TagName);
-            if (version > checkForReleaseInfo.CurrentVersion)
+            if (version > checkForReleaseArgs.CurrentVersion)
             {
                 var releaseInfo = new ReleaseInfo
                 {
                     Version = version,
-                    Uri = new Uri(latest.Url)
+                    Uri = new Uri(latest.HtmlUrl)
                 };
-                checkForReleaseInfo.OnNewReleaseCallBack(releaseInfo);
+                checkForReleaseArgs.OnNewReleaseCallBack(releaseInfo);
             }
         }
     }
