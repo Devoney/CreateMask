@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationArguments.cs" />
+    <Compile Include="CheckForReleaseInfo.cs" />
+    <Compile Include="ReleaseInfo.cs" />
     <Compile Include="Measurement.cs" />
     <Compile Include="MinMax.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,7 +50,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
+      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
