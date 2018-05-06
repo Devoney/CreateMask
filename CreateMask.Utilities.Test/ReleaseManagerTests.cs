@@ -19,7 +19,7 @@ namespace CreateMask.Utilities.Test
         {
             //Given
             var callbackCalled = false;
-            var items = CallBackIsCalledWhenNewReleaseIsAvailable_Given(info => { callbackCalled = true; });
+            var items = Given(info => { callbackCalled = true; }, new Version(1,0,0,1));
             var releaseManager = items.Item1;
             var arguments = items.Item2;
             var releasesClientMock = items.Item3;
@@ -37,7 +37,7 @@ namespace CreateMask.Utilities.Test
         {
             //Given
             var callbackCalled = false;
-            var items = CallBackIsCalledWhenNewReleaseIsAvailable_Given(info => { callbackCalled = true; }, new Version(1,0,0,0));
+            var items = Given(info => { callbackCalled = true; }, new Version(1,0,0,0));
             var releaseManager = items.Item1;
             var arguments = items.Item2;
             var releasesClientMock = items.Item3;
@@ -50,16 +50,66 @@ namespace CreateMask.Utilities.Test
             callbackCalled.Should().BeFalse();
         }
 
-        private Tuple<IReleaseManager, CheckForReleaseInfo, Mock<IReleasesClient>> 
-            CallBackIsCalledWhenNewReleaseIsAvailable_Given(Action<ReleaseInfo> callback, Version latestReleaseVersion = null)
+        [Test, Category(Categories.Unit)]
+        public async void EmptyReleaseListResultsInNoCallback()
         {
-            latestReleaseVersion = latestReleaseVersion ?? new Version(1, 0, 0, 1);
+            //Given
+            var callbackCalled = false;
+            var items = Given(info => { callbackCalled = true; }, null);
+            var releaseManager = items.Item1;
+            var arguments = items.Item2;
+            var releasesClientMock = items.Item3;
+
+            //When
+            await releaseManager.CheckForNewReleaseAsync(arguments).ConfigureAwait(false);
+
+            //Then
+            releasesClientMock.Verify(m => m.GetAll(It.IsAny<string>(), It.IsAny<string>()), Times.Once, "It is expected that the releases are queried by the client.");
+            callbackCalled.Should().BeFalse();
+        }
+
+        [Test, Category(Categories.Unit), Description("When fetching the releases fail, " +
+                                                      "the chance is very high that its just a network issue of some kind.")]
+        public async void ExceptionInReleasesClientResultsInCallbackNotCalled()
+        {
+            //Given
+            var callbackCalled = false;
+            var releasesClientMock = new Mock<IReleasesClient>();
+            releasesClientMock.Setup(client => client.GetAll(It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new TimeoutException("The network operation timed out"));
+            var releaseManager = new ReleaseManager(releasesClientMock.Object);
+            var arguments = new CheckForReleaseInfo
+            {
+                CurrentVersion = new Version(),
+                OnNewReleaseCallBack = releaseInfo =>
+                {
+                    callbackCalled = true;
+                },
+                Owner = "Owner",
+                Repository = "Repository"
+            };
+
+            //When
+            await releaseManager.CheckForNewReleaseAsync(arguments).ConfigureAwait(false);
+
+            //Then
+            releasesClientMock.Verify(m => m.GetAll(It.IsAny<string>(), It.IsAny<string>()), Times.Once, "It is expected that the releases are queried by the client.");
+            callbackCalled.Should().BeFalse();
+        }
+
+        private Tuple<IReleaseManager, CheckForReleaseInfo, Mock<IReleasesClient>> 
+            Given(Action<ReleaseInfo> callback, Version latestReleaseVersion)
+        {
             var releasesClientMock = new Mock<IReleasesClient>();
             releasesClientMock.Setup(client => client.GetAll(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() =>
                 {
-                    var release = CreateRelease(latestReleaseVersion);
-                    var list = new List<Release> { release };
+                    var list = new List<Release>();
+                    if (latestReleaseVersion != null)
+                    {
+                        var release = CreateRelease(latestReleaseVersion);
+                        list.Add(release);
+                    }
                     var task = Task.Run(() => (IReadOnlyList<Release>)list);
                     task.ConfigureAwait(false);
                     return task;

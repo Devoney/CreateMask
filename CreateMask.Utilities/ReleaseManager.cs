@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CreateMask.Containers;
@@ -18,7 +19,15 @@ namespace CreateMask.Utilities
 
         public async Task CheckForNewReleaseAsync(CheckForReleaseInfo checkForReleaseInfo)
         {
-            var releases = await _releasesClient.GetAll(checkForReleaseInfo.Owner, checkForReleaseInfo.Repository);
+            IReadOnlyList<Release> releases;
+            try
+            {
+                releases = await _releasesClient.GetAll(checkForReleaseInfo.Owner, checkForReleaseInfo.Repository);
+            }
+            catch
+            {
+                return;
+            }
             if (releases == null || releases.Count == 0) return;
 
             var latest = releases.First();
