@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -10,6 +9,7 @@ using CreateMask.Containers;
 using CreateMask.Contracts.Enums;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Gui.Components;
 using CreateMask.Gui.Controls;
 using CreateMask.Main;
 using Ninject;
@@ -22,9 +22,10 @@ namespace CreateMask.Gui
     public partial class MainWindow
     {
         private readonly Main.Main _main;
-        private readonly IKernel _kernel;
 
         public ApplicationArguments Arguments { get; set; }
+
+        public CheckForUpdate CheckForUpdateComponent { get; private set; }
 
         public IEnumerable<string> SupportedFileTypes => _main.SupportedFileTypes;
 
@@ -46,8 +47,8 @@ namespace CreateMask.Gui
 
         public MainWindow()
         {
-            _kernel = KernelConstructor.GetKernel();
-            _main = _kernel.Get<Main.Main>();
+            var kernel = KernelConstructor.GetKernel();
+            _main = kernel.Get<Main.Main>();
             _main.Output += Main_Output;
 
             Arguments = new ApplicationArguments
@@ -65,34 +66,10 @@ namespace CreateMask.Gui
 
             InitializeComponent();
 
-            Loaded += (sender, args) => CheckForUpdate();
-        }
+            var releaseManager = kernel.Get<IReleaseManager>();
+            CheckForUpdateComponent = new CheckForUpdate(releaseManager, this);
 
-        private async void CheckForUpdate()
-        {
-            var releaseManager = _kernel.Get<IReleaseManager>();
-            var args = new CheckForReleaseArgs
-            {
-                CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version,
-                OnNewReleaseCallBack = AskToVisiteTheDownloadPage,
-                Owner = "Devoney", // TODO: Should be defined somewhere else
-                Repository = "CreateMask" // TODO: Should be defined somewhere else
-            };
-            await releaseManager.CheckForNewReleaseAsync(args);
-        }
-
-        private void AskToVisiteTheDownloadPage(ReleaseInfo releaseInfo)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var messageBoxText = $"A newer version is available ({releaseInfo.Version}).\r\nDo you wish to visit the download page?";
-                var answer = MessageBox.Show(this, messageBoxText, "New version available",
-                    MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-                if (answer != MessageBoxResult.Yes) return;
-
-                Process.Start(new ProcessStartInfo(releaseInfo.Uri.AbsoluteUri));
-            });
+            Loaded += (sender, args) => CheckForUpdateComponent.Check();
         }
 
         private void CmbFileTypeOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
