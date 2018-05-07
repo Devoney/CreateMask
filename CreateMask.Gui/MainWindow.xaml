@@ -8,12 +8,13 @@
         mc:Ignorable="d"
         Title="Mask Creator for 3D UV Resin DLP Printers"
         SizeToContent="Height"
-        Height="665.641"
+        Height="684.842"
         Width="1120"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Background="Black"
         Icon="favicon.ico">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="GroupBox"
                BasedOn="{StaticResource GroupBoxStyle}">
             <Setter Property="Margin"
@@ -51,7 +52,8 @@
                     Value="{StaticResource ForegroundBrush}" />
         </Style>
     </Window.Resources>
-    <Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="0.5*" />
@@ -198,32 +200,45 @@
                 </StackPanel>
             </GroupBox>
         </Grid>
-        <Grid Grid.Column="1"
+            <Grid Grid.Column="1"
               Grid.Row="0">
-            <GroupBox Header="Diagnostics">
-                <TextBox x:Name="tbxOutput"
+                <GroupBox Header="Diagnostics">
+                    <TextBox x:Name="tbxOutput"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
                          IsReadOnly="True"
                          VerticalScrollBarVisibility="Visible" />
-            </GroupBox>
+                </GroupBox>
+            </Grid>
         </Grid>
-        <StackPanel Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Orientation="Horizontal">
-            <TextBlock Text="{Binding Version}"
+        <StatusBar DockPanel.Dock="Bottom" Background="Black">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Version}"
                        Margin="20,0,0,0" />
-            <controls:WebLink Url="https://github.com/Devoney/CreateMask/wiki/3.-How-to-create-the-mask"
+            </StatusBarItem>
+            <StatusBarItem>
+                <controls:WebLink Url="https://github.com/Devoney/CreateMask/wiki/3.-How-to-create-the-mask"
                               Margin="20,0,0,0"
                               Text="Help" />
-            <controls:WebLink Url="https://github.com/Devoney/CreateMask"
+            </StatusBarItem>
+            <StatusBarItem>
+                <controls:WebLink Url="https://github.com/Devoney/CreateMask"
                               Margin="20,0,0,0"
                               Text="Visit project on GitHub" />
-            <controls:WebLink Url="mailto:mikedeklerk@gmail.com"
+            </StatusBarItem>
+            <StatusBarItem>
+                <controls:WebLink Url="mailto:mikedeklerk@gmail.com"
                               Margin="20,0,0,0"
                               Text="Contact Developer" />
-        </StackPanel>
-    </Grid>
-
+            </StatusBarItem>
+            <StatusBarItem Visibility="{Binding CheckForUpdateComponent.IsChecking, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock>Checking for update...</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem Visibility="{Binding CheckForUpdateComponent.UpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <controls:WebLink Url="{Binding CheckForUpdateComponent.LatestVersion.Uri}"
+                              Margin="20,0,0,0"
+                              Text="Download newer version" />
+            </StatusBarItem>
+        </StatusBar>
+    </DockPanel>
 </Window>

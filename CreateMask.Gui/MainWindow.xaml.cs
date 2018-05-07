@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using CreateMask.Containers;
 using CreateMask.Contracts.Enums;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Gui.Annotations;
 using CreateMask.Gui.Components;
 using CreateMask.Gui.Controls;
 using CreateMask.Main;
@@ -19,7 +21,7 @@ namespace CreateMask.Gui
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : INotifyPropertyChanged
     {
         private readonly Main.Main _main;
 
@@ -68,8 +70,14 @@ namespace CreateMask.Gui
 
             var releaseManager = kernel.Get<IReleaseManager>();
             CheckForUpdateComponent = new CheckForUpdate(releaseManager, this);
-
+            CheckForUpdateComponent.PropertyChanged += CheckForUpdateComponent_PropertyChanged;
+      
             Loaded += (sender, args) => CheckForUpdateComponent.Check();
+        }
+
+        private void CheckForUpdateComponent_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(CheckForUpdateComponent));
         }
 
         private void CmbFileTypeOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
@@ -110,6 +118,14 @@ namespace CreateMask.Gui
             var extension = Path.GetExtension(selectFile.SelectedFilePath);
             extension = ImageFileTypeHelper.FromString(extension).ToString();
             cmbFileType.SelectedItem = extension;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

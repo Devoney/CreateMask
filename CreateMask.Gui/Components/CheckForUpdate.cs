@@ -14,6 +14,8 @@ namespace CreateMask.Gui.Components
         private readonly IReleaseManager _releaseManager;
         private readonly Window _window;
         private bool _isChecking;
+        private bool _updateAvailable;
+        private ReleaseInfo _latestVersion;
 
         public bool IsChecking
         {
@@ -21,6 +23,26 @@ namespace CreateMask.Gui.Components
             private set
             {
                 _isChecking = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UpdateAvailable
+        {
+            get { return _updateAvailable; }
+            set
+            {
+                _updateAvailable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ReleaseInfo LatestVersion
+        {
+            get { return _latestVersion; }
+            set
+            {
+                _latestVersion = value;
                 OnPropertyChanged();
             }
         }
@@ -47,6 +69,7 @@ namespace CreateMask.Gui.Components
 
         private void AskToVisiteTheDownloadPage(ReleaseInfo releaseInfo)
         {
+            LatestVersion = releaseInfo;
             IsChecking = false;
             _window.Dispatcher.Invoke(() =>
             {
@@ -54,7 +77,11 @@ namespace CreateMask.Gui.Components
                 var answer = MessageBox.Show(_window, messageBoxText, "CreateMask",
                     MessageBoxButton.YesNo, MessageBoxImage.Information);
 
-                if (answer != MessageBoxResult.Yes) return;
+                if (answer != MessageBoxResult.Yes)
+                {
+                    UpdateAvailable = true;
+                    return;
+                }
 
                 Process.Start(new ProcessStartInfo(releaseInfo.Uri.AbsoluteUri));
             });
