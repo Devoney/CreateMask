@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
+using CreateMask.Utilities;
 
 namespace CreateMask.Gui.Controls
 {
@@ -29,12 +29,11 @@ namespace CreateMask.Gui.Controls
         {
             InitializeComponent();
             MainControl.DataContext = this;
-            MainControl.MouseDown += OnMouseDown;
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void MainControlOnMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            Process.Start(new ProcessStartInfo(Url));
+            Web.OpenUrlInDefaultBrowser(Url);
         }
     }
 }

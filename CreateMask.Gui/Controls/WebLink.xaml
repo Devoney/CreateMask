@@ -7,7 +7,7 @@
              d:DesignHeight="300"
              d:DesignWidth="300">
     <TextBlock x:Name="MainControl"
-               MouseDown="OnMouseDown"
+               MouseLeftButtonUp="MainControlOnMouseLeftButtonUp"
                Text="{Binding Text}">
         <TextBlock.Resources>
             <Style TargetType="{x:Type TextBlock}"

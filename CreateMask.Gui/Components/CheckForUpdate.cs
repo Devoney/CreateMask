@@ -6,6 +6,7 @@ using System.Windows;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Gui.Annotations;
+using CreateMask.Utilities;
 
 namespace CreateMask.Gui.Components
 {
@@ -83,7 +84,7 @@ namespace CreateMask.Gui.Components
                     return;
                 }
 
-                Process.Start(new ProcessStartInfo(releaseInfo.Uri.AbsoluteUri));
+                Web.OpenUrlInDefaultBrowser(releaseInfo.Uri);
             });
         }
 

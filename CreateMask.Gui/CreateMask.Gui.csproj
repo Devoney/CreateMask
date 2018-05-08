@@ -188,6 +188,10 @@
       <Project>{9bb69810-93ec-4b99-b23c-0e62ae8d3023}</Project>
       <Name>CreateMask.Main</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CreateMask.Utilities\CreateMask.Utilities.csproj">
+      <Project>{887C2C66-C55E-4D52-B111-2020E5C267F9}</Project>
+      <Name>CreateMask.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MetroDark\HowToApplyTheme.txt" />
@@ -198,7 +202,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
