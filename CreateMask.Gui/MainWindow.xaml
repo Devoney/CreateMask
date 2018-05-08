@@ -6,7 +6,7 @@
         xmlns:controls="clr-namespace:CreateMask.Gui.Controls"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Mask Creator for 3D UV Resin DLP Printers"
+        Title="{Binding Version, StringFormat={}MaskCreator {0} - For 3D UV Resin DLP Printers}"
         SizeToContent="Height"
         Height="684.842"
         Width="1120"
@@ -52,8 +52,12 @@
                     Value="{StaticResource ForegroundBrush}" />
         </Style>
     </Window.Resources>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="0.5*" />
@@ -211,7 +215,7 @@
                 </GroupBox>
             </Grid>
         </Grid>
-        <StatusBar DockPanel.Dock="Bottom" Background="Black">
+        <StatusBar Grid.Row="1" Grid.Column="0" Background="Black">
             <StatusBarItem>
                 <TextBlock Text="{Binding Version}"
                        Margin="20,0,0,0" />
@@ -240,5 +244,5 @@
                               Text="Download newer version" />
             </StatusBarItem>
         </StatusBar>
-    </DockPanel>
+    </Grid>
 </Window>
