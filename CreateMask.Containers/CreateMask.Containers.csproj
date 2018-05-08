@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationArguments.cs" />
+    <Compile Include="CheckForReleaseArgs.cs" />
+    <Compile Include="ReleaseInfo.cs" />
     <Compile Include="Measurement.cs" />
     <Compile Include="MinMax.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

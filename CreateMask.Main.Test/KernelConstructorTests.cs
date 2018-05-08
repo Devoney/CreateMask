@@ -5,6 +5,7 @@ using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using Ninject;
 using NUnit.Framework;
+using Octokit;
 using TestHelpers;
 
 namespace CreateMask.Main.Test
@@ -23,7 +24,9 @@ namespace CreateMask.Main.Test
                 typeof(IGenericGridLoader<int>),
                 typeof(IGenericLoader<Measurement>),
                 typeof(IMaskIntensityResistanceInterpolatorFactory),
-                typeof(IMeasurementGridProcessor)
+                typeof(IMeasurementGridProcessor),
+                typeof(IReleaseManager),
+                typeof(IReleasesClient)
             };
 
             //When
