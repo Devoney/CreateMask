@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Reflection;
-using System.Security.Policy;
 using CreateMask.Containers;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
@@ -20,6 +19,7 @@ namespace CreateMask.Main
         private readonly IGenericGridLoader<int> _measurementGridLoader;
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
+        private readonly IErrorReportCreator _errorReportCreator;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
@@ -27,13 +27,15 @@ namespace CreateMask.Main
                     IMaskIntensityResistanceInterpolatorFactory maskIntensityInterpolatorFactory,
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
-                    IExposureTimeCalculator exposureTimeCalculator)
+                    IExposureTimeCalculator exposureTimeCalculator,
+                    IErrorReportCreator errorReportCreator)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolatorFactory = maskIntensityInterpolatorFactory;
             _measurementGridLoader = measurementGridLoader;
             _measurementGridProcessor = measurementGridProcessor;
             _exposureTimeCalculator = exposureTimeCalculator;
+            _errorReportCreator = errorReportCreator;
         }
 
         public void CreateMask(ApplicationArguments arguments)
@@ -88,9 +90,8 @@ namespace CreateMask.Main
             }
             catch (Exception exception)
             {
-                var errorReportCreator = new ErrorReportCreator();
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
-                errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
+                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
             }
         }
 

@@ -115,6 +115,29 @@ namespace CreateMask.Main.Test
             actualSupportedFileTypes.Should().BeEquivalentTo(expectedSupportedFileTypes);
         }
 
+        [Test]
+        public void ErrorReportIsCreatedUponException()
+        {
+            //Given
+
+            //When
+
+            //Then
+            Assert.Fail("todo");
+        }
+
+        [Test]
+        public void ExceptionInErrorReportIsHidden()
+        {
+            //Given
+
+            //When
+
+            //Then
+            Assert.Fail("todo");
+        }
+
+        #region Helpers
         private string GetFullPath(string filePath, string format = OutputStrings.LoadingFile)
         {
             return string.Format(format, Path.GetFullPath(filePath));
@@ -145,5 +168,6 @@ namespace CreateMask.Main.Test
             };
             return applicationArguments;
         }
+        #endregion
     }
 }

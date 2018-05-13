@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq.Expressions;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using Newtonsoft.Json;
@@ -10,31 +9,23 @@ namespace CreateMask.Workers
     public class ErrorReportCreator : IErrorReportCreator
     {
         private readonly ErrorReport _errorReport = new ErrorReport();
-        private string _errorReportsDirectory;
+        private string _fileName;
 
-        public void CreateReport(Version version, Exception exception, ApplicationArguments applicationArguments, string errorReportsDirectory)
+        public void CreateReport(Version version, Exception exception, ApplicationArguments applicationArguments, string fileName)
         {
             if (version == null) throw new ArgumentNullException(nameof(version));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
             if (applicationArguments == null) throw new ArgumentNullException(nameof(applicationArguments));
-            if (errorReportsDirectory == null) throw new ArgumentNullException(nameof(errorReportsDirectory));
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
 
-            _errorReportsDirectory = errorReportsDirectory;
+            _fileName = fileName;
             _errorReport.Version = version;
             _errorReport.Exception = exception;
             _errorReport.ApplicationArguments = applicationArguments;
 
-            EnsureDirectoryExists();
-
             LoadFiles();
 
             SerializeToFile();
-        }
-
-        private void EnsureDirectoryExists()
-        {
-            if (Directory.Exists(_errorReportsDirectory)) return;
-            Directory.CreateDirectory(_errorReportsDirectory);
         }
 
         private void LoadFiles()
@@ -52,10 +43,7 @@ namespace CreateMask.Workers
 
         private void SerializeToFile()
         {
-            var dateTimeMilliseconds = DateTime.Now.ToString("yyyyMMddHHmmssFFF");
-            var fileName = dateTimeMilliseconds + ".json";
-            var filePath = Path.Combine(_errorReportsDirectory, fileName);
-            using (var file = File.CreateText(filePath))
+            using (var file = File.CreateText(_fileName))
             {
                 var serializer = new JsonSerializer();
                 serializer.Serialize(file, _errorReport);

@@ -43,6 +43,7 @@
     <Compile Include="ApplicationArguments.cs" />
     <Compile Include="CheckForReleaseArgs.cs" />
     <Compile Include="ErrorReport.cs" />
+    <Compile Include="Interfaces\IApplicationArguments.cs" />
     <Compile Include="ReleaseInfo.cs" />
     <Compile Include="Measurement.cs" />
     <Compile Include="MinMax.cs" />
