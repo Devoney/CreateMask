@@ -6,7 +6,6 @@ using CreateMask.Containers;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Utilities;
-using CreateMask.Workers;
 
 namespace CreateMask.Main
 {

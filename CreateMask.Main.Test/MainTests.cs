@@ -147,14 +147,60 @@ namespace CreateMask.Main.Test
         public void ExceptionInErrorReportIsHidden()
         {
             //Given
+            var items = GetFullyMockedMain();
+            var mocks = items.Item1;
+            var main = items.Item2;
+
+            var errorReportCreatorMock = mocks.ErrorReportCreator;
+            errorReportCreatorMock.Setup(
+                ercm =>
+                    ercm.CreateReport(It.IsAny<Version>(), It.IsAny<Exception>(), It.IsAny<ApplicationArguments>(),
+                        It.IsAny<string>()))
+                        .Throws<Exception>();
+
+            var applicationArguments = GetApplicationArguments();
 
             //When
+            main.CreateMask(applicationArguments);
 
             //Then
             Assert.Fail("todo");
         }
 
         #region Helpers
+
+        private class MockedObjects
+        {
+            public Mock<IErrorReportCreator> ErrorReportCreator { get; set; }
+            public Mock<IExposureTimeCalculator> ExposureTimeCalculator { get; set; }
+            public Mock<IGenericGridLoader<int>> GenericGridLoader { get; set; }
+            public Mock<IMaskIntensityResistanceInterpolatorFactory> MaskIntensityResistanceInterpolatorFactory { get; set; }
+            public Mock<IMeasurementGridProcessor> MeasurementGridProcessor { get; set; }
+            public Mock<IGenericLoader<Measurement>> MeasurementsLoader { get; set; }
+        }
+        private Tuple<MockedObjects, Main> GetFullyMockedMain()
+        {
+            var measuremntsLoader = new Mock<IGenericLoader<Measurement>>();
+            var factory = new Mock<IMaskIntensityResistanceInterpolatorFactory>();
+            var gridLoader = new Mock<IGenericGridLoader<int>>();
+            var gridProcessor = new Mock<IMeasurementGridProcessor>();
+            var exposureTimeCalculator = new Mock<IExposureTimeCalculator>();
+            var errorReportCreator = new Mock<IErrorReportCreator>();
+            var mockedObjects = new MockedObjects
+            {
+                ErrorReportCreator = errorReportCreator,
+                ExposureTimeCalculator = exposureTimeCalculator,
+                GenericGridLoader = gridLoader,
+                MaskIntensityResistanceInterpolatorFactory = factory,
+                MeasurementGridProcessor = gridProcessor,
+                MeasurementsLoader = measuremntsLoader
+            };
+
+            var main = new Main(measuremntsLoader.Object, factory.Object, gridLoader.Object, gridProcessor.Object, exposureTimeCalculator.Object, errorReportCreator.Object);
+
+            return new Tuple<MockedObjects, Main>(mockedObjects, main);
+        }
+
         private string GetFullPath(string filePath, string format = OutputStrings.LoadingFile)
         {
             return string.Format(format, Path.GetFullPath(filePath));
