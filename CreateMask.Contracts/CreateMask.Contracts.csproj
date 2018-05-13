@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\Arguments.cs" />
+    <Compile Include="Constants\OutputStrings.cs" />
     <Compile Include="Enums\ImageFileType.cs" />
     <Compile Include="Helpers\ImageFileTypeHelper.cs" />
     <Compile Include="Interfaces\IArgumentsParser.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolator.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="Interfaces\IMeasurementGridProcessor.cs" />
+    <Compile Include="Interfaces\IOutputWriter.cs" />
     <Compile Include="Interfaces\IReleaseManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,7 +66,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

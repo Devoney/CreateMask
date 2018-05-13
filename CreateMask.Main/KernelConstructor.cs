@@ -26,6 +26,7 @@ namespace CreateMask.Main
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
             kernel.Bind<IMaskIntensityResistanceInterpolatorFactory>().To<MaskIntensityResistanceInterpolatorFactory>();
             kernel.Bind<IMeasurementGridProcessor>().To<MeasurementGridProcessor>();
+            kernel.Bind<IOutputWriter>().To<OutputWriter>();
             RegisterGithubReleasesClient(kernel);
             kernel.Bind<IReleaseManager>().To<ReleaseManager>();
             
