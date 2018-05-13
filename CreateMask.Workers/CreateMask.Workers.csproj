@@ -63,6 +63,7 @@
     <Compile Include="Factories\MaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="MaskIntensityResistanceInterpolator.cs" />
     <Compile Include="MeasurementGridProcessor.cs" />
+    <Compile Include="OutputWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

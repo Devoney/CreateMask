@@ -26,6 +26,7 @@ namespace CreateMask.Main.Test
                 typeof(IGenericLoader<Measurement>),
                 typeof(IMaskIntensityResistanceInterpolatorFactory),
                 typeof(IMeasurementGridProcessor),
+                typeof(IOutputWriter),
                 typeof(IReleaseManager),
                 typeof(IReleasesClient)
             };

@@ -18,6 +18,7 @@ namespace CreateMask.Main
         private readonly IGenericGridLoader<int> _measurementGridLoader;
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
+        private readonly IOutputWriter _outputWriter;
         private readonly IErrorReportCreator _errorReportCreator;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
@@ -27,6 +28,7 @@ namespace CreateMask.Main
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
                     IExposureTimeCalculator exposureTimeCalculator,
+                    IOutputWriter outputWriter,
                     IErrorReportCreator errorReportCreator)
         {
             _measurementsLoader = measurementsLoader;
@@ -34,6 +36,7 @@ namespace CreateMask.Main
             _measurementGridLoader = measurementGridLoader;
             _measurementGridProcessor = measurementGridProcessor;
             _exposureTimeCalculator = exposureTimeCalculator;
+            _outputWriter = outputWriter;
             _errorReportCreator = errorReportCreator;
         }
 
@@ -47,56 +50,67 @@ namespace CreateMask.Main
                     imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
                 }
 
-                OnOutput(OutputStrings.LoadingFile, arguments.LdrCalibrationFilePath);
+                _outputWriter.SetOutputMethod(OnOutput);
+
+                _outputWriter.LoadingFile(arguments.LdrCalibrationFilePath);
                 var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
 
-                OnOutput(OutputStrings.ConstructionLdPolynomialCurveFit);
+                _outputWriter.ConstructionLdPolynomialCurveFit();
                 var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
 
-                OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathHigh);
+                _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathHigh);
                 var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
                     arguments.LcdMeasurementsFilePathHigh,
                     arguments.MeasurementsNrOfRows,
                     arguments.MeasurementsNrOfColumns);
 
-                OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathLow);
+                _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathLow);
                 var measurementsLow = _measurementGridLoader.GetFromCsvFile(
                     arguments.LcdMeasurementsFilePathLow,
                     arguments.MeasurementsNrOfRows,
                     arguments.MeasurementsNrOfColumns);
 
-                OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
+                _outputWriter.ConstructingGridOfLowHighMeasurements();
                 var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
-                OnOutput(OutputStrings.CreatingGridOfLocalMaskIntensities);
+                _outputWriter.CreatingGridOfLocalMaskIntensities();
                 var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
-                OnOutput(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
+                _outputWriter.ConvertingLocalMaskIntensitiesToBitmap();
                 using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
                 {
-                    OnOutput(OutputStrings.ResizingBitmap, bitmap.Width, bitmap.Height, arguments.LcdWidth, arguments.LcdHeight);
+                    _outputWriter.ResizingBitmap(bitmap, arguments.LcdWidth, arguments.LcdHeight);
                     using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
                     {
                         mask.Save(arguments.MaskFilePath, imageFormat);
                     }
                 }
-                OnOutput(OutputStrings.MaskSavedTo, arguments.MaskFilePath);
+                _outputWriter.MaskSavedTo(arguments.MaskFilePath);
 
                 if (arguments.OriginalExposureTime > 0)
                 {
                     var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
                         arguments.OriginalExposureTime);
-                    OnOutput(OutputStrings.NewAdvisedExposureTime, exposureTime);
+                    _outputWriter.NewAdvisedExposureTime(exposureTime);
                 }
             }
             catch (Exception exception)
             {
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
+                CreateErrorReport(exception, arguments);
+                throw;
             }
         }
 
-        private void OnOutput(string format, params object[] parameters)
+        private void CreateErrorReport(Exception exception, ApplicationArguments arguments)
         {
-            OnOutput(string.Format(format, parameters));
+            try
+            {
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch
+            {
+                //Creating an error erport shouldn't cause further issues.
+            }
         }
 
         private void OnOutput(string e)

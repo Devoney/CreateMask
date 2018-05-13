@@ -164,7 +164,6 @@ namespace CreateMask.Main.Test
             main.CreateMask(applicationArguments);
 
             //Then
-            Assert.Fail("todo");
         }
 
         #region Helpers
@@ -177,6 +176,7 @@ namespace CreateMask.Main.Test
             public Mock<IMaskIntensityResistanceInterpolatorFactory> MaskIntensityResistanceInterpolatorFactory { get; set; }
             public Mock<IMeasurementGridProcessor> MeasurementGridProcessor { get; set; }
             public Mock<IGenericLoader<Measurement>> MeasurementsLoader { get; set; }
+            public Mock<IOutputWriter> OutputWriter { get; set; }
         }
         private Tuple<MockedObjects, Main> GetFullyMockedMain()
         {
@@ -185,7 +185,9 @@ namespace CreateMask.Main.Test
             var gridLoader = new Mock<IGenericGridLoader<int>>();
             var gridProcessor = new Mock<IMeasurementGridProcessor>();
             var exposureTimeCalculator = new Mock<IExposureTimeCalculator>();
+            var outputWriter = new Mock<IOutputWriter>();
             var errorReportCreator = new Mock<IErrorReportCreator>();
+
             var mockedObjects = new MockedObjects
             {
                 ErrorReportCreator = errorReportCreator,
@@ -193,10 +195,18 @@ namespace CreateMask.Main.Test
                 GenericGridLoader = gridLoader,
                 MaskIntensityResistanceInterpolatorFactory = factory,
                 MeasurementGridProcessor = gridProcessor,
-                MeasurementsLoader = measuremntsLoader
+                MeasurementsLoader = measuremntsLoader,
+                OutputWriter = outputWriter
             };
 
-            var main = new Main(measuremntsLoader.Object, factory.Object, gridLoader.Object, gridProcessor.Object, exposureTimeCalculator.Object, errorReportCreator.Object);
+            var main = new Main(
+                measuremntsLoader.Object, 
+                factory.Object, 
+                gridLoader.Object, 
+                gridProcessor.Object, 
+                exposureTimeCalculator.Object, 
+                outputWriter.Object,
+                errorReportCreator.Object);
 
             return new Tuple<MockedObjects, Main>(mockedObjects, main);
         }
