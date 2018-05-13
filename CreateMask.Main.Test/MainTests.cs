@@ -1,8 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using CreateMask.Containers;
+using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
+using Moq;
 using Ninject;
 using NUnit.Framework;
 using TestHelpers;
@@ -119,11 +122,25 @@ namespace CreateMask.Main.Test
         public void ErrorReportIsCreatedUponException()
         {
             //Given
+            var errorReportCreatorMock = new Mock<IErrorReportCreator>();
+            errorReportCreatorMock.Setup(
+                ercm =>
+                    ercm.CreateReport(It.IsAny<Version>(), It.IsAny<Exception>(), It.IsAny<ApplicationArguments>(),
+                        It.IsAny<string>()));
+            var errorReportCreator = errorReportCreatorMock.Object;
+            var main = GetMain(errorReportCreator);
+            ApplicationArguments applictionArguments = null; //This will cause the exception
 
             //When
+            // ReSharper disable once ExpressionIsAlwaysNull
+            main.CreateMask(applictionArguments);
 
             //Then
-            Assert.Fail("todo");
+            errorReportCreatorMock.Verify(ercm => ercm.CreateReport(
+                It.IsAny<Version>(), 
+                It.IsAny<Exception>(), 
+                It.IsAny<ApplicationArguments>(),
+                It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -143,9 +160,15 @@ namespace CreateMask.Main.Test
             return string.Format(format, Path.GetFullPath(filePath));
         }
 
-        private static Main GetMain()
+        private static Main GetMain(IErrorReportCreator errorReportCreator = null)
         {
-            return KernelConstructor.GetKernel().Get<Main>();
+            var kernel = KernelConstructor.GetKernel();
+            if (errorReportCreator != null)
+            {
+                kernel.Unbind<IErrorReportCreator>();
+                kernel.Bind<IErrorReportCreator>().ToConstant(errorReportCreator);
+            }
+            return kernel.Get<Main>();
         }
 
         private static ApplicationArguments GetApplicationArguments()
