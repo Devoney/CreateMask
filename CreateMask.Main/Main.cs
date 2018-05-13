@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Reflection;
+using System.Security.Policy;
 using CreateMask.Containers;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
 using CreateMask.Utilities;
+using CreateMask.Workers;
 
 namespace CreateMask.Main
 {
@@ -20,7 +23,7 @@ namespace CreateMask.Main
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
-        public Main(IGenericLoader<Measurement> measurementsLoader, 
+        public Main(IGenericLoader<Measurement> measurementsLoader,
                     IMaskIntensityResistanceInterpolatorFactory maskIntensityInterpolatorFactory,
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
@@ -35,50 +38,59 @@ namespace CreateMask.Main
 
         public void CreateMask(ApplicationArguments arguments)
         {
-            var imageFormat = ImageFormat.Png;
-            if (!string.IsNullOrEmpty(arguments.FileType))
+            try
             {
-                imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
-            }
-
-            OnOutput(OutputStrings.LoadingFile, arguments.LdrCalibrationFilePath);
-            var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
-            
-            OnOutput(OutputStrings.ConstructionLdPolynomialCurveFit);
-            var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
-
-            OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathHigh);
-            var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
-                arguments.LcdMeasurementsFilePathHigh,
-                arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns);
-
-            OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathLow);
-            var measurementsLow = _measurementGridLoader.GetFromCsvFile(
-                arguments.LcdMeasurementsFilePathLow,
-                arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns);
-
-            OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
-            var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
-            OnOutput(OutputStrings.CreatingGridOfLocalMaskIntensities);
-            var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
-            OnOutput(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
-            using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
-            {
-                OnOutput(OutputStrings.ResizingBitmap, bitmap.Width, bitmap.Height, arguments.LcdWidth, arguments.LcdHeight);
-                using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
+                var imageFormat = ImageFormat.Png;
+                if (!string.IsNullOrEmpty(arguments.FileType))
                 {
-                    mask.Save(arguments.MaskFilePath, imageFormat);
+                    imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
+                }
+
+                OnOutput(OutputStrings.LoadingFile, arguments.LdrCalibrationFilePath);
+                var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
+
+                OnOutput(OutputStrings.ConstructionLdPolynomialCurveFit);
+                var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
+
+                OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathHigh);
+                var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
+                    arguments.LcdMeasurementsFilePathHigh,
+                    arguments.MeasurementsNrOfRows,
+                    arguments.MeasurementsNrOfColumns);
+
+                OnOutput(OutputStrings.LoadingFile, arguments.LcdMeasurementsFilePathLow);
+                var measurementsLow = _measurementGridLoader.GetFromCsvFile(
+                    arguments.LcdMeasurementsFilePathLow,
+                    arguments.MeasurementsNrOfRows,
+                    arguments.MeasurementsNrOfColumns);
+
+                OnOutput(OutputStrings.ConstructingGridOfLowHighMeasurements);
+                var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
+                OnOutput(OutputStrings.CreatingGridOfLocalMaskIntensities);
+                var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
+                OnOutput(OutputStrings.ConvertingLocalMaskIntensitiesToBitmap);
+                using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
+                {
+                    OnOutput(OutputStrings.ResizingBitmap, bitmap.Width, bitmap.Height, arguments.LcdWidth, arguments.LcdHeight);
+                    using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
+                    {
+                        mask.Save(arguments.MaskFilePath, imageFormat);
+                    }
+                }
+                OnOutput(OutputStrings.MaskSavedTo, arguments.MaskFilePath);
+
+                if (arguments.OriginalExposureTime > 0)
+                {
+                    var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
+                        arguments.OriginalExposureTime);
+                    OnOutput(OutputStrings.NewAdvisedExposureTime, exposureTime);
                 }
             }
-            OnOutput(OutputStrings.MaskSavedTo, arguments.MaskFilePath);
-
-            if (arguments.OriginalExposureTime > 0)
+            catch (Exception exception)
             {
-                var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
-                    arguments.OriginalExposureTime);
-                OnOutput(OutputStrings.NewAdvisedExposureTime, exposureTime);
+                var errorReportCreator = new ErrorReportCreator();
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
             }
         }
 
