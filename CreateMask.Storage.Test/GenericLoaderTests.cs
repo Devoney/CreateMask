@@ -17,7 +17,7 @@ namespace CreateMask.Storage.Test
         {
             //Given
             const string measurementsDataFileName = "Measurements.csv";
-            var filepath = FileManager.GetFullFilePath(measurementsDataFileName);
+            var filepath = StorageManager.GetFullFilePath(measurementsDataFileName);
             var genericLoader = GetGenericLoader<Measurement>();
             var expectedMeasurements = new List<Measurement>
             {

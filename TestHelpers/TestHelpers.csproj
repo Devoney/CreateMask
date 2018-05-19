@@ -47,8 +47,9 @@
   <ItemGroup>
     <Compile Include="AssertExt.cs" />
     <Compile Include="Categories.cs" />
-    <Compile Include="FileManager.cs" />
+    <Compile Include="StorageManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TempFileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

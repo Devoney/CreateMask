@@ -48,6 +48,8 @@
     <Compile Include="Helpers\ImageFileTypeHelper.cs" />
     <Compile Include="Interfaces\IArgumentsParser.cs" />
     <Compile Include="Interfaces\IBitmapProcessor.cs" />
+    <Compile Include="Interfaces\IDateTimeWorker.cs" />
+    <Compile Include="Interfaces\IErrorReportCreator.cs" />
     <Compile Include="Interfaces\IExposureTimeCalculator.cs" />
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
@@ -67,7 +69,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

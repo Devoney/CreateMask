@@ -17,7 +17,7 @@ namespace CreateMask.Storage.Test
             const int nrOfRows = 3;
             const int nrOfColumns = 4;
             const string testDataFileName = "IntGrid.csv";
-            var fullpath = FileManager.GetFullFilePath(testDataFileName);
+            var fullpath = StorageManager.GetFullFilePath(testDataFileName);
             var gridLoader = GetGridLoader<int>();
             var expectedData = new [,]
             {
@@ -41,7 +41,7 @@ namespace CreateMask.Storage.Test
             var genericGridLoader = GetGridLoader<int>();
             const int rows = 1;
             const int columns = 5;
-            var filePath = FileManager.GetFullFilePath("empty.csv");
+            var filePath = StorageManager.GetFullFilePath("empty.csv");
 
             //When
             var action = new Action(() =>
@@ -61,7 +61,7 @@ namespace CreateMask.Storage.Test
             var genericGridLoader = GetGridLoader<int>();
             const int rows = 1;
             const int columns = 5;
-            var filePath = FileManager.GetFullFilePath("stringgrid.csv");
+            var filePath = StorageManager.GetFullFilePath("stringgrid.csv");
 
             //When
             var action = new Action(() =>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
+using System.Reflection;
 using CreateMask.Containers;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
-using CreateMask.Utilities;
 
 namespace CreateMask.Main
 {
@@ -19,16 +19,18 @@ namespace CreateMask.Main
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
         private readonly IOutputWriter _outputWriter;
         private readonly IBitmapProcessor _bitmapProcessor;
+        private readonly IErrorReportCreator _errorReportCreator;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
-        public Main(IGenericLoader<Measurement> measurementsLoader, 
+        public Main(IGenericLoader<Measurement> measurementsLoader,
                     IMaskIntensityResistanceInterpolatorFactory maskIntensityInterpolatorFactory,
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
                     IExposureTimeCalculator exposureTimeCalculator,
                     IOutputWriter outputWriter,
-                    IBitmapProcessor bitmapProcessor)
+                    IBitmapProcessor bitmapProcessor,
+                    IErrorReportCreator errorReportCreator)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolatorFactory = maskIntensityInterpolatorFactory;
@@ -37,56 +39,82 @@ namespace CreateMask.Main
             _exposureTimeCalculator = exposureTimeCalculator;
             _outputWriter = outputWriter;
             _bitmapProcessor = bitmapProcessor;
+            _errorReportCreator = errorReportCreator;
         }
 
         public void CreateMask(ApplicationArguments arguments)
         {
-            var imageFormat = ImageFormat.Png;
-            if (!string.IsNullOrEmpty(arguments.FileType))
+            if (arguments == null) throw new ArgumentNullException(nameof(arguments));
+
+            try
             {
-                imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
-            }
-            
-            _outputWriter.SetOutputMethod(OnOutput);
-
-            _outputWriter.LoadingFile(arguments.LdrCalibrationFilePath);
-            var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
-
-            _outputWriter.ConstructionLdPolynomialCurveFit();
-            var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
-
-            _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathHigh);
-            var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
-                arguments.LcdMeasurementsFilePathHigh,
-                arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns);
-
-            _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathLow);
-            var measurementsLow = _measurementGridLoader.GetFromCsvFile(
-                arguments.LcdMeasurementsFilePathLow,
-                arguments.MeasurementsNrOfRows,
-                arguments.MeasurementsNrOfColumns);
-
-            _outputWriter.ConstructingGridOfLowHighMeasurements();
-            var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
-            _outputWriter.CreatingGridOfLocalMaskIntensities();
-            var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
-            _outputWriter.ConvertingLocalMaskIntensitiesToBitmap();
-            using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
-            {
-                _outputWriter.ResizingBitmap(bitmap, arguments.LcdWidth, arguments.LcdHeight);
-                using (var mask = _bitmapProcessor.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
+                var imageFormat = ImageFormat.Png;
+                if (!string.IsNullOrEmpty(arguments.FileType))
                 {
-                    _bitmapProcessor.Save(mask, arguments.MaskFilePath, imageFormat);
-                    _outputWriter.MaskSavedTo(arguments.MaskFilePath);
+                    imageFormat = ImageFileTypeHelper.FromString(arguments.FileType).ToImageFormat();
+                }
+
+                _outputWriter.SetOutputMethod(OnOutput);
+
+                _outputWriter.LoadingFile(arguments.LdrCalibrationFilePath);
+                var ldrCalibrationMeasurements = _measurementsLoader.GetFromCsvFile(arguments.LdrCalibrationFilePath);
+
+                _outputWriter.ConstructionLdPolynomialCurveFit();
+                var maskIntensityInterpolator = _maskIntensityInterpolatorFactory.Create(ldrCalibrationMeasurements);
+
+                _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathHigh);
+                var measurementsHigh = _measurementGridLoader.GetFromCsvFile(
+                    arguments.LcdMeasurementsFilePathHigh,
+                    arguments.MeasurementsNrOfRows,
+                    arguments.MeasurementsNrOfColumns);
+
+                _outputWriter.LoadingFile(arguments.LcdMeasurementsFilePathLow);
+                var measurementsLow = _measurementGridLoader.GetFromCsvFile(
+                    arguments.LcdMeasurementsFilePathLow,
+                    arguments.MeasurementsNrOfRows,
+                    arguments.MeasurementsNrOfColumns);
+
+                _outputWriter.ConstructingGridOfLowHighMeasurements();
+                var minMaxResistanceGrid = _measurementGridProcessor.CreateMinMaxMeasurementGrid(arguments.Low, arguments.High, measurementsLow, measurementsHigh);
+                _outputWriter.CreatingGridOfLocalMaskIntensities();
+                var localMaskIntensityGrid = _measurementGridProcessor.CreateLocalMaskIntensityGrid(maskIntensityInterpolator, minMaxResistanceGrid, arguments.DesiredResistance);
+                _outputWriter.ConvertingLocalMaskIntensitiesToBitmap();
+                using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
+                {
+                    _outputWriter.ResizingBitmap(bitmap, arguments.LcdWidth, arguments.LcdHeight);
+                    using (var mask = _bitmapProcessor.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
+                    {
+                        _bitmapProcessor.Save(mask, arguments.MaskFilePath, imageFormat);
+                        _outputWriter.MaskSavedTo(arguments.MaskFilePath);
+                    }
+                }
+
+                if (arguments.OriginalExposureTime > 0)
+                {
+                    var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
+                        arguments.OriginalExposureTime);
+                    _outputWriter.NewAdvisedExposureTime(exposureTime);
                 }
             }
-            
-            if (arguments.OriginalExposureTime > 0)
+            catch (Exception exception)
             {
-                var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
-                    arguments.OriginalExposureTime);
-                _outputWriter.NewAdvisedExposureTime(exposureTime);
+                CreateErrorReport(exception, arguments);
+                throw;
+            }
+        }
+
+        private void CreateErrorReport(Exception exception, ApplicationArguments arguments)
+        {
+            try
+            {
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                var reportName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports", reportName);
+            }
+            // ReSharper disable once EmptyGeneralCatchClause
+            catch
+            {
+                //Creating an error erport shouldn't cause further issues.
             }
         }
 
