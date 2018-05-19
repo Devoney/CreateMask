@@ -22,6 +22,7 @@ namespace CreateMask.Main
         {
             kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IBitmapProcessor>().To<BitmapProcessor>();
+            kernel.Bind<IDateTimeWorker>().To<DateTimeWorker>();
             kernel.Bind<IErrorReportCreator>().To<ErrorReportCreator>();
             kernel.Bind<IExposureTimeCalculator>().To <ExposureTimeCalculator> ();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();

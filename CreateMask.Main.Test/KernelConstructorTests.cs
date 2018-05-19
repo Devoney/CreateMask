@@ -21,6 +21,7 @@ namespace CreateMask.Main.Test
             {
                 typeof(IArgumentsParser),
                 typeof(IBitmapProcessor),
+                typeof(IDateTimeWorker),
                 typeof(IErrorReportCreator),
                 typeof(IExposureTimeCalculator),
                 typeof(IGenericGridLoader<int>),
