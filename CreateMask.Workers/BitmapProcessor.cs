@@ -1,12 +1,13 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using CreateMask.Contracts.Interfaces;
 
-namespace CreateMask.Utilities
+namespace CreateMask.Workers
 {
-    public static class Image
+    public class BitmapProcessor : IBitmapProcessor
     {
-        public static Bitmap Resize(this Bitmap source, int width, int height)
+        public Bitmap Resize(Bitmap bitmap, int width, int height)
         {
             var destination = new Bitmap(width, height);
             using (var gr = Graphics.FromImage(destination))
@@ -16,9 +17,14 @@ namespace CreateMask.Utilities
                 gr.SmoothingMode = SmoothingMode.HighQuality;
                 gr.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 gr.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                gr.DrawImage(source, new Rectangle(0, 0, width, height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, imageAttributes);
+                gr.DrawImage(bitmap, new Rectangle(0, 0, width, height), 0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel, imageAttributes);
             }
             return destination;
+        }
+
+        public void Save(Bitmap bitmap, string filePath, ImageFormat imageFormat)
+        {
+            bitmap.Save(filePath, imageFormat);
         }
     }
 }

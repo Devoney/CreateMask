@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using CreateMask.Containers;
@@ -12,9 +13,6 @@ using TestHelpers;
 
 namespace CreateMask.Main.Test
 {
-    /// <summary>
-    /// Summary description for MainTests
-    /// </summary>
     [TestFixture]
     public class MainTests
     {
@@ -118,7 +116,7 @@ namespace CreateMask.Main.Test
             actualSupportedFileTypes.Should().BeEquivalentTo(expectedSupportedFileTypes);
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ErrorReportIsCreatedUponException()
         {
             //Given
@@ -143,10 +141,12 @@ namespace CreateMask.Main.Test
                 It.IsAny<string>()), Times.Once);
         }
 
-        [Test]
-        public void ExceptionInErrorReportIsHidden()
+        [Test, Category(Categories.Unit)]
+        public void ExceptionThrownInErrorReportIsHidden()
         {
             //Given
+            const string exceptionMessage = "Exception to test";
+            var exceptionToThrow = new Exception(exceptionMessage);
             var items = GetFullyMockedMain();
             var mocks = items.Item1;
             var main = items.Item2;
@@ -158,18 +158,35 @@ namespace CreateMask.Main.Test
                         It.IsAny<string>()))
                         .Throws<Exception>();
 
+            mocks.BitmapProcessor
+                .Setup(bp => bp.Save(It.IsAny<Bitmap>(), It.IsAny<string>(), It.IsAny<ImageFormat>()))
+                .Throws(exceptionToThrow);
+
             var applicationArguments = GetApplicationArguments();
 
             //When
-            main.CreateMask(applicationArguments);
+            var action = new Action(() =>
+            {
+                main.CreateMask(applicationArguments);
+            });
+
 
             //Then
+            AssertExt.ThrowsException<Exception>(action, exceptionMessage);
+
+            errorReportCreatorMock.Verify(erc => erc.CreateReport(
+                It.IsAny<Version>(), 
+                It.IsAny<Exception>(), 
+                It.IsAny<ApplicationArguments>(), 
+                It.IsAny<string>()), 
+                Times.Once);
         }
 
         #region Helpers
 
         private class MockedObjects
         {
+            public Mock<IBitmapProcessor> BitmapProcessor { get; set; }
             public Mock<IErrorReportCreator> ErrorReportCreator { get; set; }
             public Mock<IExposureTimeCalculator> ExposureTimeCalculator { get; set; }
             public Mock<IGenericGridLoader<int>> GenericGridLoader { get; set; }
@@ -187,9 +204,11 @@ namespace CreateMask.Main.Test
             var exposureTimeCalculator = new Mock<IExposureTimeCalculator>();
             var outputWriter = new Mock<IOutputWriter>();
             var errorReportCreator = new Mock<IErrorReportCreator>();
+            var bitmapProcessor = new Mock<IBitmapProcessor>();
 
             var mockedObjects = new MockedObjects
             {
+                BitmapProcessor = bitmapProcessor,
                 ErrorReportCreator = errorReportCreator,
                 ExposureTimeCalculator = exposureTimeCalculator,
                 GenericGridLoader = gridLoader,
@@ -206,6 +225,7 @@ namespace CreateMask.Main.Test
                 gridProcessor.Object, 
                 exposureTimeCalculator.Object, 
                 outputWriter.Object,
+                bitmapProcessor.Object,
                 errorReportCreator.Object);
 
             return new Tuple<MockedObjects, Main>(mockedObjects, main);

@@ -1,12 +1,13 @@
 ﻿using CreateMask.Containers;
 using NUnit.Framework;
+using TestHelpers;
 
 namespace CreateMask.Workers.Test
 {
     [TestFixture]
     public class ErrorReportCreatorTests
     {
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ErrorReportIsSerializedToFileOnStorage()
         {
             //Given
@@ -17,7 +18,7 @@ namespace CreateMask.Workers.Test
             Assert.Fail("todo");
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void SerializedErrorReportContainsCorrectData()
         {
             //Given
@@ -28,7 +29,7 @@ namespace CreateMask.Workers.Test
             Assert.Fail("todo");
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         [TestCase(nameof(ApplicationArguments.LdrCalibrationFilePath), nameof(ErrorReport.LdrCurveCsvData))]
         [TestCase(nameof(ApplicationArguments.LcdMeasurementsFilePathLow), nameof(ErrorReport.MeasurementsLowCsvData))]
         [TestCase(nameof(ApplicationArguments.LcdMeasurementsFilePathHigh), nameof(ErrorReport.MeasurementsHighCsvData))]
@@ -42,7 +43,7 @@ namespace CreateMask.Workers.Test
             Assert.Fail("todo");
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         [TestCase(nameof(ApplicationArguments.LdrCalibrationFilePath), nameof(ErrorReport.LdrCurveCsvData))]
         [TestCase(nameof(ApplicationArguments.LcdMeasurementsFilePathLow), nameof(ErrorReport.MeasurementsLowCsvData))]
         [TestCase(nameof(ApplicationArguments.LcdMeasurementsFilePathHigh), nameof(ErrorReport.MeasurementsHighCsvData))]

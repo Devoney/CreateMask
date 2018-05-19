@@ -5,7 +5,6 @@ using System.Reflection;
 using CreateMask.Containers;
 using CreateMask.Contracts.Helpers;
 using CreateMask.Contracts.Interfaces;
-using CreateMask.Utilities;
 
 namespace CreateMask.Main
 {
@@ -19,6 +18,7 @@ namespace CreateMask.Main
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
         private readonly IOutputWriter _outputWriter;
+        private readonly IBitmapProcessor _bitmapProcessor;
         private readonly IErrorReportCreator _errorReportCreator;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
@@ -29,6 +29,7 @@ namespace CreateMask.Main
                     IMeasurementGridProcessor measurementGridProcessor,
                     IExposureTimeCalculator exposureTimeCalculator,
                     IOutputWriter outputWriter,
+                    IBitmapProcessor bitmapProcessor,
                     IErrorReportCreator errorReportCreator)
         {
             _measurementsLoader = measurementsLoader;
@@ -37,11 +38,14 @@ namespace CreateMask.Main
             _measurementGridProcessor = measurementGridProcessor;
             _exposureTimeCalculator = exposureTimeCalculator;
             _outputWriter = outputWriter;
+            _bitmapProcessor = bitmapProcessor;
             _errorReportCreator = errorReportCreator;
         }
 
         public void CreateMask(ApplicationArguments arguments)
         {
+            if (arguments == null) throw new ArgumentNullException(nameof(arguments));
+
             try
             {
                 var imageFormat = ImageFormat.Png;
@@ -78,12 +82,12 @@ namespace CreateMask.Main
                 using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
                 {
                     _outputWriter.ResizingBitmap(bitmap, arguments.LcdWidth, arguments.LcdHeight);
-                    using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
+                    using (var mask = _bitmapProcessor.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
                     {
-                        mask.Save(arguments.MaskFilePath, imageFormat);
+                        _bitmapProcessor.Save(mask, arguments.MaskFilePath, imageFormat);
+                        _outputWriter.MaskSavedTo(arguments.MaskFilePath);
                     }
                 }
-                _outputWriter.MaskSavedTo(arguments.MaskFilePath);
 
                 if (arguments.OriginalExposureTime > 0)
                 {
