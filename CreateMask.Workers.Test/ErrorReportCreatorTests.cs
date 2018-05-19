@@ -74,9 +74,9 @@ namespace CreateMask.Workers.Test
                     filesInDirectory.Count.Should().Be(1);
                     var report = filesInDirectory.Single();
 
+                    var actualFileContents = File.ReadAllText(report);
                     var expectedFilePath = StorageManager.GetFullFilePath(expectedFileName);
                     var expectedFileContents = File.ReadAllText(expectedFilePath);
-                    var actualFileContents = File.ReadAllText(report);
                     actualFileContents.Should().Be(expectedFileContents);
                 }
             });

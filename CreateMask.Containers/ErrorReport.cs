@@ -9,6 +9,7 @@ namespace CreateMask.Containers
     [Serializable]
     public class ErrorReport
     {
+        public DateTime DateTime { get; set; }
         public Version Version { get; set; }
         public Exception Exception { get; set; }
         public ApplicationArguments ApplicationArguments { get; set; }

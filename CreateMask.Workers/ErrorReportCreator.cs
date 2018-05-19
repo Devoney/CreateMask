@@ -26,6 +26,7 @@ namespace CreateMask.Workers
 
             _fileName = Path.Combine(directory, reportName) + ".json";
 
+            _errorReport.DateTime = DateTime.Now;
             _errorReport.Version = version;
             _errorReport.Exception = exception;
             _errorReport.ApplicationArguments = applicationArguments;
