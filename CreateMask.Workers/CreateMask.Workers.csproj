@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="ArgumentsParser.cs" />
     <Compile Include="BitmapProcessor.cs" />
+    <Compile Include="DateTimeWorker.cs" />
     <Compile Include="ErrorReportCreator.cs" />
     <Compile Include="Exceptions\LowHigherThanHighMeasurementException.cs" />
     <Compile Include="Exceptions\LowHighMeasurementsSwappedException.cs" />
@@ -87,7 +88,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
+      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

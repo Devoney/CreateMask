@@ -8,8 +8,15 @@ namespace CreateMask.Workers
 {
     public class ErrorReportCreator : IErrorReportCreator
     {
+        private readonly IDateTimeWorker _dateTimeWorker;
         private readonly ErrorReport _errorReport = new ErrorReport();
         private string _fileName;
+
+        public ErrorReportCreator(IDateTimeWorker dateTimeWorker)
+        {
+            if (dateTimeWorker == null) throw new ArgumentNullException(nameof(dateTimeWorker));
+            _dateTimeWorker = dateTimeWorker;
+        }
 
         public void CreateReport(
             Version version, 
@@ -26,7 +33,7 @@ namespace CreateMask.Workers
 
             _fileName = Path.Combine(directory, reportName) + ".json";
 
-            _errorReport.DateTime = DateTime.Now;
+            _errorReport.DateTime = _dateTimeWorker.Now;
             _errorReport.Version = version;
             _errorReport.Exception = exception;
             _errorReport.ApplicationArguments = applicationArguments;

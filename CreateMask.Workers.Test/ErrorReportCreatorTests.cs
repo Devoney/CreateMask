@@ -4,6 +4,7 @@ using System.Linq;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using TestHelpers;
 
@@ -112,7 +113,10 @@ namespace CreateMask.Workers.Test
 
         private IErrorReportCreator GetErrorReportCreator()
         {
-            return new ErrorReportCreator();
+            var dateTimeWorkerMock = new Mock<IDateTimeWorker>();
+            dateTimeWorkerMock.Setup(dtw => dtw.Now).Returns(new DateTime(2018, 05, 19));
+            var dateTimeWorker = dateTimeWorkerMock.Object;
+            return new ErrorReportCreator(dateTimeWorker);
         }
     }
 }
