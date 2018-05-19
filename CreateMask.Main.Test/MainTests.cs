@@ -29,7 +29,7 @@ namespace CreateMask.Main.Test
 
             //Then
             using (var actualBitmap = new Bitmap(Image.FromFile(applicationArguments.MaskFilePath)))
-            using (var expectedBitmap = new Bitmap(Image.FromFile(FileManager.GetFullFilePath("MaskIsCreatedAsExpected.png"))))
+            using (var expectedBitmap = new Bitmap(Image.FromFile(StorageManager.GetFullFilePath("MaskIsCreatedAsExpected.png"))))
             {
                 AssertExt.Equals(expectedBitmap, actualBitmap);
             }
@@ -120,24 +120,40 @@ namespace CreateMask.Main.Test
         public void ErrorReportIsCreatedUponException()
         {
             //Given
-            var errorReportCreatorMock = new Mock<IErrorReportCreator>();
+            var items = GetFullyMockedMain();
+            var mocks = items.Item1;
+
+            var errorReportCreatorMock = mocks.ErrorReportCreator;
             errorReportCreatorMock.Setup(
                 ercm =>
-                    ercm.CreateReport(It.IsAny<Version>(), It.IsAny<Exception>(), It.IsAny<ApplicationArguments>(),
-                        It.IsAny<string>()));
-            var errorReportCreator = errorReportCreatorMock.Object;
-            var main = GetMain(errorReportCreator);
-            ApplicationArguments applictionArguments = null; //This will cause the exception
+                    ercm.CreateReport(It.IsAny<Version>(),
+                    It.IsAny<Exception>(),
+                    It.IsAny<ApplicationArguments>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()));
+
+            mocks.OutputWriter.Setup(ow => ow.LoadingFile(It.IsAny<string>()))
+                .Throws<FileNotFoundException>();
+
+            var main = items.Item2;
+            var applictionArguments = GetApplicationArguments(); //This will cause the exception
 
             //When
-            // ReSharper disable once ExpressionIsAlwaysNull
-            main.CreateMask(applictionArguments);
+            try
+            {
+                main.CreateMask(applictionArguments);
+            }
+            catch
+            {
+                // ignored
+            }
 
             //Then
             errorReportCreatorMock.Verify(ercm => ercm.CreateReport(
                 It.IsAny<Version>(), 
                 It.IsAny<Exception>(), 
                 It.IsAny<ApplicationArguments>(),
+                It.IsAny<string>(),
                 It.IsAny<string>()), Times.Once);
         }
 
@@ -154,7 +170,11 @@ namespace CreateMask.Main.Test
             var errorReportCreatorMock = mocks.ErrorReportCreator;
             errorReportCreatorMock.Setup(
                 ercm =>
-                    ercm.CreateReport(It.IsAny<Version>(), It.IsAny<Exception>(), It.IsAny<ApplicationArguments>(),
+                    ercm.CreateReport(
+                        It.IsAny<Version>(),
+                        It.IsAny<Exception>(), 
+                        It.IsAny<ApplicationArguments>(),
+                        It.IsAny<string>(),
                         It.IsAny<string>()))
                         .Throws<Exception>();
 
@@ -178,6 +198,7 @@ namespace CreateMask.Main.Test
                 It.IsAny<Version>(), 
                 It.IsAny<Exception>(), 
                 It.IsAny<ApplicationArguments>(), 
+                It.IsAny<string>(),
                 It.IsAny<string>()), 
                 Times.Once);
         }
@@ -254,10 +275,10 @@ namespace CreateMask.Main.Test
                 DesiredResistance = 8820,
                 High = 255,
                 LcdHeight = 1440,
-                LcdMeasurementsFilePathHigh = FileManager.GetFullFilePath("high.csv"),
-                LcdMeasurementsFilePathLow = FileManager.GetFullFilePath("low.csv"),
+                LcdMeasurementsFilePathHigh = StorageManager.GetFullFilePath("high.csv"),
+                LcdMeasurementsFilePathLow = StorageManager.GetFullFilePath("low.csv"),
                 LcdWidth = 2560,
-                LdrCalibrationFilePath = FileManager.GetFullFilePath("ldrcurve.csv"),
+                LdrCalibrationFilePath = StorageManager.GetFullFilePath("ldrcurve.csv"),
                 Low = 175,
                 MaskFilePath = Path.GetFullPath("./mask2.png"),
                 MeasurementsNrOfColumns = 12,

@@ -108,7 +108,8 @@ namespace CreateMask.Main
             try
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
-                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports");
+                var reportName = DateTime.Now.ToString("yyyyMMddHHmmss");
+                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports", reportName);
             }
             // ReSharper disable once EmptyGeneralCatchClause
             catch

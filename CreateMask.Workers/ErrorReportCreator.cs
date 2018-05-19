@@ -11,21 +11,50 @@ namespace CreateMask.Workers
         private readonly ErrorReport _errorReport = new ErrorReport();
         private string _fileName;
 
-        public void CreateReport(Version version, Exception exception, ApplicationArguments applicationArguments, string fileName)
+        public void CreateReport(
+            Version version, 
+            Exception exception, 
+            ApplicationArguments applicationArguments, 
+            string directory, 
+            string reportName)
         {
             if (version == null) throw new ArgumentNullException(nameof(version));
             if (exception == null) throw new ArgumentNullException(nameof(exception));
             if (applicationArguments == null) throw new ArgumentNullException(nameof(applicationArguments));
-            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+            if (directory == null) throw new ArgumentNullException(nameof(directory));
+            if (reportName == null) throw new ArgumentNullException(nameof(reportName));
 
-            _fileName = fileName;
+            _fileName = Path.Combine(directory, reportName) + ".json";
+
             _errorReport.Version = version;
             _errorReport.Exception = exception;
             _errorReport.ApplicationArguments = applicationArguments;
 
             LoadFiles();
 
+            RemoveSensitivePersonalInformation();
+
             SerializeToFile();
+        }
+
+        private void RemoveSensitivePersonalInformation()
+        {
+            if (!string.IsNullOrEmpty(_errorReport.ApplicationArguments.MaskFilePath))
+            {
+                _errorReport.ApplicationArguments.MaskFilePath = "[REMOVED]";
+            }
+            if (!string.IsNullOrEmpty(_errorReport.ApplicationArguments.LdrCalibrationFilePath))
+            {
+                _errorReport.ApplicationArguments.LdrCalibrationFilePath = "[REMOVED]";
+            }
+            if (!string.IsNullOrEmpty(_errorReport.ApplicationArguments.LcdMeasurementsFilePathHigh))
+            {
+                _errorReport.ApplicationArguments.LcdMeasurementsFilePathHigh = "[REMOVED]";
+            }
+            if (!string.IsNullOrEmpty(_errorReport.ApplicationArguments.LcdMeasurementsFilePathLow))
+            {
+                _errorReport.ApplicationArguments.LcdMeasurementsFilePathLow = "[REMOVED]";
+            }
         }
 
         private void LoadFiles()

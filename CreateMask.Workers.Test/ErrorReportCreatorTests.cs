@@ -1,4 +1,9 @@
-﻿using CreateMask.Containers;
+﻿using System;
+using System.IO;
+using System.Linq;
+using CreateMask.Containers;
+using CreateMask.Contracts.Interfaces;
+using FluentAssertions;
 using NUnit.Framework;
 using TestHelpers;
 
@@ -8,25 +13,73 @@ namespace CreateMask.Workers.Test
     public class ErrorReportCreatorTests
     {
         [Test, Category(Categories.Unit)]
-        public void ErrorReportIsSerializedToFileOnStorage()
+        public void ErrorReportIsSerializedToFileOnStorageWithoutCsvFilesSpecifiedInApplicationArguments()
         {
-            //Given
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                //Given
+                const string reportName = "DKEFN-09-87DF";
+                var errorReportCreator = GetErrorReportCreator();
+                var exception = new Exception();
+                var version = new Version();
+                var applicationArguments = new ApplicationArguments();
 
-            //When
+                //When
+                errorReportCreator.CreateReport(version, exception, applicationArguments, directory, reportName);
 
-            //Then
-            Assert.Fail("todo");
+                //Then
+                var filesInDirectory = Directory.GetFiles(directory, reportName + "*").ToList();
+                filesInDirectory.Count.Should().Be(1);
+            });
         }
 
         [Test, Category(Categories.Unit)]
         public void SerializedErrorReportContainsCorrectData()
         {
-            //Given
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                using (var tempFileManager = new TempFileManager(directory))
+                {
+                    //Given
+                    const string reportName = "JEU76-12-95FE";
+                    const string expectedFileName = "JEU76-12-95FE_expected.json";
+                    var errorReportCreator = GetErrorReportCreator();
+                    const string exceptionMessage = reportName + " exception message";
+                    var exception = new Exception(exceptionMessage);
+                    var version = new Version(1, 2, 3, 4);
+                    var applicationArguments = new ApplicationArguments();
 
-            //When
+                    const string ldrContents = "Ldr file contents";
+                    const string highContents = "High file contents";
+                    const string lowContents = "Low file contents";
+                    applicationArguments.DesiredResistance = 8820;
+                    applicationArguments.FileType = "bmp";
+                    applicationArguments.High = 20;
+                    applicationArguments.Low = 128;
+                    applicationArguments.LcdHeight = 1440;
+                    applicationArguments.LcdWidth = 2560;
+                    applicationArguments.MaskFilePath = @"c:\user\my\dir\mask.bmp";
+                    applicationArguments.OriginalExposureTime = 1540;
+                    applicationArguments.MeasurementsNrOfColumns = 7;
+                    applicationArguments.MeasurementsNrOfRows = 9;
+                    applicationArguments.LdrCalibrationFilePath = tempFileManager.GetTempFile(ldrContents);
+                    applicationArguments.LcdMeasurementsFilePathHigh = tempFileManager.GetTempFile(highContents);
+                    applicationArguments.LcdMeasurementsFilePathLow = tempFileManager.GetTempFile(lowContents);
 
-            //Then
-            Assert.Fail("todo");
+                    //When
+                    errorReportCreator.CreateReport(version, exception, applicationArguments, directory, reportName);
+
+                    //Then
+                    var filesInDirectory = Directory.GetFiles(directory, reportName + "*").ToList();
+                    filesInDirectory.Count.Should().Be(1);
+                    var report = filesInDirectory.Single();
+
+                    var expectedFilePath = StorageManager.GetFullFilePath(expectedFileName);
+                    var expectedFileContents = File.ReadAllText(expectedFilePath);
+                    var actualFileContents = File.ReadAllText(report);
+                    actualFileContents.Should().Be(expectedFileContents);
+                }
+            });
         }
 
         [Test, Category(Categories.Unit)]
@@ -55,6 +108,11 @@ namespace CreateMask.Workers.Test
 
             //Then
             Assert.Fail("todo");
+        }
+
+        private IErrorReportCreator GetErrorReportCreator()
+        {
+            return new ErrorReportCreator();
         }
     }
 }

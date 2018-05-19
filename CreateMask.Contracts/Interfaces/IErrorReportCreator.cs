@@ -5,6 +5,6 @@ namespace CreateMask.Contracts.Interfaces
 {
     public interface IErrorReportCreator
     {
-        void CreateReport(Version version, Exception exception, ApplicationArguments applicationArguments, string errorReportsDirectory);
+        void CreateReport(Version version, Exception exception, ApplicationArguments applicationArguments, string directory, string reportName);
     }
 }
