@@ -9,9 +9,6 @@ using TestHelpers;
 
 namespace CreateMask.Main.Test
 {
-    /// <summary>
-    /// Summary description for MainTests
-    /// </summary>
     [TestFixture]
     public class MainTests
     {

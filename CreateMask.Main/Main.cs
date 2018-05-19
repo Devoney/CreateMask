@@ -18,6 +18,7 @@ namespace CreateMask.Main
         private readonly IMeasurementGridProcessor _measurementGridProcessor;
         private readonly IExposureTimeCalculator _exposureTimeCalculator;
         private readonly IOutputWriter _outputWriter;
+        private readonly IBitmapProcessor _bitmapProcessor;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
@@ -26,7 +27,8 @@ namespace CreateMask.Main
                     IGenericGridLoader<int> measurementGridLoader,
                     IMeasurementGridProcessor measurementGridProcessor,
                     IExposureTimeCalculator exposureTimeCalculator,
-                    IOutputWriter outputWriter)
+                    IOutputWriter outputWriter,
+                    IBitmapProcessor bitmapProcessor)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolatorFactory = maskIntensityInterpolatorFactory;
@@ -34,6 +36,7 @@ namespace CreateMask.Main
             _measurementGridProcessor = measurementGridProcessor;
             _exposureTimeCalculator = exposureTimeCalculator;
             _outputWriter = outputWriter;
+            _bitmapProcessor = bitmapProcessor;
         }
 
         public void CreateMask(ApplicationArguments arguments)
@@ -72,12 +75,12 @@ namespace CreateMask.Main
             using (var bitmap = _measurementGridProcessor.CreateBitMap(localMaskIntensityGrid))
             {
                 _outputWriter.ResizingBitmap(bitmap, arguments.LcdWidth, arguments.LcdHeight);
-                using (var mask = bitmap.Resize(arguments.LcdWidth, arguments.LcdHeight))
+                using (var mask = _bitmapProcessor.Resize(bitmap, arguments.LcdWidth, arguments.LcdHeight))
                 {
-                    mask.Save(arguments.MaskFilePath, imageFormat);
+                    _bitmapProcessor.Save(mask, arguments.MaskFilePath, imageFormat);
+                    _outputWriter.MaskSavedTo(arguments.MaskFilePath);
                 }
             }
-            _outputWriter.MaskSavedTo(arguments.MaskFilePath); 
             
             if (arguments.OriginalExposureTime > 0)
             {

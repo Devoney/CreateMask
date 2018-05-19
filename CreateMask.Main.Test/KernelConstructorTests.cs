@@ -20,6 +20,7 @@ namespace CreateMask.Main.Test
             var expectedResolvableTypes = new List<Type>
             {
                 typeof(IArgumentsParser),
+                typeof(IBitmapProcessor),
                 typeof(IExposureTimeCalculator),
                 typeof(IGenericGridLoader<int>),
                 typeof(IGenericLoader<Measurement>),
