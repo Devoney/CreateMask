@@ -10,7 +10,8 @@ namespace CreateMask.Workers
     {
         private readonly IDateTimeWorker _dateTimeWorker;
         private readonly ErrorReport _errorReport = new ErrorReport();
-        private string _fileName;
+        private string _directory;
+        private string _reportName;
 
         public ErrorReportCreator(IDateTimeWorker dateTimeWorker)
         {
@@ -31,8 +32,9 @@ namespace CreateMask.Workers
             if (directory == null) throw new ArgumentNullException(nameof(directory));
             if (reportName == null) throw new ArgumentNullException(nameof(reportName));
 
-            _fileName = Path.Combine(directory, reportName) + ".json";
-
+            _directory = directory;
+            _reportName = reportName;
+            
             _errorReport.DateTime = _dateTimeWorker.Now;
             _errorReport.Version = version;
             _errorReport.Exception = exception;
@@ -42,7 +44,14 @@ namespace CreateMask.Workers
 
             RemoveSensitivePersonalInformation();
 
+            EnsureDirectoryExists();
+
             SerializeToFile();
+        }
+
+        private void EnsureDirectoryExists()
+        {
+            if (!Directory.Exists(_directory)) Directory.CreateDirectory(_directory);
         }
 
         private void RemoveSensitivePersonalInformation()
@@ -80,7 +89,9 @@ namespace CreateMask.Workers
 
         private void SerializeToFile()
         {
-            using (var file = File.CreateText(_fileName))
+            var fileName = Path.Combine(_directory, _reportName) + ".json";
+
+            using (var file = File.CreateText(fileName))
             {
                 var serializer = new JsonSerializer();
                 serializer.Serialize(file, _errorReport);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -14,6 +15,25 @@ namespace CreateMask.Workers.Test
     [TestFixture]
     public class ErrorReportCreatorTests
     {
+        [Test, Category(Categories.Unit)]
+        public void DirectoryIsCreatedWhenItDoesNotExistYet()
+        {
+            //Given
+            var errorReportCreator = GetErrorReportCreator();
+            var version = new Version();
+            var exception = new Exception();
+            var applicationArguments = new ApplicationArguments();
+            const string directoryName = "./IEJDKF8eF";
+            if(Directory.Exists(directoryName)) Directory.Delete(directoryName, true);
+            const string reportName = "39837DJ";
+
+            //When
+            errorReportCreator.CreateReport(version, exception, applicationArguments, directoryName, reportName);
+
+            //Then
+            Directory.Exists(directoryName).Should().BeTrue();
+        }
+
         [Test, Category(Categories.Unit)]
         public void ErrorReportIsSerializedToFileOnStorageWithoutCsvFilesSpecifiedInApplicationArguments()
         {
