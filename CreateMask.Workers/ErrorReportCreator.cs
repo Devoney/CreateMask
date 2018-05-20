@@ -9,14 +9,17 @@ namespace CreateMask.Workers
     public class ErrorReportCreator : IErrorReportCreator
     {
         private readonly IDateTimeWorker _dateTimeWorker;
+        private readonly ICloner _cloner;
         private readonly ErrorReport _errorReport = new ErrorReport();
         private string _directory;
         private string _reportName;
 
-        public ErrorReportCreator(IDateTimeWorker dateTimeWorker)
+        public ErrorReportCreator(IDateTimeWorker dateTimeWorker, ICloner cloner)
         {
             if (dateTimeWorker == null) throw new ArgumentNullException(nameof(dateTimeWorker));
+            if (cloner == null) throw new ArgumentNullException(nameof(cloner));
             _dateTimeWorker = dateTimeWorker;
+            _cloner = cloner;
         }
 
         public void CreateReport(
@@ -38,7 +41,7 @@ namespace CreateMask.Workers
             _errorReport.DateTime = _dateTimeWorker.Now;
             _errorReport.Version = version;
             _errorReport.Exception = exception;
-            _errorReport.ApplicationArguments = applicationArguments;
+            _errorReport.ApplicationArguments = _cloner.DeepClone(applicationArguments);
 
             LoadFiles();
 

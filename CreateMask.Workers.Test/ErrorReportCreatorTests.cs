@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Policy;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
+using CreateMask.Utilities;
 using FluentAssertions;
 using Moq;
 using Newtonsoft.Json;
@@ -171,7 +172,7 @@ namespace CreateMask.Workers.Test
             var dateTimeWorkerMock = new Mock<IDateTimeWorker>();
             dateTimeWorkerMock.Setup(dtw => dtw.Now).Returns(new DateTime(2018, 05, 19));
             var dateTimeWorker = dateTimeWorkerMock.Object;
-            return new ErrorReportCreator(dateTimeWorker);
+            return new ErrorReportCreator(dateTimeWorker, new Cloner());
         }
     }
 }

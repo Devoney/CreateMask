@@ -100,6 +100,10 @@
       <Project>{02973af4-5120-44c2-b3dd-158e0c21bac7}</Project>
       <Name>CreateMask.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CreateMask.Utilities\CreateMask.Utilities.csproj">
+      <Project>{887C2C66-C55E-4D52-B111-2020E5C267F9}</Project>
+      <Name>CreateMask.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CreateMask.Workers\CreateMask.Workers.csproj">
       <Project>{cbc70769-c5e3-4c66-b837-7998bcc486e0}</Project>
       <Name>CreateMask.Workers</Name>
@@ -143,7 +147,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
