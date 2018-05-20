@@ -23,6 +23,8 @@ namespace CreateMask.Main
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
+        public event EventHandler<int> ExposureTimeCalculated;
+
         public Main(IGenericLoader<Measurement> measurementsLoader,
                     IMaskIntensityResistanceInterpolatorFactory maskIntensityInterpolatorFactory,
                     IGenericGridLoader<int> measurementGridLoader,
@@ -94,6 +96,7 @@ namespace CreateMask.Main
                     var exposureTime = _exposureTimeCalculator.CalculateExposure(arguments.High, localMaskIntensityGrid,
                         arguments.OriginalExposureTime);
                     _outputWriter.NewAdvisedExposureTime(exposureTime);
+                    OnExposureTimeCalculated(exposureTime);
                 }
             }
             catch (Exception exception)
@@ -121,6 +124,11 @@ namespace CreateMask.Main
         private void OnOutput(string e)
         {
             Output?.Invoke(this, e);
+        }
+
+        protected virtual void OnExposureTimeCalculated(int exposureTime)
+        {
+            ExposureTimeCalculated?.Invoke(this, exposureTime);
         }
     }
 }
