@@ -24,6 +24,28 @@ namespace CreateMask.Gui
     public partial class MainWindow : INotifyPropertyChanged
     {
         private readonly Main.Main _main;
+        private bool _exposureTimeRecalculated;
+        private int ? _recalculatedExposureTime;
+
+        public bool ExposureTimeRecalculated
+        {
+            get { return _exposureTimeRecalculated; }
+            set
+            {
+                _exposureTimeRecalculated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int? RecalculatedExposureTime
+        {
+            get { return _recalculatedExposureTime; }
+            set
+            {
+                _recalculatedExposureTime = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ApplicationArguments Arguments { get; set; }
 
@@ -52,6 +74,7 @@ namespace CreateMask.Gui
             var kernel = KernelConstructor.GetKernel();
             _main = kernel.Get<Main.Main>();
             _main.Output += Main_Output;
+            _main.ExposureTimeCalculated += _main_ExposureTimeCalculated;
 
             Arguments = new ApplicationArguments
             {
@@ -75,6 +98,12 @@ namespace CreateMask.Gui
             Loaded += (sender, args) => CheckForUpdateComponent.Check();
         }
 
+        private void _main_ExposureTimeCalculated(object sender, int recalculatedExposureTime)
+        {
+            RecalculatedExposureTime = recalculatedExposureTime;
+            ExposureTimeRecalculated = true;
+        }
+
         private void CheckForUpdateComponent_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(nameof(CheckForUpdateComponent));
@@ -91,6 +120,7 @@ namespace CreateMask.Gui
             try
             {
                 tbxOutput.Clear();
+                ExposureTimeRecalculated = false;
                 _main.CreateMask(Arguments);
             }
             catch (Exception exception)
