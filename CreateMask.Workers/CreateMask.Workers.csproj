@@ -42,6 +42,10 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Octokit, Version=0.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.29.0\lib\net45\Octokit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -63,6 +67,7 @@
     <Compile Include="Exceptions\LowHighMeasurementsSwappedException.cs" />
     <Compile Include="ExposureTimeCalculator.cs" />
     <Compile Include="Factories\MaskIntensityResistanceInterpolatorFactory.cs" />
+    <Compile Include="GitHubIssueCreator.cs" />
     <Compile Include="MaskIntensityResistanceInterpolator.cs" />
     <Compile Include="MeasurementGridProcessor.cs" />
     <Compile Include="OutputWriter.cs" />
@@ -88,7 +93,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

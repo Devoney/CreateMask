@@ -27,6 +27,8 @@ namespace CreateMask.Main.Test
                 typeof(IExposureTimeCalculator),
                 typeof(IGenericGridLoader<int>),
                 typeof(IGenericLoader<Measurement>),
+                typeof(IGitHubIssueCreator),
+                typeof(IIssuesClient),
                 typeof(IMaskIntensityResistanceInterpolatorFactory),
                 typeof(IMeasurementGridProcessor),
                 typeof(IOutputWriter),
