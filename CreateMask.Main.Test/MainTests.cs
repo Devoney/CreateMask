@@ -215,6 +215,7 @@ namespace CreateMask.Main.Test
             public Mock<IMeasurementGridProcessor> MeasurementGridProcessor { get; set; }
             public Mock<IGenericLoader<Measurement>> MeasurementsLoader { get; set; }
             public Mock<IOutputWriter> OutputWriter { get; set; }
+            public Mock<IErrorReportReporter> ErrorReportReporter { get; set; }
         }
         private Tuple<MockedObjects, Main> GetFullyMockedMain()
         {
@@ -226,6 +227,7 @@ namespace CreateMask.Main.Test
             var outputWriter = new Mock<IOutputWriter>();
             var errorReportCreator = new Mock<IErrorReportCreator>();
             var bitmapProcessor = new Mock<IBitmapProcessor>();
+            var errorReportReporter = new Mock<IErrorReportReporter>();
 
             var mockedObjects = new MockedObjects
             {
@@ -236,7 +238,8 @@ namespace CreateMask.Main.Test
                 MaskIntensityResistanceInterpolatorFactory = factory,
                 MeasurementGridProcessor = gridProcessor,
                 MeasurementsLoader = measuremntsLoader,
-                OutputWriter = outputWriter
+                OutputWriter = outputWriter,
+                ErrorReportReporter = errorReportReporter
             };
 
             var main = new Main(
@@ -247,7 +250,9 @@ namespace CreateMask.Main.Test
                 exposureTimeCalculator.Object, 
                 outputWriter.Object,
                 bitmapProcessor.Object,
-                errorReportCreator.Object);
+                errorReportCreator.Object,
+                new ErrorReportConfiguration("./error-reports", "./error-reports/reported"),
+                errorReportReporter.Object);
 
             return new Tuple<MockedObjects, Main>(mockedObjects, main);
         }

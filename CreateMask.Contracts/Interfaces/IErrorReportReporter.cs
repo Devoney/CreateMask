@@ -1,6 +1,6 @@
 ﻿namespace CreateMask.Contracts.Interfaces
 {
-    public interface IErrorReportProcessor
+    public interface IErrorReportReporter
     {
         void Start();
     }
