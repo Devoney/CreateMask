@@ -21,6 +21,8 @@ namespace CreateMask.Main
 
         private static void Register(IKernel kernel)
         {
+            var gitHubRepoInfo = new GitHubRepoInfo("CreateMask", "Devoney", "create-mask-error-reporter", "createmask2018");
+            kernel.Bind<GitHubRepoInfo>().ToConstant(gitHubRepoInfo);
             kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IBitmapProcessor>().To<BitmapProcessor>();
             kernel.Bind<IDateTimeWorker>().To<DateTimeWorker>();

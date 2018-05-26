@@ -11,10 +11,12 @@ namespace CreateMask.Utilities
     public class ReleaseManager : IReleaseManager
     {
         private readonly IReleasesClient _releasesClient;
+        private readonly GitHubRepoInfo _gitHubRepoInfo;
 
-        public ReleaseManager(IReleasesClient releasesClient)
+        public ReleaseManager(IReleasesClient releasesClient, GitHubRepoInfo gitHubRepoInfo)
         {
             _releasesClient = releasesClient;
+            _gitHubRepoInfo = gitHubRepoInfo;
         }
 
         public async Task CheckForNewReleaseAsync(CheckForReleaseArgs checkForReleaseArgs)
@@ -22,7 +24,7 @@ namespace CreateMask.Utilities
             IReadOnlyList<Release> releases;
             try
             {
-                releases = await _releasesClient.GetAll(checkForReleaseArgs.Owner, checkForReleaseArgs.Repository);
+                releases = await _releasesClient.GetAll(_gitHubRepoInfo.Owner, _gitHubRepoInfo.Name);
             }
             catch
             {

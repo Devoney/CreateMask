@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -12,12 +11,15 @@ namespace CreateMask.Gui.Components
 {
     public class CheckForUpdate : INotifyPropertyChanged
     {
+        #region Fields
         private readonly IReleaseManager _releaseManager;
         private readonly Window _window;
         private bool _isChecking;
         private bool _updateAvailable;
         private ReleaseInfo _latestVersion;
+        #endregion
 
+        #region Properties
         public bool IsChecking
         {
             get { return _isChecking; }
@@ -47,6 +49,7 @@ namespace CreateMask.Gui.Components
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         public CheckForUpdate(IReleaseManager releaseManager, Window window)
         {
@@ -60,9 +63,7 @@ namespace CreateMask.Gui.Components
             var args = new CheckForReleaseArgs
             {
                 CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version,
-                OnNewReleaseCallBack = AskToVisiteTheDownloadPage,
-                Owner = "Devoney", // TODO: Should be defined somewhere else
-                Repository = "CreateMask" // TODO: Should be defined somewhere else
+                OnNewReleaseCallBack = AskToVisiteTheDownloadPage
             };
             await _releaseManager.CheckForNewReleaseAsync(args);
             IsChecking = false;

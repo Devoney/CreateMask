@@ -19,6 +19,7 @@ namespace CreateMask.Main.Test
             //Given
             var expectedResolvableTypes = new List<Type>
             {
+                typeof(GitHubRepoInfo),
                 typeof(IArgumentsParser),
                 typeof(IBitmapProcessor),
                 typeof(IDateTimeWorker),
