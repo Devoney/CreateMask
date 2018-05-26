@@ -2,7 +2,13 @@
 {
     public class ErrorReportConfiguration
     {
-        public string MainDirectory { get; set; }
-        public string ReportedDirectory { get; set; }
+        public string MainDirectory { get; private set; }
+        public string ReportedDirectory { get; private set; }
+
+        public ErrorReportConfiguration(string mainDirectory, string reportedDirectory)
+        {
+            MainDirectory = mainDirectory;
+            ReportedDirectory = reportedDirectory;
+        }
     }
 }

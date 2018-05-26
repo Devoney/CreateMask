@@ -23,11 +23,16 @@ namespace CreateMask.Main
         {
             var gitHubRepoInfo = new GitHubRepoInfo("CreateMask", "Devoney", "create-mask-error-reporter", "createmask2018");
             kernel.Bind<GitHubRepoInfo>().ToConstant(gitHubRepoInfo);
+
+            var errorReportConfiguration = new ErrorReportConfiguration("./error-logs", "./error-logs/reported");
+            kernel.Bind<ErrorReportConfiguration>().ToConstant(errorReportConfiguration);
+
             kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IBitmapProcessor>().To<BitmapProcessor>();
             kernel.Bind<IDateTimeWorker>().To<DateTimeWorker>();
             kernel.Bind<ICloner>().To<Cloner>();
             kernel.Bind<IErrorReportCreator>().To<ErrorReportCreator>();
+            kernel.Bind<IErrorReportProcessor>().To<ErrorReportProcessor>();
             kernel.Bind<IExposureTimeCalculator>().To <ExposureTimeCalculator> ();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();

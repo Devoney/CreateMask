@@ -19,12 +19,14 @@ namespace CreateMask.Main.Test
             //Given
             var expectedResolvableTypes = new List<Type>
             {
+                typeof(ErrorReportConfiguration),
                 typeof(GitHubRepoInfo),
                 typeof(IArgumentsParser),
                 typeof(IBitmapProcessor),
                 typeof(IDateTimeWorker),
                 typeof(ICloner),
                 typeof(IErrorReportCreator),
+                typeof(IErrorReportProcessor),
                 typeof(IExposureTimeCalculator),
                 typeof(IGenericGridLoader<int>),
                 typeof(IGenericLoader<Measurement>),

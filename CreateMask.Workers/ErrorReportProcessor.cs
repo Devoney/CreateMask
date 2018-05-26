@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ namespace CreateMask.Workers
         private readonly IFileSystemWatcher _fileSystemWatcher;
         private readonly ErrorReportConfiguration _errorReportConfiguration;
         private readonly IGitHubIssueCreator _gitHubIssueCreator;
-        private bool _started = false;
+        private bool _started;
 
         public ErrorReportProcessor(IFileSystemWatcher fileSystemWatcher, 
             ErrorReportConfiguration errorReportConfiguration,
@@ -25,9 +24,12 @@ namespace CreateMask.Workers
         public void Start()
         {
             if (_started) return;
+            _started = true;
+
             _fileSystemWatcher.Created += OnErrorReportCreated;
             _fileSystemWatcher.Start(_errorReportConfiguration.MainDirectory);
-            _started = true;
+
+            ProcessAlreadyPresentErrorReports();
         }
 
         private void OnErrorReportCreated(object sender, FileSystemEventArgs fileSystemEventArgs)
@@ -35,13 +37,34 @@ namespace CreateMask.Workers
             var filePath = fileSystemEventArgs.FullPath;
             if (!File.Exists(filePath)) return; //Would be strange but you never know.
 
+            ProcessErrorReport(filePath);
+        }
+
+        private void ProcessAlreadyPresentErrorReports()
+        {
+            var files = Directory.GetFiles(_errorReportConfiguration.MainDirectory, "*.json");
+            foreach (var file in files)
+            {
+                try
+                {
+                    ProcessErrorReport(file);
+                }
+                catch
+                {
+                    //Just continue with the next
+                }
+            }
+        }
+
+        private void ProcessErrorReport(string filePath)
+        {
             var errorReport = DeserializeErrorReport(filePath);
             _gitHubIssueCreator.CreateIssue(errorReport);
 
             MoveErrorReport(filePath);
         }
 
-        private ErrorReport DeserializeErrorReport(string filePath)
+        private static ErrorReport DeserializeErrorReport(string filePath)
         {
             var fileContents = File.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<ErrorReport>(fileContents);
