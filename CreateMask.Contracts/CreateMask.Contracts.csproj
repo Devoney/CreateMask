@@ -51,7 +51,9 @@
     <Compile Include="Interfaces\IDateTimeWorker.cs" />
     <Compile Include="Interfaces\ICloner.cs" />
     <Compile Include="Interfaces\IErrorReportCreator.cs" />
+    <Compile Include="Interfaces\IErrorReportProcessor.cs" />
     <Compile Include="Interfaces\IExposureTimeCalculator.cs" />
+    <Compile Include="Interfaces\IFileSystemWatcher.cs" />
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
     <Compile Include="Interfaces\IGitHubIssueCreator.cs" />
@@ -71,7 +73,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
+      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

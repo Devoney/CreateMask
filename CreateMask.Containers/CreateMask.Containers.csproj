@@ -43,6 +43,7 @@
     <Compile Include="ApplicationArguments.cs" />
     <Compile Include="CheckForReleaseArgs.cs" />
     <Compile Include="ErrorReport.cs" />
+    <Compile Include="ErrorReportConfiguration.cs" />
     <Compile Include="GitHubRepoInfo.cs" />
     <Compile Include="ReleaseInfo.cs" />
     <Compile Include="Measurement.cs" />
