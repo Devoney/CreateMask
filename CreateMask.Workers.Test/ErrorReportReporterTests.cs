@@ -3,6 +3,7 @@ using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TestHelpers;
 
@@ -28,6 +29,57 @@ namespace CreateMask.Workers.Test
 
                 //Then
                 Directory.Exists(subDir).Should().BeTrue();
+            });
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void IssueIsCreatedFromAlreadyExistingErrorReport()
+        {
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                //Given
+                var errorReport = new ErrorReport();
+                var processedFolder = Path.Combine(directory, "processed");
+                var json = JsonConvert.SerializeObject(errorReport);
+                const string errorReportName = "error-report.json";
+                var filePath = Path.Combine(directory, errorReportName);
+                File.WriteAllText(filePath, json);
+                var config = new ErrorReportConfiguration(directory, processedFolder);
+                var container = GetErrorReportReporter(config);
+                var errorReportReporter = container.ErrorReportReporter;
+                var githubIssueCreatorMock = container.GitHubIssueCreatorMock;
+                githubIssueCreatorMock.Setup(gic => gic.CreateIssue(It.IsAny<ErrorReport>()));
+
+                //When
+                errorReportReporter.Start();
+
+                //Then
+                githubIssueCreatorMock.Verify(gic => gic.CreateIssue(It.IsAny<ErrorReport>()), Times.Once);
+            });
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void AlreadyExistingErrorReportIsMovedToProcessedFolder()
+        {
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                //Given
+                var errorReport = new ErrorReport();
+                var processedFolder = Path.Combine(directory, "processed");
+                var json = JsonConvert.SerializeObject(errorReport);
+                const string errorReportName = "error-report.json";
+                var filePath = Path.Combine(directory, errorReportName);
+                var expectedFilePath = Path.Combine(processedFolder, errorReportName);
+                File.WriteAllText(filePath, json);
+                var config = new ErrorReportConfiguration(directory, processedFolder);
+                var container = GetErrorReportReporter(config);
+                var errorReportReporter = container.ErrorReportReporter;
+
+                //When
+                errorReportReporter.Start();
+
+                //Then
+                File.Exists(expectedFilePath).Should().BeTrue();
             });
         }
 
@@ -58,7 +110,7 @@ namespace CreateMask.Workers.Test
             var fileSystemWatcherMock = new Mock<IFileSystemWatcher>();
             var gitHubIssueCreatorMock = new Mock<IGitHubIssueCreator>();
             var errorReportReporter = new ErrorReportReporter(fileSystemWatcherMock.Object, errorReportConfiguration, gitHubIssueCreatorMock.Object);
-            return new GetContainer(fileSystemWatcherMock, errorReportReporter, errorReportConfiguration);
+            return new GetContainer(fileSystemWatcherMock, gitHubIssueCreatorMock, errorReportReporter, errorReportConfiguration);
         }
 
         private class GetContainer
@@ -66,10 +118,12 @@ namespace CreateMask.Workers.Test
             public Mock<IFileSystemWatcher> FileSystemWatcherMock { get; private set; }
             public ErrorReportReporter ErrorReportReporter { get; private set; }
             public ErrorReportConfiguration ErrorReportConfiguration { get; private set; }
+            public Mock<IGitHubIssueCreator> GitHubIssueCreatorMock { get; private set; }
 
-            public GetContainer(Mock<IFileSystemWatcher> fileSystemWatcherMock, ErrorReportReporter errorReportReporter, ErrorReportConfiguration errorReportConfiguration)
+            public GetContainer(Mock<IFileSystemWatcher> fileSystemWatcherMock, Mock<IGitHubIssueCreator> gitHubIssueCreatorMock, ErrorReportReporter errorReportReporter, ErrorReportConfiguration errorReportConfiguration)
             {
                 FileSystemWatcherMock = fileSystemWatcherMock;
+                GitHubIssueCreatorMock = gitHubIssueCreatorMock;
                 ErrorReportReporter = errorReportReporter;
                 ErrorReportConfiguration = errorReportConfiguration;
             }
