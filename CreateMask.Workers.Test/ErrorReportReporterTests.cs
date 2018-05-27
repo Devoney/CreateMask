@@ -31,6 +31,28 @@ namespace CreateMask.Workers.Test
             });
         }
 
+        [Test, Category(Categories.Unit)]
+        public void ErrorReportReporterIsOnlyStartedOnce()
+        {
+            //Given
+            var errorReportConfiguration =new ErrorReportConfiguration("./", "./");
+            var container = GetErrorReportReporter(errorReportConfiguration);
+            var fswMock = container.FileSystemWatcherMock;
+            var fileSystemWatcherStartTimesCalled = 0;
+            fswMock.Setup(fsw => fsw.Start(It.IsAny<string>())).Callback(() =>
+            {
+                fileSystemWatcherStartTimesCalled++;
+            });
+            var errorReportReporter = container.ErrorReportReporter;
+
+            //When
+            errorReportReporter.Start();
+            errorReportReporter.Start();
+
+            //Then
+            fileSystemWatcherStartTimesCalled.Should().Be(1);
+        }
+
         private static GetContainer GetErrorReportReporter(ErrorReportConfiguration errorReportConfiguration)
         {
             var fileSystemWatcherMock = new Mock<IFileSystemWatcher>();
