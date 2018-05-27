@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
@@ -105,6 +106,60 @@ namespace CreateMask.Workers.Test
             fileSystemWatcherStartTimesCalled.Should().Be(1);
         }
 
+        [Test, Category(Categories.Unit)]
+        public void ErrorReportIsProcessedWhenItIsCreatedAsFileOnDrive()
+        {
+            StorageManager.InTemporaryDirectory(directory => 
+            {
+                //Given
+                var config = new ErrorReportConfiguration(directory, Path.Combine(directory, "processed"));
+                var container = GetErrorReportReporter(config);
+                var errorReportReporter = container.ErrorReportReporter;
+                var gitHubIssueCreatorMock = container.GitHubIssueCreatorMock;
+                gitHubIssueCreatorMock.Setup(gic => gic.CreateIssue(It.IsAny<ErrorReport>()));
+                var fileSystemWatcherMock = container.FileSystemWatcherMock;
+                var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Created, directory, "error-report.json");
+                
+                var errorReport = new ErrorReport();
+                var json = JsonConvert.SerializeObject(errorReport);
+                var filePath = Path.Combine(directory, "error-report.json");
+                errorReportReporter.Start();
+
+                //When
+                File.WriteAllText(filePath, json);
+                fileSystemWatcherMock.Raise(fsw => fsw.Created += null, eventArgs);
+
+                //Then
+                gitHubIssueCreatorMock.Verify(gic => gic.CreateIssue(It.IsAny<ErrorReport>()), Times.Once);
+            });
+        }
+
+        //Pretty far fetched test, but was quick to write as we had the test above already.
+        //Writing this comment took the most time :P
+        [Test, Category(Categories.Unit)]
+        public void ErrorReportIsNotProcessedWhenItDoesNotExistOnDiskThoughFileSystemWatcherRaisedCreatedEvent()
+        {
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                //Given
+                var config = new ErrorReportConfiguration(directory, Path.Combine(directory, "processed"));
+                var container = GetErrorReportReporter(config);
+                var errorReportReporter = container.ErrorReportReporter;
+                var gitHubIssueCreatorMock = container.GitHubIssueCreatorMock;
+                gitHubIssueCreatorMock.Setup(gic => gic.CreateIssue(It.IsAny<ErrorReport>()));
+                var fileSystemWatcherMock = container.FileSystemWatcherMock;
+                var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Created, directory, "error-report.json");
+                errorReportReporter.Start();
+
+                //When
+                fileSystemWatcherMock.Raise(fsw => fsw.Created += null, eventArgs);
+
+                //Then
+                gitHubIssueCreatorMock.Verify(gic => gic.CreateIssue(It.IsAny<ErrorReport>()), Times.Never);
+            });
+        }
+
+        #region Helpers
         private static GetContainer GetErrorReportReporter(ErrorReportConfiguration errorReportConfiguration)
         {
             var fileSystemWatcherMock = new Mock<IFileSystemWatcher>();
@@ -128,5 +183,6 @@ namespace CreateMask.Workers.Test
                 ErrorReportConfiguration = errorReportConfiguration;
             }
         }
+        #endregion
     }
 }
