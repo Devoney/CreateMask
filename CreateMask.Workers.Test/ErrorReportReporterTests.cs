@@ -85,7 +85,7 @@ namespace CreateMask.Workers.Test
         }
 
         [Test, Category(Categories.Unit)]
-        public void ErrorReportReporterIsOnlyStartedOnce()
+        public void ErrorReportReporterStartsOnceWhenStartingItTwice()
         {
             //Given
             var errorReportConfiguration =new ErrorReportConfiguration("./", "./");
@@ -152,6 +152,32 @@ namespace CreateMask.Workers.Test
                 errorReportReporter.Start();
 
                 //When
+                fileSystemWatcherMock.Raise(fsw => fsw.Created += null, eventArgs);
+
+                //Then
+                gitHubIssueCreatorMock.Verify(gic => gic.CreateIssue(It.IsAny<ErrorReport>()), Times.Never);
+            });
+        }
+
+        [Test, Category(Categories.Unit)]
+        public void InvalidErrorReportCausesNoException()
+        {
+            StorageManager.InTemporaryDirectory(directory =>
+            {
+                //Given
+                var config = new ErrorReportConfiguration(directory, Path.Combine(directory, "processed"));
+                var container = GetErrorReportReporter(config);
+                var errorReportReporter = container.ErrorReportReporter;
+                var gitHubIssueCreatorMock = container.GitHubIssueCreatorMock;
+                gitHubIssueCreatorMock.Setup(gic => gic.CreateIssue(It.IsAny<ErrorReport>()));
+                var fileSystemWatcherMock = container.FileSystemWatcherMock;
+                var eventArgs = new FileSystemEventArgs(WatcherChangeTypes.Created, directory, "error-report.json");
+
+                var filePath = Path.Combine(directory, "error-report.json");
+                errorReportReporter.Start();
+
+                //When
+                File.WriteAllText(filePath, "eijef9*()f397");
                 fileSystemWatcherMock.Raise(fsw => fsw.Created += null, eventArgs);
 
                 //Then
