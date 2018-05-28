@@ -38,19 +38,17 @@ namespace CreateMask.Workers
             task.Wait();
         }
 
-        public bool DoesIssueExist(string issueTitle)
+        private bool DoesIssueExist(string issueTitle)
         {
-            //TODO: Use some kind of caching
-            //TODO: Use some kind of filtering.
-            //var issueRequest = new IssueRequest();
-            //foreach (var label in _issueLabels)
-            //{
-            //    issueRequest.Labels.Add(label);
-            //}
-            //issueRequest.State = ItemStateFilter.All;s
-            var task = _issuesClient.GetAllForRepository(_gitHubRepoInfo.Owner, _gitHubRepoInfo.Name);
+            var repositoryIssueRequest = new RepositoryIssueRequest
+            {
+                State = ItemStateFilter.All
+            };
+            foreach(var label in _issueLabels) repositoryIssueRequest.Labels.Add(label);
+            var task = _issuesClient.GetAllForRepository(_gitHubRepoInfo.Owner, _gitHubRepoInfo.Name, repositoryIssueRequest);
             task.Wait();
             var issues = task.Result;
+            if (issues == null) return false; //Not sure what happened, let's just upload the report.
             return issues.Any(i => i.Title == issueTitle);
         }
     }
