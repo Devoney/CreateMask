@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
@@ -116,7 +117,7 @@ namespace CreateMask.Main.Test
             actualSupportedFileTypes.Should().BeEquivalentTo(expectedSupportedFileTypes);
         }
 
-        [Test, Category(Categories.Unit)]
+        [Test, Category(Categories.Integration)]
         public void ErrorReportIsCreatedUponException()
         {
             //Given
@@ -157,7 +158,7 @@ namespace CreateMask.Main.Test
                 It.IsAny<string>()), Times.Once);
         }
 
-        [Test, Category(Categories.Unit)]
+        [Test, Category(Categories.Integration)]
         public void ExceptionThrownInErrorReportIsHidden()
         {
             //Given
@@ -201,6 +202,24 @@ namespace CreateMask.Main.Test
                 It.IsAny<string>(),
                 It.IsAny<string>()), 
                 Times.Once);
+        }
+
+        [Test, Category(Categories.Integration)]
+        public void ErrorReportReporterIsStarted()
+        {
+            //Given
+            var tuple = GetFullyMockedMain();
+            var mocks = tuple.Item1;
+            var errorReportReporterMock = mocks.ErrorReportReporter;
+            errorReportReporterMock.Setup(err => err.Start());
+            var main = tuple.Item2;
+            var applicationArguments = GetApplicationArguments();
+
+            //When
+            main.CreateMask(applicationArguments);
+
+            //Then
+            errorReportReporterMock.Verify(err => err.Start(), Times.Once);
         }
 
         #region Helpers
