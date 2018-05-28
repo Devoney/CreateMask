@@ -6,6 +6,7 @@ using CreateMask.Workers;
 using CreateMask.Workers.Factories;
 using Ninject;
 using Octokit;
+using Octokit.Internal;
 
 namespace CreateMask.Main
 {
@@ -20,28 +21,38 @@ namespace CreateMask.Main
 
         private static void Register(IKernel kernel)
         {
+            var gitHubRepoInfo = new GitHubRepoInfo("CreateMask", "Devoney", "create-mask-error-reporter", "createmask2018");
+            kernel.Bind<GitHubRepoInfo>().ToConstant(gitHubRepoInfo);
+
+            var errorReportConfiguration = new ErrorReportConfiguration("./error-reports", "./error-reports/reported");
+            kernel.Bind<ErrorReportConfiguration>().ToConstant(errorReportConfiguration);
+
             kernel.Bind<IArgumentsParser>().To<ArgumentsParser>();
             kernel.Bind<IBitmapProcessor>().To<BitmapProcessor>();
             kernel.Bind<IDateTimeWorker>().To<DateTimeWorker>();
             kernel.Bind<ICloner>().To<Cloner>();
             kernel.Bind<IErrorReportCreator>().To<ErrorReportCreator>();
-            kernel.Bind<IExposureTimeCalculator>().To <ExposureTimeCalculator> ();
+            kernel.Bind<IErrorReportReporter>().To<ErrorReportReporter>();
+            kernel.Bind<IExposureTimeCalculator>().To <ExposureTimeCalculator>();
+            kernel.Bind<IFileSystemWatcher>().To<FileSystemWatcher>();
             kernel.Bind<IGenericGridLoader<int>>().To<GenericGridLoader<int>>();
             kernel.Bind<IGenericLoader<Measurement>>().To<GenericLoader<Measurement>>();
+            kernel.Bind<IGitHubIssueCreator>().To<GitHubIssueCreator>();
             kernel.Bind<IMaskIntensityResistanceInterpolatorFactory>().To<MaskIntensityResistanceInterpolatorFactory>();
             kernel.Bind<IMeasurementGridProcessor>().To<MeasurementGridProcessor>();
             kernel.Bind<IOutputWriter>().To<OutputWriter>();
-            RegisterGithubReleasesClient(kernel);
+            RegisterGithubClients(kernel);
             kernel.Bind<IReleaseManager>().To<ReleaseManager>();
             
         }
 
-        private static void RegisterGithubReleasesClient(IKernel kernel)
+        private static void RegisterGithubClients(IKernel kernel)
         {
             var productHeaderValue = new ProductHeaderValue("CreateMask");
-            var githubClient = new GitHubClient(productHeaderValue);
-            var releasesClient = githubClient.Repository.Release;
-            kernel.Bind<IReleasesClient>().ToConstant(releasesClient);
+            var credentialStore = new InMemoryCredentialStore(new Credentials("create-mask-error-reporter", "createmask2018"));
+            var githubClient = new GitHubClient(productHeaderValue, credentialStore);
+            kernel.Bind<IReleasesClient>().ToConstant(githubClient.Repository.Release);
+            kernel.Bind<IIssuesClient>().ToConstant(githubClient.Issue);
         }
     }
 }

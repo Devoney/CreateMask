@@ -84,7 +84,7 @@ namespace CreateMask.Workers
             _errorReport.MeasurementsHighCsvData = LoadFile(_errorReport.ApplicationArguments.LcdMeasurementsFilePathHigh);
         }
 
-        private string LoadFile(string filePath)
+        private static string LoadFile(string filePath)
         {
             if (!File.Exists(filePath)) return null;
             return File.ReadAllText(filePath);

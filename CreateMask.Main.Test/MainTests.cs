@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
@@ -116,7 +117,7 @@ namespace CreateMask.Main.Test
             actualSupportedFileTypes.Should().BeEquivalentTo(expectedSupportedFileTypes);
         }
 
-        [Test, Category(Categories.Unit)]
+        [Test, Category(Categories.Integration)]
         public void ErrorReportIsCreatedUponException()
         {
             //Given
@@ -157,7 +158,7 @@ namespace CreateMask.Main.Test
                 It.IsAny<string>()), Times.Once);
         }
 
-        [Test, Category(Categories.Unit)]
+        [Test, Category(Categories.Integration)]
         public void ExceptionThrownInErrorReportIsHidden()
         {
             //Given
@@ -203,6 +204,24 @@ namespace CreateMask.Main.Test
                 Times.Once);
         }
 
+        [Test, Category(Categories.Integration)]
+        public void ErrorReportReporterIsStarted()
+        {
+            //Given
+            var tuple = GetFullyMockedMain();
+            var mocks = tuple.Item1;
+            var errorReportReporterMock = mocks.ErrorReportReporter;
+            errorReportReporterMock.Setup(err => err.Start());
+            var main = tuple.Item2;
+            var applicationArguments = GetApplicationArguments();
+
+            //When
+            main.CreateMask(applicationArguments);
+
+            //Then
+            errorReportReporterMock.Verify(err => err.Start(), Times.Once);
+        }
+
         #region Helpers
 
         private class MockedObjects
@@ -215,6 +234,7 @@ namespace CreateMask.Main.Test
             public Mock<IMeasurementGridProcessor> MeasurementGridProcessor { get; set; }
             public Mock<IGenericLoader<Measurement>> MeasurementsLoader { get; set; }
             public Mock<IOutputWriter> OutputWriter { get; set; }
+            public Mock<IErrorReportReporter> ErrorReportReporter { get; set; }
         }
         private Tuple<MockedObjects, Main> GetFullyMockedMain()
         {
@@ -226,6 +246,7 @@ namespace CreateMask.Main.Test
             var outputWriter = new Mock<IOutputWriter>();
             var errorReportCreator = new Mock<IErrorReportCreator>();
             var bitmapProcessor = new Mock<IBitmapProcessor>();
+            var errorReportReporter = new Mock<IErrorReportReporter>();
 
             var mockedObjects = new MockedObjects
             {
@@ -236,7 +257,8 @@ namespace CreateMask.Main.Test
                 MaskIntensityResistanceInterpolatorFactory = factory,
                 MeasurementGridProcessor = gridProcessor,
                 MeasurementsLoader = measuremntsLoader,
-                OutputWriter = outputWriter
+                OutputWriter = outputWriter,
+                ErrorReportReporter = errorReportReporter
             };
 
             var main = new Main(
@@ -247,7 +269,9 @@ namespace CreateMask.Main.Test
                 exposureTimeCalculator.Object, 
                 outputWriter.Object,
                 bitmapProcessor.Object,
-                errorReportCreator.Object);
+                errorReportCreator.Object,
+                new ErrorReportConfiguration("./error-reports", "./error-reports/reported"),
+                errorReportReporter.Object);
 
             return new Tuple<MockedObjects, Main>(mockedObjects, main);
         }

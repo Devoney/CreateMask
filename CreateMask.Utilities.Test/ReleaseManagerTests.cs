@@ -73,20 +73,19 @@ namespace CreateMask.Utilities.Test
         public async void ExceptionInReleasesClientResultsInCallbackNotCalled()
         {
             //Given
+            var tuple = GetReleaseManager();
+            var releasesClientMock = tuple.Item1;
+            var releaseManager = tuple.Item2;
             var callbackCalled = false;
-            var releasesClientMock = new Mock<IReleasesClient>();
             releasesClientMock.Setup(client => client.GetAll(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new TimeoutException("The network operation timed out"));
-            var releaseManager = new ReleaseManager(releasesClientMock.Object);
             var arguments = new CheckForReleaseArgs
             {
                 CurrentVersion = new Version(),
                 OnNewReleaseCallBack = releaseInfo =>
                 {
                     callbackCalled = true;
-                },
-                Owner = "Owner",
-                Repository = "Repository"
+                }
             };
 
             //When
@@ -122,10 +121,19 @@ namespace CreateMask.Utilities.Test
             releaseInfo.Uri.ToString().Should().Be(expectedUrl);
         }
 
+        private Tuple<Mock<IReleasesClient>, IReleaseManager> GetReleaseManager()
+        {
+            var releasesClient = new Mock<IReleasesClient>();
+            var gitHubRepoInfo = new GitHubRepoInfo("CreateMask", "Devoney", "Username", "Password");
+            var releaseManager = new ReleaseManager(releasesClient.Object, gitHubRepoInfo);
+            return new Tuple<Mock<IReleasesClient>, IReleaseManager>(releasesClient, releaseManager);
+        }
+
         private Tuple<IReleaseManager, CheckForReleaseArgs, Mock<IReleasesClient>> 
             Given(Action<ReleaseInfo> callback, Version latestReleaseVersion)
         {
-            var releasesClientMock = new Mock<IReleasesClient>();
+            var tuple = GetReleaseManager();
+            var releasesClientMock = tuple.Item1;
             releasesClientMock.Setup(client => client.GetAll(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() =>
                 {
@@ -139,14 +147,11 @@ namespace CreateMask.Utilities.Test
                     task.ConfigureAwait(false);
                     return task;
                 });
-
-            var releasesClient = releasesClientMock.Object;
-            var releaseManager = new ReleaseManager(releasesClient);
+            var releaseManager = tuple.Item2;
+            
             var arguments = new CheckForReleaseArgs
             {
                 CurrentVersion = new Version(1, 0, 0, 0),
-                Repository = "MyRepo",
-                Owner = "SomeOwner",
                 OnNewReleaseCallBack = callback
             };
             return new Tuple<IReleaseManager, CheckForReleaseArgs, Mock<IReleasesClient>>(releaseManager, arguments, releasesClientMock);

@@ -2,13 +2,14 @@
 using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using NUnit.Framework;
+using TestHelpers;
 
 namespace CreateMask.Utilities.Test
 {
     [TestFixture]
     public class ClonerTests
     {
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ObjectReferencesAreNotEqualAfterCloning()
         {
             //Given
@@ -22,7 +23,7 @@ namespace CreateMask.Utilities.Test
             ReferenceEquals(source, clone).Should().BeFalse();
         }
 
-        [Test]
+        [Test, Category(Categories.Unit)]
         public void ObjectIsClonedCorrectly()
         {
             //Given

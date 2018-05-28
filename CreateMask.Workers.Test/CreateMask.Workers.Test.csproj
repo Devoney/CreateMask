@@ -57,6 +57,10 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Octokit, Version=0.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Octokit.0.29.0\lib\net45\Octokit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -86,7 +90,9 @@
   <ItemGroup>
     <Compile Include="ArgumentsParserTests.cs" />
     <Compile Include="ErrorReportCreatorTests.cs" />
+    <Compile Include="ErrorReportReporterTests.cs" />
     <Compile Include="ExposureTimeCalculatorTests.cs" />
+    <Compile Include="GitHubIssueCreatorTests.cs" />
     <Compile Include="MaskIntensityResistanceInterpolatorTests.cs" />
     <Compile Include="MeasurementGridProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -20,6 +20,7 @@ namespace CreateMask.Main
         private readonly IOutputWriter _outputWriter;
         private readonly IBitmapProcessor _bitmapProcessor;
         private readonly IErrorReportCreator _errorReportCreator;
+        private readonly ErrorReportConfiguration _errorReportConfiguration;
 
         public IEnumerable<string> SupportedFileTypes => ImageFileTypeHelper.ImageFileTypes;
 
@@ -32,7 +33,9 @@ namespace CreateMask.Main
                     IExposureTimeCalculator exposureTimeCalculator,
                     IOutputWriter outputWriter,
                     IBitmapProcessor bitmapProcessor,
-                    IErrorReportCreator errorReportCreator)
+                    IErrorReportCreator errorReportCreator,
+                    ErrorReportConfiguration errorReportConfiguration,
+                    IErrorReportReporter errorReportReporter)
         {
             _measurementsLoader = measurementsLoader;
             _maskIntensityInterpolatorFactory = maskIntensityInterpolatorFactory;
@@ -42,6 +45,9 @@ namespace CreateMask.Main
             _outputWriter = outputWriter;
             _bitmapProcessor = bitmapProcessor;
             _errorReportCreator = errorReportCreator;
+            _errorReportConfiguration = errorReportConfiguration;
+            
+            errorReportReporter.Start();
         }
 
         public void CreateMask(ApplicationArguments arguments)
@@ -112,7 +118,7 @@ namespace CreateMask.Main
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 var reportName = DateTime.Now.ToString("yyyyMMddHHmmss");
-                _errorReportCreator.CreateReport(version, exception, arguments, "./error-reports", reportName);
+                _errorReportCreator.CreateReport(version, exception, arguments, _errorReportConfiguration.MainDirectory, reportName);
             }
             // ReSharper disable once EmptyGeneralCatchClause
             catch
