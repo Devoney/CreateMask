@@ -26,6 +26,7 @@ namespace CreateMask.Gui
         private readonly Main.Main _main;
         private bool _exposureTimeRecalculated;
         private int ? _recalculatedExposureTime;
+        private string _fileFilter;
 
         public bool ExposureTimeRecalculated
         {
@@ -57,16 +58,16 @@ namespace CreateMask.Gui
         {
             get
             {
-                var fileFilter = "";
+                if (_fileFilter != null) return _fileFilter;
                 foreach (var supportedFileType in SupportedFileTypes)
                 {
-                    fileFilter += $"{supportedFileType}|*.{supportedFileType}|";
+                    _fileFilter += $"{supportedFileType}|*.{supportedFileType}|";
                 }
-                fileFilter = fileFilter.Substring(0, fileFilter.Length - 1);
-                return fileFilter;
+                _fileFilter = _fileFilter.Substring(0, _fileFilter.Length - 1);
+                return _fileFilter;
             }
         }
-
+        
         public string Version => "v" +Assembly.GetExecutingAssembly().GetName().Version;
 
         public MainWindow()
