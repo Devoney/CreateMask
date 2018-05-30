@@ -12,11 +12,11 @@ namespace CreateMask.Workers
         {
             var bitmap = new Bitmap(dimensions.Width, dimensions.Height);
             using (var graphics = Graphics.FromImage(bitmap))
-            using(var pen = new Pen(color))
+            using(var brush = new SolidBrush(color))
             {
                 var point = new Point(0,0);
                 var rectangle = new Rectangle(point, dimensions);
-                graphics.DrawRectangle(pen, rectangle);
+                graphics.FillRectangle(brush, rectangle);
             }
             return bitmap;
         }

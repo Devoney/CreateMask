@@ -58,7 +58,6 @@
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
     <Compile Include="Interfaces\IGitHubIssueCreator.cs" />
-    <Compile Include="Interfaces\IHomogeneousMasksCreator.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolator.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="Interfaces\IMeasurementGridProcessor.cs" />

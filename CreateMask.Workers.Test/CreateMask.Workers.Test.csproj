@@ -93,6 +93,7 @@
     <Compile Include="ErrorReportReporterTests.cs" />
     <Compile Include="ExposureTimeCalculatorTests.cs" />
     <Compile Include="GitHubIssueCreatorTests.cs" />
+    <Compile Include="HomogeneousMasksCreatorTests.cs" />
     <Compile Include="MaskIntensityResistanceInterpolatorTests.cs" />
     <Compile Include="MeasurementGridProcessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,7 +120,11 @@
       <Name>TestHelpers</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\homogeneousmask32x48-56.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Data\JEU76-12-95FE_expected.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -153,7 +158,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
+      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
