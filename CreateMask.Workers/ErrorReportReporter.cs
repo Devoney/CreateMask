@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading;
 using CreateMask.Containers;
 using CreateMask.Contracts.Interfaces;
 using Newtonsoft.Json;
@@ -64,6 +66,11 @@ namespace CreateMask.Workers
             try
             {
                 var errorReport = DeserializeErrorReport(filePath);
+                if (errorReport == null)
+                {
+                    File.Delete(filePath); //Empty error report file or incorrupt.
+                    return;
+                }
                 _gitHubIssueCreator.CreateIssue(errorReport);
 
                 MoveErrorReport(filePath);
@@ -77,8 +84,22 @@ namespace CreateMask.Workers
 
         private static ErrorReport DeserializeErrorReport(string filePath)
         {
-            var fileContents = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<ErrorReport>(fileContents);
+            const int retries = 5;
+            Exception lastException = null;
+            for (var i = 0; i < retries; i++)
+            {
+                try
+                {
+                    var fileContents = File.ReadAllText(filePath);
+                    return JsonConvert.DeserializeObject<ErrorReport>(fileContents);
+                }
+                catch (IOException ex)
+                {
+                    lastException = ex;
+                    Thread.Sleep(200);
+                }
+            }
+            throw lastException;
         }
 
         private void MoveErrorReport(string filePath)
