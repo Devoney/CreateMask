@@ -24,12 +24,19 @@ namespace CreateMask.Workers
         public IEnumerable<Bitmap> CreateSetOfMasks(Size dimensions, IntensityDifference intensityDifference)
         {
             var id = (int) intensityDifference;
-            var masks = new List<Bitmap>(256/id);
-            for (var i = 0; i <= byte.MaxValue; i = i+id)
+            var nrOfMasks = (256/id) + 1;
+            var masks = new List<Bitmap>(nrOfMasks);
+            var pixelColorValue = -id;
+            for (var i = 0; i < nrOfMasks; i++)
             {
-                var color = Color.FromArgb(i, i, i);
+                pixelColorValue = pixelColorValue + id;
+                var color = Color.FromArgb(pixelColorValue, pixelColorValue, pixelColorValue);
                 var mask = CreateMask(dimensions, color);
                 masks.Add(mask);
+                if (i == 0)
+                {
+                    pixelColorValue--;
+                }
             }
             return masks;
         }
@@ -43,9 +50,10 @@ namespace CreateMask.Workers
             var masks = CreateSetOfMasks(dimensions, intensityDifference);
             foreach (var mask in masks)
             {
-                var filename = GetFileName(mask);
+                var filename = GetFileName(mask, imageFileType);
+                var filePath = Path.Combine(directory, filename);
                 
-                mask.Save(filename, imageFormat);
+                mask.Save(filePath, imageFormat);
                 mask.Dispose();
             }
         }
@@ -61,14 +69,18 @@ namespace CreateMask.Workers
         private string GetColorString(Color color)
         {
             var colorString = color.R.ToString();
+            while (colorString.Length < 3)
+            {
+                colorString = "0" + colorString;
+            }
             return colorString;
         }
 
-        private string GetFileName(Bitmap mask)
+        private string GetFileName(Bitmap mask, ImageFileType imageFileType)
         {
             var color = mask.GetPixel(0, 0);
             var colorString = GetColorString(color);
-            return $"Mask_{mask.Width}x{mask.Height}_{colorString}";
+            return $"Mask_{mask.Width}x{mask.Height}_{colorString}.{imageFileType.ToString().ToLowerInvariant()}";
         }
     }
 }
