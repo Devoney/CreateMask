@@ -2,7 +2,7 @@
 using System.Drawing;
 using CreateMask.Contracts.Enums;
 
-namespace CreateMask.Workers
+namespace CreateMask.Contracts.Interfaces
 {
     public interface IHomogeneousMasksCreator
     {

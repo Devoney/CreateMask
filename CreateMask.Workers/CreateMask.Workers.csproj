@@ -70,7 +70,6 @@
     <Compile Include="Factories\MaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="GitHubIssueCreator.cs" />
     <Compile Include="HomogeneousMasksCreator.cs" />
-    <Compile Include="IHomogeneousMasksCreator.cs" />
     <Compile Include="MaskIntensityResistanceInterpolator.cs" />
     <Compile Include="MeasurementGridProcessor.cs" />
     <Compile Include="OutputWriter.cs" />
@@ -96,7 +95,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

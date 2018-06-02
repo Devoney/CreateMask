@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using CreateMask.Contracts.Enums;
 using CreateMask.Contracts.Helpers;
+using CreateMask.Contracts.Interfaces;
 
 namespace CreateMask.Workers
 {
@@ -25,6 +26,7 @@ namespace CreateMask.Workers
         {
             var id = (int) intensityDifference;
             var nrOfMasks = (256/id) + 1;
+            if (intensityDifference == IntensityDifference.Id1) nrOfMasks = 256;
             var masks = new List<Bitmap>(nrOfMasks);
             var pixelColorValue = -id;
             for (var i = 0; i < nrOfMasks; i++)

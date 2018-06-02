@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\IGenericGridLoader.cs" />
     <Compile Include="Interfaces\IGenericLoader.cs" />
     <Compile Include="Interfaces\IGitHubIssueCreator.cs" />
+    <Compile Include="Interfaces\IHomogeneousMasksCreator.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolator.cs" />
     <Compile Include="Interfaces\IMaskIntensityResistanceInterpolatorFactory.cs" />
     <Compile Include="Interfaces\IMeasurementGridProcessor.cs" />
@@ -74,7 +75,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2018/4/20" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_StartDate="2018/4/20" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -9,7 +9,7 @@
         Title="{Binding Version, StringFormat={}MaskCreator {0} - For 3D UV Resin DLP Printers}"
         SizeToContent="Height"
         Height="684.842"
-        Width="1120"
+        Width="1280"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Background="Black"
         Icon="favicon.ico">
@@ -57,199 +57,262 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*" />
-            <ColumnDefinition Width="0.5*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
         <Grid Grid.Column="0"
               Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <GroupBox Grid.Row="1"
-                      Header="Measurement Dimensions">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0"
-                           Content="Number of rows" />
-                    <xctk:IntegerUpDown Grid.Column="1"
-                                        Value="{Binding Arguments.MeasurementsNrOfRows}"
-                                        Minimum="1" />
-                    <Label Grid.Column="2"
-                           Content="Number of columns" />
-                    <xctk:IntegerUpDown Grid.Column="3"
-                                        Value="{Binding Arguments.MeasurementsNrOfColumns}"
-                                        Minimum="1" />
-                </Grid>
-            </GroupBox>
-            <GroupBox Grid.Row="2"
-                      Header="Measurements">
-                <StackPanel>
-                    <controls:SelectFile Label="LDR Curve Data"
-                                         SelectedFilePath="{Binding Arguments.LdrCalibrationFilePath, Mode=TwoWay}"
-                                         Filter="Csv|*.csv" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="1"
+                          Header="LCD">
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition Width="0.2*" />
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition Width="0.2*" />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0"
-                               Content="Low Mask Intensity" />
-                        <xctk:IntegerUpDown Grid.Column="1"
-                                            Value="{Binding Arguments.Low}"
-                                            Minimum="0"
-                                            Maximum="255" />
-                        <Label Grid.Column="2"
-                               Content="High Mask Intensity" />
-                        <xctk:IntegerUpDown Grid.Column="3"
-                                            Value="{Binding Arguments.High}"
-                                            Minimum="0"
-                                            Maximum="255" />
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Content="Width (px)" />
+                        <xctk:IntegerUpDown Grid.Row="1"
+                                            Grid.Column="1"
+                                            Value="{Binding Arguments.LcdWidth}" />
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Content="Height (px)" />
+                        <xctk:IntegerUpDown Grid.Row="1"
+                                            Grid.Column="3"
+                                            Value="{Binding Arguments.LcdHeight}" />
                     </Grid>
-                    <controls:SelectFile Label="LCD Measurements High Light Intensity"
-                                         SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathHigh, Mode=TwoWay}"
-                                         Filter="Csv|*.csv" />
-                    <controls:SelectFile Label="LCD Measurements Low Light Intensity"
-                                         SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathLow, Mode=TwoWay}"
-                                         Filter="Csv|*.csv" />
-                </StackPanel>
-            </GroupBox>
-            <GroupBox Grid.Row="3"
-                      Header="LCD">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.3*" />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition Width="0.3*" />
-                        <ColumnDefinition Width="0.2*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           Content="Current exposure time" />
-                    <xctk:IntegerUpDown Grid.Row="0"
-                                        Grid.Column="1"
-                                        Value="{Binding Arguments.OriginalExposureTime}" />
-                        <Label Grid.Row="0"
-                               Grid.Column="2" Foreground="Orange" Content="New estimated exp. time" Visibility="{Binding ExposureTimeRecalculated, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="3"
-                                   Text="{Binding RecalculatedExposureTime}"
-                                   TextAlignment="Right"
-                                   Foreground="Orange"
-                                   Visibility="{Binding ExposureTimeRecalculated, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Content="Width (px)" />
-                    <xctk:IntegerUpDown Grid.Row="1"
-                                        Grid.Column="1"
-                                        Value="{Binding Arguments.LcdWidth}" />
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Content="Height (px)" />
-                    <xctk:IntegerUpDown Grid.Row="1"
+                </GroupBox>
+                <GroupBox Header="LDR Curve"
+                          Grid.Row="2">
+                    <StackPanel>
+                        <GroupBox Header="Generate homogeneous masks">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.25*" />
+                                    <ColumnDefinition Width="0.25*" />
+                                    <ColumnDefinition Width="0.25*" />
+                                    <ColumnDefinition Width="0.25*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="4" Foreground="#777777">Creates a set of homogeneous mask to be able to create the LDR Curve Measurement Data</TextBlock>
+                                <Label Grid.Row="1"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="3"
+                                       Content="Number of masks to create, the more the preciser the curve fit." />
+                                <ComboBox Grid.Row="1"
+                                          Grid.Column="3">
+                                    <ComboBoxItem IsSelected="True">9 (default)</ComboBoxItem>
+                                    <ComboBoxItem>17</ComboBoxItem>
+                                    <ComboBoxItem>33</ComboBoxItem>
+                                    <ComboBoxItem>65</ComboBoxItem>
+                                    <ComboBoxItem>129</ComboBoxItem>
+                                    <ComboBoxItem>256</ComboBoxItem>
+                                </ComboBox>
+                                <Label Grid.Row="2"
+                                       Grid.ColumnSpan="4"
+                                       Grid.Column="0"
+                                       Content="Directory to put masks in" />
+                                <TextBox Grid.Row="3"
+                                         Grid.Column="0"
+                                         Grid.ColumnSpan="3" />
+                                <Button Grid.Row="3"
                                         Grid.Column="3"
-                                        Value="{Binding Arguments.LcdHeight}" />
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Output"
-                      Grid.Row="4">
-                <StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*" />
-                            <ColumnDefinition Width="0.5*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Column="0">
-                            <Label Content="Desired overall resistance" />
-                            <xctk:IntegerUpDown Value="{Binding Arguments.DesiredResistance}"
+                                        Content="Browse"></Button>
+                                <Button Grid.Row="4"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="4"
+                                        Content="Create set of masks" />
+                            </Grid>
+                        </GroupBox>
+                        <controls:SelectFile Label="LDR Curve Measurement Data"
+                                             SelectedFilePath="{Binding Arguments.LdrCalibrationFilePath, Mode=TwoWay}"
+                                             Filter="Csv|*.csv" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Grid.Row="3"
+                          Header="LDR Grid Measurements">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"
+                                   Content="Number of rows" />
+                            <xctk:IntegerUpDown Grid.Column="1"
+                                                Value="{Binding Arguments.MeasurementsNrOfRows}"
+                                                Minimum="1" />
+                            <Label Grid.Column="2"
+                                   Content="Number of columns" />
+                            <xctk:IntegerUpDown Grid.Column="3"
+                                                Value="{Binding Arguments.MeasurementsNrOfColumns}"
+                                                Minimum="1" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"
+                                   Content="Low Mask Intensity" />
+                            <xctk:IntegerUpDown Grid.Column="1"
+                                                Value="{Binding Arguments.Low}"
                                                 Minimum="0"
-                                                Maximum="100000"
-                                                Width="80" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Right">
-                            <Label Content="File type" />
-                            <ComboBox x:Name="cmbFileType"
+                                                Maximum="255" />
+                            <Label Grid.Column="2"
+                                   Content="High Mask Intensity" />
+                            <xctk:IntegerUpDown Grid.Column="3"
+                                                Value="{Binding Arguments.High}"
+                                                Minimum="0"
+                                                Maximum="255" />
+                        </Grid>
+                        <controls:SelectFile Label="LCD Measurements High Light Intensity"
+                                             SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathHigh, Mode=TwoWay}"
+                                             Filter="Csv|*.csv" />
+                        <controls:SelectFile Label="LCD Measurements Low Light Intensity"
+                                             SelectedFilePath="{Binding Arguments.LcdMeasurementsFilePathLow, Mode=TwoWay}"
+                                             Filter="Csv|*.csv" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Output"
+                          Grid.Row="4">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.35*" />
+                                <ColumnDefinition Width="0.15*" />
+                                <ColumnDefinition Width="0.25*" />
+                                <ColumnDefinition Width="0.25*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Content="Current exposure time" />
+                            <xctk:IntegerUpDown Grid.Row="0"
+                                                Grid.Column="1"
+                                                Value="{Binding Arguments.OriginalExposureTime}" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="2"
+                                   Foreground="Orange"
+                                   Content="New est. exp. time"
+                                   HorizontalAlignment="Right"
+                                   Visibility="{Binding ExposureTimeRecalculated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Text="{Binding RecalculatedExposureTime}"
+                                       TextAlignment="Right"
+                                       Foreground="Orange"
+                                       Visibility="{Binding ExposureTimeRecalculated, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Content="Desired overall resistance" />
+                            <xctk:IntegerUpDown Grid.Row="1"
+                                                Grid.Column="1"
+                                                Value="{Binding Arguments.DesiredResistance}"
+                                                Minimum="0"
+                                                Maximum="100000" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
+                                   HorizontalAlignment="Right"
+                                   Content="File type" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      x:Name="cmbFileType"
                                       Width="120"
                                       HorizontalAlignment="Stretch"
                                       ItemsSource="{Binding SupportedFileTypes}"
                                       SelectedItem="{Binding Arguments.FileType}"
                                       SelectionChanged="CmbFileTypeOnSelectionChanged" />
-                        </StackPanel>
-                    </Grid>
-                    <controls:SelectFile x:Name="sfOutputPath"
-                                         Label="Save mask file path"
-                                         SelectedFilePath="{Binding Arguments.MaskFilePath, Mode=TwoWay}"
-                                         Filter="{Binding FileFilter}"
-                                         DefaultExtension="{Binding ElementName=cmbFileType, Path=SelectedValue}"
-                                         PropertyChanged="SelectFile_OnPropertyChanged" />
-                    <Button Height="40"
-                            Click="BtnCreateMask_OnClick">Create Mask</Button>
-                </StackPanel>
-            </GroupBox>
-        </Grid>
+                        </Grid>
+                        <controls:SelectFile x:Name="sfOutputPath"
+                                             Label="Save mask file path"
+                                             SelectedFilePath="{Binding Arguments.MaskFilePath, Mode=TwoWay}"
+                                             Filter="{Binding FileFilter}"
+                                             DefaultExtension="{Binding ElementName=cmbFileType, Path=SelectedValue}"
+                                             PropertyChanged="SelectFile_OnPropertyChanged" />
+                        <Button Height="40"
+                                Click="BtnCreateMask_OnClick">Create Mask</Button>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
             <Grid Grid.Column="1"
-              Grid.Row="0">
+                  Grid.Row="0">
                 <GroupBox Header="Diagnostics">
                     <TextBox x:Name="tbxOutput"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         IsReadOnly="True"
-                         VerticalScrollBarVisibility="Visible" />
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             IsReadOnly="True"
+                             VerticalScrollBarVisibility="Visible" />
                 </GroupBox>
             </Grid>
         </Grid>
-        <StatusBar Grid.Row="1" Grid.Column="0" Background="Black">
+        <StatusBar Grid.Row="1"
+                   Grid.Column="0"
+                   Background="Black">
             <StatusBarItem>
                 <TextBlock Text="{Binding Version}"
-                       Margin="20,0,0,0" />
+                           Margin="20,0,0,0" />
             </StatusBarItem>
             <StatusBarItem>
                 <controls:WebLink Url="https://github.com/Devoney/CreateMask/wiki/3.-How-to-create-the-mask"
-                              Margin="20,0,0,0"
-                              Text="Help" />
+                                  Margin="20,0,0,0"
+                                  Text="Help" />
             </StatusBarItem>
             <StatusBarItem>
                 <controls:WebLink Url="https://github.com/Devoney/CreateMask"
-                              Margin="20,0,0,0"
-                              Text="Visit project on GitHub" />
+                                  Margin="20,0,0,0"
+                                  Text="Visit project on GitHub" />
             </StatusBarItem>
             <StatusBarItem>
                 <controls:WebLink Url="mailto:mikedeklerk@gmail.com"
-                              Margin="20,0,0,0"
-                              Text="Contact Developer" />
+                                  Margin="20,0,0,0"
+                                  Text="Contact Developer" />
             </StatusBarItem>
             <StatusBarItem Visibility="{Binding CheckForUpdateComponent.IsChecking, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock>Checking for update...</TextBlock>
             </StatusBarItem>
             <StatusBarItem Visibility="{Binding CheckForUpdateComponent.UpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <controls:WebLink Url="{Binding CheckForUpdateComponent.LatestVersion.Uri}"
-                              Margin="20,0,0,0"
-                              Text="Download newer version" />
+                                  Margin="20,0,0,0"
+                                  Text="Download newer version" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

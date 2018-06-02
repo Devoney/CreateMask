@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using CreateMask.Contracts.Enums;
+using CreateMask.Contracts.Interfaces;
 using FluentAssertions;
 using NUnit.Framework;
 using TestHelpers;
@@ -30,7 +31,8 @@ namespace CreateMask.Workers.Test
         }
 
         [Test, Category(Categories.Unit)]
-        [TestCase(IntensityDifference.Id1, 257)]
+        [TestCase(IntensityDifference.Id1, 256)]
+        [TestCase(IntensityDifference.Id2, 129)]
         [TestCase(IntensityDifference.Id8, 33)]
         [TestCase(IntensityDifference.Id64, 5)]
         public void CorrectNumberOfMasksIsCreated(IntensityDifference intensityDifference, int expectedNrOfMasks)
@@ -43,7 +45,7 @@ namespace CreateMask.Workers.Test
             var masks = hmc.CreateSetOfMasks(size, intensityDifference);
 
             //Then
-            masks.Count().Equals(expectedNrOfMasks);
+            masks.Count().Should().Be(expectedNrOfMasks);
         }
 
         [Test, Category(Categories.Unit)]
